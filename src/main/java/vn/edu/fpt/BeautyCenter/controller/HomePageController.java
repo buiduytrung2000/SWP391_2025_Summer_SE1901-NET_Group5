@@ -1,4 +1,4 @@
-package com.example.BeautyCenter.controller;
+package vn.edu.fpt.BeautyCenter.controller;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomePageController {
     @GetMapping
     public String home() {
-        return "index-5"; // trả về file index-5.html trong templates
+        return "home/index-5"; // trả về file home/index-5.html trong templates
     }
 }

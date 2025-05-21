@@ -1,4 +1,4 @@
-package com.example.BeautyCenter;
+package vn.edu.fpt.BeautyCenter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
