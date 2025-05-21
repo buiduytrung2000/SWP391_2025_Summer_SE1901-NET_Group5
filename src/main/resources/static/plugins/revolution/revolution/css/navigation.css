@@ -23,7 +23,7 @@ website:    http://www.themepunch.com
 .ares.tparrows:hover {}
 
 .ares.tparrows:before {
-    font-family: "revicons";
+    font-family: "revicons", serif;
     font-size: 25px;
     color: #aaa;
     display: block;
@@ -55,24 +55,24 @@ website:    http://www.themepunch.com
     background: #fff;
     min-height: 60px;
     line-height: 60px;
-    top: 0px;
+    top: 0;
     margin-left: 30px;
-    border-radius: 0px 30px 30px 0px;
+    border-radius: 0 30px 30px 0;
     overflow: hidden;
     -webkit-transition: -webkit-transform 0.3s;
     transition: transform 0.3s;
     transform: scaleX(0);
     -webkit-transform: scaleX(0);
-    transform-origin: 0% 50%;
-    -webkit-transform-origin: 0% 50%;
+    transform-origin: 0 50%;
+    -webkit-transform-origin: 0 50%;
 }
 
 .ares.tp-rightarrow .tp-title-wrap {
-    right: 0px;
+    right: 0;
     margin-right: 30px;
-    margin-left: 0px;
+    margin-left: 0;
     -webkit-transform-origin: 100% 50%;
-    border-radius: 30px 0px 0px 30px;
+    border-radius: 30px 0 0 30px;
 }
 
 .ares.tparrows:hover .tp-title-wrap {
@@ -91,14 +91,14 @@ website:    http://www.themepunch.com
     font-size: 14px;
     line-height: 60px;
     white-space: nowrap;
-    padding: 0px 20px;
+    padding: 0 20px;
     margin-left: 10px;
     opacity: 0;
 }
 
 .ares.tp-rightarrow .tp-arr-titleholder {
     transform: translateX(-200px);
-    margin-left: 0px;
+    margin-left: 0;
     margin-right: 10px;
 }
 
@@ -144,7 +144,7 @@ website:    http://www.themepunch.com
     position: absolute;
     color: #888;
     font-size: 12px;
-    padding: 0px 10px;
+    padding: 0 10px;
     font-weight: 600;
     right: 27px;
     top: -4px;
@@ -160,15 +160,15 @@ website:    http://www.themepunch.com
 }
 
 .ares .tp-bullet-title:after {
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     border-style: solid;
     border-width: 10px 0 10px 10px;
     border-color: transparent transparent transparent rgba(255, 255, 255, 0.75);
     content: " ";
     position: absolute;
     right: -10px;
-    top: 0px;
+    top: 0;
 }
 
 .ares .tp-bullet:hover .tp-bullet-title {
@@ -217,7 +217,7 @@ website:    http://www.themepunch.com
     background: rgba(0, 0, 0, 0);
     position: relative;
     padding: 15px 15px 15px 85px;
-    left: 0px;
+    left: 0;
     overflow: hidden;
     margin-top: -15px;
     box-sizing: border-box;
@@ -233,7 +233,7 @@ website:    http://www.themepunch.com
     color: #aaa;
     font-weight: 500;
     font-size: 12px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .ares .tp-tab-title {
@@ -372,16 +372,16 @@ website:    http://www.themepunch.com
 
 .dione .tp-arr-imgwrapper {
     width: 100px;
-    left: 0px;
+    left: 0;
     position: absolute;
     height: 100%;
-    top: 0px;
+    top: 0;
     overflow: hidden;
 }
 
 .dione.tp-rightarrow .tp-arr-imgwrapper {
     left: auto;
-    right: 0px;
+    right: 0;
 }
 
 .dione .tp-arr-imgholder {
@@ -389,18 +389,18 @@ website:    http://www.themepunch.com
     background-size: cover;
     width: 100px;
     height: 100%;
-    top: 0px;
+    top: 0;
     visibility: hidden;
     transform: translateX(-50px);
     -webkit-transform: translateX(-50px);
     transition: all 0.3s;
     -webkit-transition: all 0.3s;
     opacity: 0;
-    left: 0px;
+    left: 0;
 }
 
 .dione.tparrows.tp-rightarrow .tp-arr-imgholder {
-    right: 0px;
+    right: 0;
     left: auto;
     transform: translateX(50px);
     -webkit-transform: translateX(50px);
@@ -449,7 +449,7 @@ website:    http://www.themepunch.com
     padding: 3px;
     background: #000;
     background-color: rgba(0, 0, 0, 0.25);
-    margin: 0px;
+    margin: 0;
     box-sizing: border-box;
     transition: all 0.3s;
     -webkit-transition: all 0.3s;
@@ -459,9 +459,9 @@ website:    http://www.themepunch.com
     display: block;
     box-sizing: border-box;
     position: relative;
-    -webkit-box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
-    box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
     width: 44px;
     height: 44px;
     background-size: cover;
@@ -499,11 +499,10 @@ website:    http://www.themepunch.com
 .dione .tp-bullet.selected,
 .dione .tp-bullet:hover {
     background: rgba(255, 255, 255, 1);
-    background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(100%, rgba(119, 119, 119, 1)));
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -o-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
+    background-image: -webkit-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -moz-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -o-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -ms-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
     background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#777777", GradientType=0);
 }
@@ -573,8 +572,8 @@ website:    http://www.themepunch.com
     background: rgba(0, 0, 0, 0.5);
     min-height: 70px;
     line-height: 70px;
-    top: 0px;
-    margin-left: 0px;
+    top: 0;
+    margin-left: 0;
     border-radius: 35px;
     overflow: hidden;
     transition: opacity 0.3s;
@@ -596,9 +595,9 @@ website:    http://www.themepunch.com
 }
 
 .erinyen.tp-rightarrow .tp-title-wrap {
-    right: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
+    right: 0;
+    margin-right: 0;
+    margin-left: 0;
     -webkit-transform-origin: 100% 50%;
     border-radius: 35px;
     padding-right: 20px;
@@ -622,7 +621,7 @@ website:    http://www.themepunch.com
     font-size: 13px;
     line-height: 70px;
     white-space: nowrap;
-    padding: 0px 20px;
+    padding: 0 20px;
     margin-left: 11px;
     opacity: 0;
 }
@@ -631,8 +630,8 @@ website:    http://www.themepunch.com
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     background-position: center center;
     background-size: cover;
 }
@@ -641,15 +640,15 @@ website:    http://www.themepunch.com
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     background: #000;
     background: rgba(0, 0, 0, 0.5);
 }
 
 .erinyen.tp-rightarrow .tp-arr-titleholder {
     transform: translateX(-200px);
-    margin-left: 0px;
+    margin-left: 0;
     margin-right: 11px;
 }
 
@@ -690,7 +689,7 @@ website:    http://www.themepunch.com
     margin-top: -10px;
     box-sizing: content-box;
     border-radius: 10px;
-    box-shadow: 0px 0px 2px 1px rgba(33, 33, 33, 0.3);
+    box-shadow: 0 0 2px 1px rgba(33, 33, 33, 0.3);
 }
 
 .erinyen .tp-bullet {
@@ -742,8 +741,8 @@ website:    http://www.themepunch.com
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 1;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
@@ -778,8 +777,8 @@ website:    http://www.themepunch.com
     text-align: left;
     z-index: 2;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 2;
     padding: 20px 35px 20px 20px;
     width: 100%;
@@ -812,7 +811,7 @@ website:    http://www.themepunch.com
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    font-family: "Roboto Slab" margin-bottom:5px;
+    font-family: "Roboto Slab" ;margin-bottom:5px;
 }
 
 .erinyen .tp-tab-desc {
@@ -847,11 +846,11 @@ website:    http://www.themepunch.com
     height: 100%;
     background: #777777;
     /* Old browsers */
-    background: -moz-linear-gradient(top, #777777 0%, #666666 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #777777), color-stop(100%, #666666));
-    background: -webkit-linear-gradient(top, #777777 0%, #666666 100%);
-    background: -o-linear-gradient(top, #777777 0%, #666666 100%);
-    background: -ms-linear-gradient(top, #777777 0%, #666666 100%);
+    background-image: -webkit-linear-gradient(to top, #777777 0%, #666666 100%);
+    background-image: -moz-linear-gradient(to top, #777777 0%, #666666 100%);
+    background-image: -o-linear-gradient(to top, #777777 0%, #666666 100%);
+    background-image: -ms-linear-gradient(to top, #777777 0%, #666666 100%);
+    background-image: linear-gradient(to bottom, #777777 0%, #666666 100%);
     background: linear-gradient(to bottom, #777777 0%, #666666 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#777777", endColorstr="#666666", GradientType=0);
     padding: 10px;
@@ -876,15 +875,13 @@ website:    http://www.themepunch.com
 .gyges .tp-bullet.selected {
     background: #ffffff;
     /* Old browsers */
-    background: -moz-linear-gradient(top, #ffffff 0%, #e1e1e1 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e1e1e1));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #ffffff 0%, #e1e1e1 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #ffffff 0%, #e1e1e1 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #ffffff 0%, #e1e1e1 100%);
+    background-image: -moz-linear-gradient(to top, #ffffff 0%, #e1e1e1 100%);
+    background-image: -webkit-linear-gradient(to top, #ffffff 0%, #e1e1e1 100%);
+    background-image: -o-linear-gradient(to top, #ffffff 0%, #e1e1e1 100%);
+    background-image: -ms-linear-gradient(to top, #ffffff 0%, #e1e1e1 100%);
+    background-image: linear-gradient(to top, #ffffff 0%, #e1e1e1 100%);
+
+
     /* IE10+ */
     background: linear-gradient(to bottom, #ffffff 0%, #e1e1e1 100%);
     /* W3C */
@@ -910,7 +907,7 @@ website:    http://www.themepunch.com
     width: 100%;
     height: 100%;
     position: relative;
-    margin: 0px;
+    margin: 0;
     box-sizing: border-box;
     transition: all 0.3s;
     -webkit-transition: all 0.3s;
@@ -921,9 +918,9 @@ website:    http://www.themepunch.com
     display: block;
     box-sizing: border-box;
     position: relative;
-    -webkit-box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
-    box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
 }
 
 .gyges .tp-thumb-title {
@@ -955,11 +952,11 @@ website:    http://www.themepunch.com
 .gyges .tp-thumb:hover .tp-thumb-img-wrap,
 .gyges .tp-thumb.selected .tp-thumb-img-wrap {
     background: rgba(255, 255, 255, 1);
-    background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(100%, rgba(119, 119, 119, 1)));
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -o-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
+    background-image: -webkit-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -moz-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -o-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -ms-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
     background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#777777", GradientType=0);
 }
@@ -1001,7 +998,7 @@ website:    http://www.themepunch.com
     background: rgba(0, 0, 0, 0);
     position: relative;
     padding: 15px 15px 15px 85px;
-    left: 0px;
+    left: 0;
     overflow: hidden;
     margin-top: -15px;
     box-sizing: border-box;
@@ -1017,7 +1014,7 @@ website:    http://www.themepunch.com
     color: rgba(255, 255, 255, 0.25);
     font-weight: 500;
     font-size: 12px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .gyges .tp-tab-title {
@@ -1094,7 +1091,7 @@ website:    http://www.themepunch.com
 .hades .tp-arr-allwrapper {
     position: absolute;
     left: 100%;
-    top: 0px;
+    top: 0;
     background: #888;
     width: 100px;
     height: 100px;
@@ -1107,8 +1104,8 @@ website:    http://www.themepunch.com
     opacity: 0.0;
     -webkit-transform: rotatey(-90deg);
     transform: rotatey(-90deg);
-    -webkit-transform-origin: 0% 50%;
-    transform-origin: 0% 50%;
+    -webkit-transform-origin: 0 50%;
+    transform-origin: 0 50%;
 }
 
 .hades.tp-rightarrow .tp-arr-allwrapper {
@@ -1135,8 +1132,8 @@ website:    http://www.themepunch.com
 .hades .tp-arr-imgholder {
     background-size: cover;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
 }
@@ -1169,9 +1166,9 @@ website:    http://www.themepunch.com
     cursor: pointer;
     border: 5px solid #fff;
     box-sizing: content-box;
-    box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.2);
-    -webkit-perspective: 400;
-    perspective: 400;
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
+    -webkit-perspective: 400px;
+    perspective: 400px;
     -webkit-transform: translatez(0.01px);
     transform: translatez(0.01px);
 }
@@ -1194,11 +1191,11 @@ website:    http://www.themepunch.com
     transition: all 0.3s;
     -webkit-transform-style: flat;
     transform-style: flat;
-    perspective: 600;
-    -webkit-perspective: 600;
+    perspective: 600px;
+    -webkit-perspective: 600px;
     transform: rotatex(-90deg);
     -webkit-transform: rotatex(-90deg);
-    box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
     transform-origin: 50% 100%;
     -webkit-transform-origin: 50% 100%;
 }
@@ -1228,7 +1225,7 @@ website:    http://www.themepunch.com
     width: 100%;
     height: 100%;
     position: relative;
-    margin: 0px;
+    margin: 0;
     box-sizing: border-box;
     transition: all 0.3s;
     -webkit-transition: all 0.3s;
@@ -1240,20 +1237,19 @@ website:    http://www.themepunch.com
     display: block;
     box-sizing: border-box;
     position: relative;
-    -webkit-box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
-    box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
 }
 
 .hades .tp-thumb:hover .tp-thumb-img-wrap,
 .hades .tp-thumb.selected .tp-thumb-img-wrap {
     background: rgba(255, 255, 255, 1);
-    background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(100%, rgba(119, 119, 119, 1)));
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -o-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
+    background-image: -webkit-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -moz-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -o-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -ms-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#777777", GradientType=0);
 }
 
@@ -1373,17 +1369,17 @@ website:    http://www.themepunch.com
     min-height: 60px;
     line-height: 60px;
     top: -10px;
-    margin-left: 0px;
+    margin-left: 0;
     -webkit-transition: -webkit-transform 0.3s;
     transition: transform 0.3s;
     transform: scaleX(0);
     -webkit-transform: scaleX(0);
-    transform-origin: 0% 50%;
-    -webkit-transform-origin: 0% 50%;
+    transform-origin: 0 50%;
+    -webkit-transform-origin: 0 50%;
 }
 
 .hebe.tp-rightarrow .tp-title-wrap {
-    right: 0px;
+    right: 0;
     -webkit-transform-origin: 100% 50%;
 }
 
@@ -1400,12 +1396,12 @@ website:    http://www.themepunch.com
     font-size: 12px;
     line-height: 90px;
     white-space: nowrap;
-    padding: 0px 20px 0px 90px;
+    padding: 0 20px 0 90px;
 }
 
 .hebe.tp-rightarrow .tp-arr-titleholder {
-    margin-left: 0px;
-    padding: 0px 90px 0px 20px;
+    margin-left: 0;
+    padding: 0 90px 0 20px;
 }
 
 .hebe.tparrows:hover .tp-arr-titleholder {
@@ -1423,7 +1419,7 @@ website:    http://www.themepunch.com
     display: block;
     background-size: cover;
     background-position: center center;
-    top: 0px;
+    top: 0;
     right: -90px;
 }
 
@@ -1457,8 +1453,8 @@ website:    http://www.themepunch.com
     border: 5px solid #222;
     border-radius: 50%;
     box-sizing: content-box;
-    -webkit-perspective: 400;
-    perspective: 400;
+    -webkit-perspective: 400px;
+    perspective: 400px;
     -webkit-transform: translateZ(0.01px);
     transform: translateZ(0.01px);
     transition: all 0.3s;
@@ -1483,8 +1479,8 @@ website:    http://www.themepunch.com
     transition: all 0.3s;
     -webkit-transform-style: flat;
     transform-style: flat;
-    perspective: 600;
-    -webkit-perspective: 600;
+    perspective: 600px;
+    -webkit-perspective: 600px;
     transform: scale(0);
     -webkit-transform: scale(0);
     transform-origin: 50% 100%;
@@ -1509,7 +1505,7 @@ website:    http://www.themepunch.com
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    font-family: "Roboto Slab" margin-bottom:5px;
+    font-family: "Roboto Slab" ;margin-bottom:5px;
 }
 
 .hebe .tp-tab-desc {
@@ -1593,7 +1589,7 @@ website:    http://www.themepunch.com
     border-radius: 50%;
     cursor: pointer;
     box-sizing: content-box;
-    box-shadow: 0px 0px 2px 1px rgba(130, 130, 130, 0.3);
+    box-shadow: 0 0 2px 1px rgba(130, 130, 130, 0.3);
 }
 
 .hephaistos .tp-bullet:hover,
@@ -1668,8 +1664,8 @@ website:    http://www.themepunch.com
     position: absolute;
     width: 180px;
     height: 140px;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     visibility: hidden;
     -webkit-transition: -webkit-transform 0.3s 0.3s;
     transition: transform 0.3s 0.3s;
@@ -1678,7 +1674,7 @@ website:    http://www.themepunch.com
 }
 
 .hermes.tp-rightarrow .tp-arr-allwrapper {
-    right: 0px;
+    right: 0;
     left: auto;
 }
 
@@ -1689,8 +1685,8 @@ website:    http://www.themepunch.com
 .hermes .tp-arr-imgholder {
     width: 180px;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     height: 110px;
     transform: translateX(-180px);
     -webkit-transform: translateX(-180px);
@@ -1713,7 +1709,7 @@ website:    http://www.themepunch.com
     width: 180px;
     text-align: left;
     display: block;
-    padding: 0px 10px;
+    padding: 0 10px;
     line-height: 30px;
     background: #000;
     background: rgba(0, 0, 0, 0.75);
@@ -1799,7 +1795,7 @@ website:    http://www.themepunch.com
     display: block;
     width: 100%;
     min-height: 40%;
-    bottom: 0px;
+    bottom: 0;
     left: -10px;
 }
 
@@ -1821,8 +1817,8 @@ website:    http://www.themepunch.com
 }
 
 .hermes .tp-tab.selected .tp-tab-title:after {
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     border-style: solid;
     border-width: 30px 0 30px 10px;
     border-color: transparent transparent transparent rgb(54, 54, 54);
@@ -1939,18 +1935,11 @@ website:    http://www.themepunch.com
     height: 12px;
     position: absolute;
     background: #999999;
-    /* old browsers */
-    background: -moz-linear-gradient(top, #999999 0%, #e1e1e1 100%);
-    /* ff3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #999999), color-stop(100%, #e1e1e1));
-    /* chrome,safari4+ */
-    background: -webkit-linear-gradient(top, #999999 0%, #e1e1e1 100%);
-    /* chrome10+,safari5.1+ */
-    background: -o-linear-gradient(top, #999999 0%, #e1e1e1 100%);
-    /* opera 11.10+ */
-    background: -ms-linear-gradient(top, #999999 0%, #e1e1e1 100%);
-    /* ie10+ */
-    background: linear-gradient(to bottom, #999999 0%, #e1e1e1 100%);
+    background-image: -webkit-linear-gradient(to top, #999999 0%, #e1e1e1 100%);
+    background-image: -moz-linear-gradient(to top, #999999 0%, #e1e1e1 100%);
+    background-image: -o-linear-gradient(to top, #999999 0%, #e1e1e1 100%);
+    background-image: -ms-linear-gradient(to top, #999999 0%, #e1e1e1 100%);
+    background-image: linear-gradient(to bottom, #999999 0%, #e1e1e1 100%);
     /* w3c */
     filter: progid:dximagetransform.microsoft.gradient( startcolorstr="#999999", endcolorstr="#e1e1e1", gradienttype=0);
     /* ie6-9 */
@@ -1986,8 +1975,8 @@ website:    http://www.themepunch.com
     z-index: 10000;
     background-color: #000;
     padding: 5px 10px;
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     width: 100%;
     box-sizing: border-box;
     text-align: center;
@@ -2032,7 +2021,7 @@ website:    http://www.themepunch.com
     background: rgba(0, 0, 0, 0);
     position: relative;
     padding: 15px 15px 15px 85px;
-    left: 0px;
+    left: 0;
     overflow: hidden;
     margin-top: -15px;
     box-sizing: border-box;
@@ -2048,7 +2037,7 @@ website:    http://www.themepunch.com
     color: #aaa;
     font-weight: 500;
     font-size: 12px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .hesperiden .tp-tab-title {
@@ -2121,7 +2110,7 @@ website:    http://www.themepunch.com
     padding: 3px;
     background: #000;
     background-color: rgba(0, 0, 0, 0.25);
-    margin: 0px;
+    margin: 0;
     box-sizing: border-box;
     transition: all 0.3s;
     -webkit-transition: all 0.3s;
@@ -2133,9 +2122,9 @@ website:    http://www.themepunch.com
     display: block;
     box-sizing: border-box;
     position: relative;
-    -webkit-box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
-    box-shadow: inset 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.25);
     width: 44px;
     height: 44px;
     background-size: cover;
@@ -2173,12 +2162,12 @@ website:    http://www.themepunch.com
 .metis .tp-bullet.selected,
 .metis .tp-bullet:hover {
     background: rgba(255, 255, 255, 1);
-    background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(100%, rgba(119, 119, 119, 1)));
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -o-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(119, 119, 119, 1) 100%);
+    background-image: -webkit-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -moz-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -o-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: -ms-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+    background-image: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(119,119,119,1) 100%);
+
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#777777", GradientType=0);
 }
 
@@ -2209,13 +2198,13 @@ website:    http://www.themepunch.com
 
 .metis .tp-tab-mask {
     padding-left: 20px;
-    left: 0px;
+    left: 0;
     max-width: 90px !important;
     transition: 0.4s padding-left, 0.4s left, 0.4s max-width;
 }
 
 .metis:hover .tp-tab-mask {
-    padding-left: 0px;
+    padding-left: 0;
     left: 50px;
     max-width: 500px !important;
 }
@@ -2278,8 +2267,8 @@ website:    http://www.themepunch.com
     width: 88px;
     background: rgba(0, 0, 0, 0.15);
     border-right: 1px solid rgba(255, 255, 255, 0.10);
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     position: absolute;
     transition: 0.4s all;
 }
@@ -2349,7 +2338,7 @@ website:    http://www.themepunch.com
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #transparent;
+    background: transparent;
     padding: 10px;
     margin-left: -10px;
     margin-top: -10px;
@@ -2498,8 +2487,8 @@ website:    http://www.themepunch.com
     background: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     position: absolute;
     opacity: 0;
     transform: scale(0);
@@ -2514,8 +2503,8 @@ website:    http://www.themepunch.com
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     background-position: center center;
     background-size: cover;
     border-radius: 50%;
@@ -2653,8 +2642,8 @@ website:    http://www.themepunch.com
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 1;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
@@ -2689,8 +2678,8 @@ website:    http://www.themepunch.com
     text-align: left;
     z-index: 2;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 2;
     padding: 20px 35px 20px 20px;
     width: 100%;
@@ -2761,8 +2750,8 @@ website:    http://www.themepunch.com
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 1;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
@@ -2797,8 +2786,8 @@ website:    http://www.themepunch.com
     text-align: left;
     z-index: 2;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 2;
     padding: 15px 30px 15px 15px;
     width: 100%;
