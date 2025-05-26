@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header2 :: common-head}">
+    <!-- PAGE TITLE HERE -->
+    <title>404</title>
+</head>
+
+
+<body id="bg">
+
+<div class="page-wraper">
+
+    <!-- HEADER START -->
+    <header th:replace="~{fragments/header2 :: header}">
+    </header>
+    <!-- HEADER END -->
+
+    <!-- CONTENT START -->
+    <div class="page-content">
+
+        <!-- BREADCRUMB ROW -->
+        <div class="bg-gray-light p-tb20">
+            <div class="container">
+                <ul class="wt-breadcrumb breadcrumb-style-2">
+                    <li><a href="index.html">Home</a></li>
+                    <li>Error 404</li>
+                </ul>
+            </div>
+        </div>
+        <!-- BREADCRUMB ROW END -->
+
+        <!-- SECTION CONTENT START -->
+        <div class="section-full p-t80 p-b50">
+            <div class="container">
+                <div class="section-content">
+                    <div class="page-notfound-wrap row">
+
+                        <div class="col-lg-8 col-md-6 col-sm-6">
+                            <div class="page-notfound text-center">
+                                <form method="post">
+                                    <strong class="text-uppercase">Error</strong>
+                                    <strong>4<i class="fa fa-frown-o site-text-primary"></i>4</strong>
+                                    <span>Page not found</span>
+                                    <a href="index.html" class="site-button ">GO TO HOME  <i class="fa fa-angle-double-right"></i></a>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="page-notfound-left text-center bg-gray">
+                                <div class="constrot-strip"></div>
+                                <span class="flaticon-bronzer"></span>
+                                <div class="constrot-strip"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- SECTION CONTENT END -->
+
+    </div>
+    <!-- CONTENT END -->
+
+    <!-- FOOTER START -->
+    <footer th:replace="~{fragments/footer :: footer}">
+
+    <!-- FOOTER END -->
+
+    <!-- BUTTON TOP START -->
+    <button class="scroltop"><span class=" iconmoon-house relative" id="btn-vibrate"></span>Top</button>
+    </footer>
+</div>
+
+
+<!-- LOADING AREA START ===== -->
+<div class="loading-area">
+    <div class="loading-box"></div>
+    <div class="loading-pic">
+        <div class="cssload-container">
+            <div class="cssload-progress cssload-float cssload-shadow">
+                <div class="cssload-progress-item"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOADING AREA  END ====== -->
+<!-- STYLE SWITCHER  ======= -->
+<div class="styleswitcher">
+
+    <div class="switcher-btn-bx">
+        <a class="switch-btn">
+            <span class="fa fa-cog fa-spin"></span>
+        </a>
+    </div>
+
+    <div class="styleswitcher-inner">
+
+        <h6 class="switcher-title">Color Skin</h6>
+        <ul class="color-skins">
+            <li><a class="theme-skin skin-1" href="?theme=css/skin/skin-1" title="default Theme"></a></li>
+            <li><a class="theme-skin skin-2" href="?theme=css/skin/skin-2" title="pink Theme"></a></li>
+            <li><a class="theme-skin skin-3" href="?theme=css/skin/skin-3" title="sky Theme"></a></li>
+            <li><a class="theme-skin skin-4" href="?theme=css/skin/skin-4" title="green Theme"></a></li>
+            <li><a class="theme-skin skin-5" href="?theme=css/skin/skin-5" title="red Theme"></a></li>
+            <li><a class="theme-skin skin-6" href="?theme=css/skin/skin-6" title="orange Theme"></a></li>
+            <li><a class="theme-skin skin-7" href="?theme=css/skin/skin-7" title="purple Theme"></a></li>
+            <li><a class="theme-skin skin-8" href="?theme=css/skin/skin-8" title="blue Theme"></a></li>
+            <li><a class="theme-skin skin-9" href="?theme=css/skin/skin-9" title="gray Theme"></a></li>
+            <li><a class="theme-skin skin-10" href="?theme=css/skin/skin-10" title="brown Theme"></a></li>
+            <li><a class="theme-skin skin-11" href="?theme=css/skin/skin-11" title="gray Theme"></a></li>
+            <li><a class="theme-skin skin-12" href="?theme=css/skin/skin-12" title="golden Theme"></a></li>
+        </ul>
+
+        <h6 class="switcher-title">Nav</h6>
+        <ul class="nav-view">
+            <li class="nav-light active">Light</li>
+            <li class="nav-dark">Dark</li>
+        </ul>
+
+        <h6 class="switcher-title">Nav</h6>
+        <ul class="nav-width">
+            <li class="nav-boxed active">Boxed</li>
+            <li class="nav-wide">Wide</li>
+        </ul>
+
+        <h6 class="switcher-title">Header</h6>
+        <ul class="header-view">
+            <li class="header-fixed active">Fixed</li>
+            <li class="header-static">Static</li>
+        </ul>
+
+        <h6 class="switcher-title">Layout</h6>
+        <ul class="layout-view">
+            <li class="wide-layout active">Wide</li>
+            <li class="boxed">Boxed</li>
+        </ul>
+
+        <h6 class="switcher-title">Background Image</h6>
+        <ul class="background-switcher">
+            <li><img src="images/switcher/switcher-bg/thum/bg1.jpg" rel="images/switcher/switcher-bg/large/bg1.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg2.jpg" rel="images/switcher/switcher-bg/large/bg2.jpg"  alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg3.jpg" rel="images/switcher/switcher-bg/large/bg3.jpg"  alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg4.jpg" rel="images/switcher/switcher-bg/large/bg4.jpg"  alt=""></li>
+        </ul>
+
+        <h6 class="switcher-title">Background Pattern</h6>
+        <ul class="pattern-switcher">
+            <li><img src="images/switcher/switcher-patterns/thum/bg1.jpg"  rel="images/switcher/switcher-patterns/large/pt1.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg2.jpg"  rel="images/switcher/switcher-patterns/large/pt2.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg3.jpg"  rel="images/switcher/switcher-patterns/large/pt3.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg4.jpg"  rel="images/switcher/switcher-patterns/large/pt4.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg5.jpg"  rel="images/switcher/switcher-patterns/large/pt5.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg6.jpg"  rel="images/switcher/switcher-patterns/large/pt6.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg7.jpg"  rel="images/switcher/switcher-patterns/large/pt7.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg8.jpg"  rel="images/switcher/switcher-patterns/large/pt8.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg9.jpg"  rel="images/switcher/switcher-patterns/large/pt9.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg10.jpg"  rel="images/switcher/switcher-patterns/large/pt10.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg11.jpg"  rel="images/switcher/switcher-patterns/large/pt11.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg12.jpg"  rel="images/switcher/switcher-patterns/large/pt12.jpg" alt=""></li>
+        </ul>
+
+
+    </div>
+</div>
+<!-- STYLE SWITCHER END ==== -->
+
+<!-- JAVASCRIPT  FILES ========================================= -->
+<script th:replace="~{fragments/script :: common-scripts}">
+
+</script>
+
+</body>
+
+</html>
