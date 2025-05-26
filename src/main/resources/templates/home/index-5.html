@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-  <head th:replace="fragments/header::common-head">
+  <head th:replace="~{fragments/header::common-head}">
     <!-- PAGE TITLE HERE -->
-    <title>Spa Template | Home Page 5</title>
+    <title th:text="${pageTitle}">Default Title</title>
   </head>
 
   <body id="bg">
     <div class="page-wraper">
       <!-- HEADER START -->
-      <header th:replace="fragments/header::header">
+      <header th:replace="~{fragments/header::header}">
       </header>
       <!-- HEADER END -->
 
@@ -20,7 +20,7 @@
           class="rev_slider_wrapper fullscreen-container"
           data-alias="snowaddon1"
           data-source="gallery"
-          style="background-color: #2d3032; padding: 0px"
+          style="background-color: #2d3032; padding: 0"
         >
           <div
             id="rev_slider_149_1"
@@ -4754,7 +4754,7 @@
       <!-- CONTENT END -->
 
       <!-- FOOTER START -->
-      <footer th:replace="fragments/footer">
+      <footer th:replace="~{fragments/footer :: footer}">
 
       </footer>
       <!-- FOOTER END -->
@@ -5023,8 +5023,6 @@
     <!-- STYLE SWITCHER END ==== -->
 
     <!-- JAVASCRIPT  FILES ========================================= -->
-    <div th:replace="fragments/script">
-
-    </div>
+    <div th:replace="~{fragments/script :: common-scripts}"></div>
   </body>
 </html>

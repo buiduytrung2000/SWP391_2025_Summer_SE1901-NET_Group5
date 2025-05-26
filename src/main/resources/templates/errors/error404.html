@@ -3,7 +3,7 @@
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/header2::common-head">
+<head th:replace="~{fragments/header2 :: common-head}">
     <!-- PAGE TITLE HERE -->
     <title>404</title>
 </head>
@@ -14,7 +14,7 @@
 <div class="page-wraper">
 
     <!-- HEADER START -->
-    <header th:replace="fragments/header2::header">
+    <header th:replace="~{fragments/header2 :: header}">
     </header>
     <!-- HEADER END -->
 
@@ -67,7 +67,7 @@
     <!-- CONTENT END -->
 
     <!-- FOOTER START -->
-    <footer th:replace="fragments/footer">
+    <footer th:replace="~{fragments/footer :: footer}">
 
     <!-- FOOTER END -->
 
@@ -170,8 +170,9 @@
 <!-- STYLE SWITCHER END ==== -->
 
 <!-- JAVASCRIPT  FILES ========================================= -->
-<div th:replace="fragments/script">
-</div>
+<script th:replace="~{fragments/script :: common-scripts}">
+
+</script>
 
 </body>
 

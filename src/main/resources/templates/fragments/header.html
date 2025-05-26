@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:fragment="common-head">
   <!-- META -->
   <meta charset="utf-8" />
@@ -14,7 +14,7 @@
   <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.png}" />
 
 <!--  &lt;!&ndash; PAGE TITLE HERE &ndash;&gt;-->
-<!--  <title>Spa Template | Home Page 5</title>-->
+  <title th:text="${pageTitle} ?: 'Spa Template | Default Page'">Default Spa Title</title>
 
   <!-- MOBILE SPECIFIC -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -99,7 +99,7 @@
           <div class="header-nav navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active">
-                <a href="javascript:;"
+                <a href="javascript:"
                 >Home<i class="fa fa-chevron-down"></i
                 ></a>
                 <ul class="sub-menu">
@@ -112,19 +112,19 @@
               </li>
 
               <li>
-                <a href="javascript:;"
+                <a href="javascript:"
                 >Pages<i class="fa fa-chevron-down"></i
                 ></a>
                 <ul class="sub-menu">
                   <li>
-                    <a href="javascript:;">About us</a>
+                    <a href="javascript:">About us</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/about-1.html}">About us 1</a></li>
                       <li><a th:href="@{/about-2.html}">About us 2</a></li>
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">FAQ</a>
+                    <a href="javascript:">FAQ</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/faq-1.html}">FAQ 1</a></li>
                       <li><a th:href="@{/faq-2.html}">FAQ 2</a></li>
@@ -134,7 +134,7 @@
                     <a th:href="@{/career.html}">Career</a>
                   </li>
                   <li>
-                    <a href="javascript:;">Portfolio</a>
+                    <a href="javascript:">Portfolio</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/portfolio-1.html}">Portfolio 1</a></li>
                       <li><a th:href="@{/portfolio-2.html}">Portfolio 2</a></li>
@@ -145,7 +145,7 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">Our Team</a>
+                    <a href="javascript:">Our Team</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/our-team.html}">Our Team 1</a></li>
                       <li>
@@ -154,7 +154,7 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">Services</a>
+                    <a href="javascript:">Services</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/services-1.html}">Services 1</a></li>
                       <li><a th:href="@{/services-2.html}">Services 2</a></li>
@@ -164,7 +164,7 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">Galley</a>
+                    <a href="javascript:">Galley</a>
                     <ul class="sub-menu">
                       <li>
                         <a th:href="@{/gallery-grid-1.html}">Galley Grid 1</a>
@@ -178,7 +178,7 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">Error</a>
+                    <a href="javascript:">Error</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/error-403.html}">Error 403</a></li>
                       <li><a th:href="@{/error-404.html}">Error 404</a></li>
@@ -186,7 +186,7 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">Contact us</a>
+                    <a href="javascript:">Contact us</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/contact-1.html}">Contact us 1</a></li>
                       <li><a th:href="@{/contact-2.html}">Contact us 2</a></li>
@@ -197,12 +197,12 @@
               </li>
 
               <li>
-                <a href="javascript:;"
+                <a href="javascript:"
                 >Features<i class="fa fa-chevron-down"></i
                 ></a>
                 <ul class="sub-menu">
                   <li>
-                    <a href="javascript:;">Header</a>
+                    <a href="javascript:">Header</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/header-style-1.html}">Header 1</a></li>
                       <li><a th:href="@{/header-style-2.html}">Header 2</a></li>
@@ -223,7 +223,7 @@
               </li>
 
               <li>
-                <a href="javascript:;"
+                <a href="javascript:"
                 >Product<i class="fa fa-chevron-down"></i
                 ></a>
                 <ul class="sub-menu">
@@ -236,19 +236,19 @@
               </li>
 
               <li class="submenu-direction">
-                <a href="javascript:;"
+                <a href="javascript:"
                 >Blog<i class="fa fa-chevron-down"></i
                 ></a>
                 <ul class="sub-menu">
                   <li>
-                    <a href="javascript:;">Media</a>
+                    <a href="javascript:">Media</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/blog-media-list.html}">Media list</a></li>
                       <li><a th:href="@{/blog-media-grid.html}">Media grid</a></li>
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">list</a>
+                    <a href="javascript:">list</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/blog-half-img.html}">Half image</a></li>
                       <li>
@@ -275,7 +275,7 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">Grid</a>
+                    <a href="javascript:">Grid</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/blog-grid-2.html}">Grid 2</a></li>
                       <li>
@@ -303,7 +303,7 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="javascript:;">Single</a>
+                    <a href="javascript:">Single</a>
                     <ul class="sub-menu">
                       <li><a th:href="@{/blog-single.html}">Single full</a></li>
                       <li>
@@ -322,7 +322,7 @@
               </li>
 
               <li class="has-mega-menu">
-                <a href="javascript:;"
+                <a href="javascript:"
                 >Elements<i class="fa fa-chevron-down"></i
                 ></a>
                 <ul class="mega-menu">
@@ -516,7 +516,7 @@
             </div>
             <div class="extra-cell">
               <a
-                      href="javascript:;"
+                      href="javascript:"
                       class="wt-cart cart-btn dropdown-toggle"
                       title="Your Cart"
                       id="ID-MSG_dropdown"
@@ -620,12 +620,14 @@
                     class="radius-xl"
             >
               <div class="input-group">
-                <input
-                        value=""
-                        name="q"
-                        type="search"
-                        placeholder="Type to search"
-                />
+                <label>
+                  <input
+                          value=""
+                          name="q"
+                          type="search"
+                          placeholder="Type to search"
+                  />
+                </label>
                 <span class="input-group-btn"
                 ><button type="button" class="search-btn">
                         <i class="fa fa-search"></i></button

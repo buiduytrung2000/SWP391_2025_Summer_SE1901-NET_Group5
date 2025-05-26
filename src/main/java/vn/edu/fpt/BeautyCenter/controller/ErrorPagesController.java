@@ -11,8 +11,6 @@ public class ErrorPagesController implements ErrorController {
     public String handleError(HttpServletRequest request) {
         Integer statusCode = (Integer) request.getAttribute("jakarta.servlet.error.status_code");
         if (statusCode != null && statusCode == 404) {
-            System.out.println("Hêllo");
-            System.out.println(statusCode);
             return "errors/error404";
         }
         return "error";
