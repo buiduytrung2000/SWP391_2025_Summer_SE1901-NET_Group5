@@ -11,8 +11,9 @@ public enum ErrorCode {
     USER_EXISTED(1001,"User already exists"),
     INVALID_KEY(1002,"Invalid message key"),
     USERNAME_INVALID(1003,"Username must be at least 3 characters"),
-    PASSWORD_INVALID(1004,"Password must be at least 8 characters")
-
+    PASSWORD_INVALID(1004,"Password must be at least 8 characters"),
+    SERVICE_EXISTED(3000, "Service already exists"),
+    SERVICE_NOT_FOUND(3001, "Service not found"),
     ;
 
     ErrorCode(int errorCode, String errorMessage) {
@@ -22,13 +23,5 @@ public enum ErrorCode {
 
     private int errorCode;
     private String errorMessage;
-
-    public int getErrorCode() {
-        return errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
 
 }
