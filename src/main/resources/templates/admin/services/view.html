@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${service.name}">Tên dịch vụ</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1 th:text="${service.name}">Tên dịch vụ</h1>
+    <a th:href="@{/services/{id}/edit(id=${service.serviceId})}"
+       class="btn btn-edit">Chỉnh sửa</a>
+  </div>
+
+  <!-- Thông tin cơ bản -->
+  <div class="service-info">
+    <div class="meta">
+      <span class="price" th:text="'Giá: ' + ${#numbers.formatCurrency(service.price)}">$100</span>
+      <span class="duration" th:text="'Thời lượng: ' + ${service.duration} + ' phút'">60 phút</span>
+    </div>
+
+    <!-- Tags -->
+    <div class="tags" th:if="${not #lists.isEmpty(service.tags)}">
+                <span th:each="tag : ${service.tags}"
+                      class="tag"
+                      th:text="${tag}">Tag</span>
+    </div>
+  </div>
+
+  <!-- Nội dung HTML từ Summernote -->
+  <div class="content" th:utext="${service.content}">
+    <!-- Nội dung mẫu -->
+    <h2>Mô tả dịch vụ</h2>
+    <p>Nội dung chi tiết...</p>
+  </div>
+  <!-- Nút quay lại -->
+  <div class="actions">
+    <a th:href="@{/services}" class="btn btn-back">Danh sách dịch vụ</a>
+  </div>
+</div>
+</body>
+</html>
