@@ -4,7 +4,7 @@ var tpj = jQuery;
 
 var revapi149;
 tpj(document).ready(function() {
-    if (tpj("#rev_slider_149_1").revolution == undefined) {
+    if (tpj("#rev_slider_149_1").revolution === undefined) {
         revslider_showDoubleJqueryError("#rev_slider_149_1");
     } else {
         revapi149 = tpj("#rev_slider_149_1").show().revolution({
