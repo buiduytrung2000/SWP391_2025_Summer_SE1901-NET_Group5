@@ -7,8 +7,19 @@ spring:
   datasource:
     url: "jdbc:mysql://localhost:3306/sbs"
     username: root
-    password: 123456
+    password: root
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dungbnhe173185@fpt.edu.vn
+    password: xcjxjvqsravhigzq
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
