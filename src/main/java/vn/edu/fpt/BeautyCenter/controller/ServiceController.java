@@ -47,8 +47,9 @@ public class ServiceController {
             redirectAttributes.addFlashAttribute("error", "Dịch vụ không tồn tại");
             return "redirect:/services";
         }
-        System.out.println(serviceOpt);
+
         model.addAttribute("service", serviceOpt.get());
+        model.addAttribute("pageTitle",serviceOpt.get().getName().trim());
         return "admin/services/view";
     }
 }

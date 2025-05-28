@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import vn.edu.fpt.BeautyCenter.dto.request.ApiResponse;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @SuppressWarnings("rawtypes")
@@ -36,8 +37,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception){
-        String enumKey= Objects.requireNonNull(exception.getFieldError()).getDefaultMessage();
+    ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        String enumKey = Objects.requireNonNull(exception.getFieldError()).getDefaultMessage();
 
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
         try {
@@ -52,5 +53,25 @@ public class GlobalExceptionHandler {
 //        apiResponse.setMessage(errorCode.getErrorMessage());
         apiResponse.setMessage(enumKey);
         return ResponseEntity.badRequest().body(apiResponse);
+    }
+
+    @ExceptionHandler(value = NoSuchElementException.class)
+    String handlingNoSuchElementException(NoSuchElementException exception) {
+        String enumKey = Objects.requireNonNull(exception.getMessage());
+
+        ErrorCode errorCode = ErrorCode.SERVICE_NOT_FOUND;
+        try {
+            errorCode = ErrorCode.valueOf(enumKey);
+        } catch (IllegalArgumentException ignored) {
+
+        }
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setCode(errorCode.getErrorCode());
+        apiResponse.setMessage(errorCode.getErrorMessage());
+        System.out.println("Error Code: "+apiResponse.getCode());
+        System.out.println("Error Msg: "+apiResponse.getMessage());
+        return "redirect:/services";
     }
 }
