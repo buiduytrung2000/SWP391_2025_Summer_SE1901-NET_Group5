@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header::common-head}">
+<head th:replace="~{fragments/header2::common-head}">
     <!-- PAGE TITLE HERE -->
     <title th:text="${pageTitle}">Default Title</title>
 </head>
@@ -11,135 +11,120 @@
 <div class="page-wraper">
 
     <!-- HEADER START -->
-    <header th:replace="~{fragments/header::header}">
-
+    <header th:replace="~{fragments/header2::header}">
     </header>
     <!-- HEADER END -->
 
     <!-- CONTENT START -->
     <div class="page-content">
 
-        <!-- INNER PAGE BANNER -->
-        <div class="wt-bnr-inr overlay-wraper" th:style="|background-image: url('@{/images/background/bg-6.jpg}')|">
-            <div class="overlay-main bg-black opacity-05"></div>
-            <div class="container">
-                <div class="wt-bnr-inr-entry">
-                    <h1 class="text-white">Add Service</h1>
-                </div>
-            </div>
-        </div>
-        <!-- INNER PAGE BANNER END -->
-
         <!-- BREADCRUMB ROW -->
         <div class="bg-gray-light p-tb20">
             <div class="container">
-                <ul class="wt-breadcrumb breadcrumb-style-1">
-                    <li><a href="javascript:void(0);">Home</a></li>
-                    <li>Add Service</li>
+                <ul class="wt-breadcrumb breadcrumb-style-2">
+                    <li><a href="javascript:void(0);"><i class="fa fa-home"></i> Home</a></li>
+                    <li>Services List</li>
                 </ul>
             </div>
         </div>
-        <!-- BREADCRUMB  ROW END -->
-
-        <!-- SECTION CONTENT START -->
-        <div class="section-full p-t80 p-b50">
-
-            <!-- PRODUCT DETAILS -->
-            <div class="container woo-entry">
-
-
-                <!-- SECTION CONTENT START -->
-                <div class="section-content">
-                    <div class="row">
-                        <!-- FROM STYEL 1 -->
-                        <div class="col-md-6 m-b30" style="width: 80%">
-                            <div class="section-head">
-                                <h3 class="text-uppercase">Add New Service</h3>
-                                <div class="wt-separator-outer">
-                                    <div class="wt-separator style-icon">
-                                        <i class="fa fa-leaf text-black"></i>
-                                        <span class="separator-left site-bg-primary"></span>
-                                        <span class="separator-right site-bg-primary"></span>
-                                    </div>
-                                </div>
+        <!-- BREADCRUMB ROW END -->
+        <div
+                class="section-full overlay-wraper site-bg-primary"
+                th:style="|background-image: url('@{/images/background/bg-7.jpg}')|"
+        >
+            <div class="section-content">
+                <!-- COLL-TO ACTION START -->
+                <div class="wt-subscribe-box">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8">
                             </div>
-
-                            <div class="wt-box">
-                                <form th:action="@{/admin/services/add}" method="POST">
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6">
-                                            <!--Nhập tên dịch vụ-->
-                                            <div class="form-group">
-                                                <label for="name" class="form-label">Tên dịch vụ</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                       placeholder="Nhập tên dịch vụ">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6">
-                                            <!--Nhập giá dịch vụ-->
-                                            <div class="form-group">
-                                                <label for="price" class="form-label">Price ($)</label>
-                                                <input type="number"
-                                                       step="0.01"
-                                                       class="form-control"
-                                                       id="price"
-                                                       name="price"
-                                                       placeholder="0.00">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--Thời gian dịch vụ-->
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6">
-                                            <label for="tagNames" class="form-label">Tags (comma separated)</label>
-                                            <input type="text"
-                                                   id="tagInput"
-                                                   class="form-control"
-                                                   name="tagNames"
-                                                   placeholder="Enter tags separated by commas (e.g., Facial, Relaxing, Premium)"/>
-                                            <input type="hidden" id="tagNames"/>
-                                            <div id="tagContainer" class="mt-2"></div>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="duration" class="form-label">Duration (minutes)</label>
-                                                <input type="number"
-                                                       class="form-control"
-                                                       id="duration"
-                                                       name="duration"
-                                                       placeholder="60">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Service description-->
-                                    <div class="form-group">
-                                        <label for="summernote" class="form-label">Service Description</label>
-                                        <textarea id="summernote"
-                                                  name="content"
-                                                  placeholder="Describe your service in detail..."></textarea>
-
-                                    </div>
-                                    <a th:href="@{/admin/services}" class="site-button">Cancel</a>
-                                    <button type="submit" class="site-button">Publish Service</button>
-                                </form>
+                            <div class="col-md-3">
+                                <div class="call-to-action-right p-tb30">
+                                    <a
+                                            th:href="@{/admin/services/add}"
+                                            class="site-button-secondry text-uppercase radius-sm font-weight-600"
+                                    >
+                                        Add new Service
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- SECTION CONTENT END -->
+            </div>
+        </div>
+
+        <!-- SECTION CONTENT START -->
+        <div class="section-full p-t80 p-b50">
+            <div class="container">
+
+                <!-- BLOG POST START -->
+
+                <!-- COLUMNS 1 -->
+                <div class="blog-post blog-md date-style-1 clearfix" th:each="s : ${services}">
+
+                    <div class="wt-post-media wt-img-effect zoom-slow">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/de9Mhw2dU60"></iframe>
+
+                    </div>
+                    <div class="wt-post-info">
+
+                        <div class="wt-post-title ">
+                            <h3 class="post-title" th:text="${s.name}"><a href="blog-single.html">Blogpost With
+                                Youtube</a></h3>
+                        </div>
+                        <div class="wt-post-meta ">
+                            <ul>
+                                <li class="post-date"><i class="fa fa-credit-card"></i><span
+                                        th:text="'Giá: ' + ${#numbers.formatCurrency(s.price)}">Price</span></li>
+                                <li class="post-author"><i class="fa fa-clock-o"></i><span
+                                        th:text="'Thời lượng: ' + ${s.duration} ">Time</span></li>
+                            </ul>
+                        </div>
+                        <div class="wt-post-text" th:utext="${s.content}">
+                        </div>
+                        <div class="clearfix">
+                            <div class="wt-post-readmore pull-left">
+                                <a th:href="@{/admin/services/{id}(id=${s.getServiceId()})}" title="READ MORE" rel="bookmark"
+                                   class="site-button-link">Read
+                                    More</a>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!-- BLOG POST END -->
+
+                <!-- PAGINATION START -->
+                <div class="pagination-bx clearfix ">
+                    <ul class="custom-pagination pagination-1">
+                        <li><a href="#">&laquo;</a></li>
+                        <li class="page-item" th:each="pageNum : ${pageNumbers}"
+                            th:classappend="${pageNum == (services.number + 1)} ? 'active' : ''">
+                            <a class="page-link"
+                               th:href="@{/admin/services(page=${pageNum - 1}, size=${services.size})}"
+                               th:text="${pageNum}"
+                               th:title="'Trang ' + ${pageNum}">1</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- PAGINATION END -->
 
             </div>
-            <!-- PRODUCT DETAILS -->
-
         </div>
-        <!-- CONTENT CONTENT END -->
+        <!-- SECTION CONTENT END -->
+
     </div>
     <!-- CONTENT END -->
 
     <!-- FOOTER START -->
     <footer th:replace="~{fragments/footer :: footer}">
+
     </footer>
     <!-- FOOTER END -->
 
@@ -409,30 +394,7 @@
 
 <!-- JAVASCRIPT  FILES ========================================= -->
 <div th:replace="~{fragments/script :: common-scripts}"></div>
-<!-- include summernote css/js -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
-<script>
-
-    $(document).ready(function () {
-        $('#summernote').summernote({
-            toolbar: [
-                // [groupName, [list of button]]
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['insert', ['link', 'picture', 'video']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']],
-                ['view', ['fullscreen', 'codeview', 'help']],
-            ],
-            height: 300,
-            placeholder: 'Content here',
-        });
-    });
-
-
-</script>
 </body>
 
 </html>
+

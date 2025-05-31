@@ -4,6 +4,10 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceCreationRequest;
@@ -15,10 +19,8 @@ import vn.edu.fpt.BeautyCenter.mapper.ServiceMapper;
 import vn.edu.fpt.BeautyCenter.repository.ServiceRepository;
 import vn.edu.fpt.BeautyCenter.repository.ServiceTagRepository;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +29,62 @@ public class ServiceService {
     ServiceRepository serviceRepository;
     ServiceTagRepository serviceTagRepository;
     ServiceMapper serviceMapper;
-    public vn.edu.fpt.BeautyCenter.entity.Service createService(@Valid ServiceCreationRequest request) {
-        if(serviceRepository.existsByName(request.getName())) {
+
+    public Page<vn.edu.fpt.BeautyCenter.entity.Service> getAllServices(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<vn.edu.fpt.BeautyCenter.entity.Service> services = serviceRepository.findAll(pageable);
+
+        List<vn.edu.fpt.BeautyCenter.entity.Service> processedServices = services.getContent()
+                .stream()
+                .peek(service -> {
+                    if (service.getContent() != null) {
+                        // Loại bỏ img tags và giới hạn 20 từ
+                        String cleanContent = removeImgTags(service.getContent());
+                        String limitedContent = limitWords(cleanContent);
+                        service.setContent(limitedContent);
+                    }
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(processedServices, pageable, services.getTotalElements());
+    }
+
+    // Method để loại bỏ img tags
+    private String removeImgTags(String content) {
+        if (content == null || content.trim().isEmpty()) {
+            return content;
+        }
+
+        // Loại bỏ các thẻ img self-closing: <img ... />
+        content = content.replaceAll("<img[^>]*/>", "");
+
+        // Loại bỏ các thẻ img với closing tag: <img ...>...</img>
+        content = content.replaceAll("<img[^>]*>.*?</img>", "");
+
+        // Loại bỏ các thẻ img không có closing tag: <img ...>
+        content = content.replaceAll("<img[^>]*>", "");
+
+        return content.trim();
+    }
+
+    // Method để giới hạn số từ
+    private String limitWords(String content) {
+        if (content == null || content.trim().isEmpty()) {
+            return content;
+        }
+
+        String[] words = content.trim().split("\\s+");
+        if (words.length <= 20) {
+            return content;
+        }
+
+        return String.join(" ", Arrays.copyOf(words, 20)) + "...";
+    }
+
+
+
+    public void createService(@Valid ServiceCreationRequest request) {
+        if (serviceRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.SERVICE_EXISTED);
         }
         vn.edu.fpt.BeautyCenter.entity.Service service = vn.edu.fpt.BeautyCenter.entity.Service.builder()
@@ -43,7 +99,7 @@ public class ServiceService {
             service.setServiceTags(tags);
         }
         System.out.println("Save service success");
-        return serviceRepository.save(service);
+        serviceRepository.save(service);
     }
 
     private Set<ServiceTag> processServiceTags(List<String> tagNames) {
