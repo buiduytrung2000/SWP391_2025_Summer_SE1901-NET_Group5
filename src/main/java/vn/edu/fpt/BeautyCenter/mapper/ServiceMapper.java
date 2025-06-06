@@ -2,8 +2,9 @@ package vn.edu.fpt.BeautyCenter.mapper;
 
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceCreationRequest;
+import vn.edu.fpt.BeautyCenter.dto.request.ServiceUpdateRequest;
 import vn.edu.fpt.BeautyCenter.dto.response.ServiceResponse;
 import vn.edu.fpt.BeautyCenter.entity.Service;
 import vn.edu.fpt.BeautyCenter.entity.ServiceTag;
@@ -44,7 +45,7 @@ public interface ServiceMapper {
     }
 
     @InheritInverseConfiguration(name = "toEntity")
-    void updateEntity(@MappingTarget Service entity, ServiceCreationRequest request);
+    void updateEntity(@MappingTarget Service entity, ServiceUpdateRequest request);
 
     // Custom mapping methods cho Instant <-> LocalDateTime
     default LocalDateTime instantToLocalDateTime(Instant instant) {
@@ -60,9 +61,10 @@ public interface ServiceMapper {
         return String.format("%d giờ %02d phút", minutes / 60, minutes % 60);
     }
 
-    default String getCurrentUserId() {
-        return SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-    }
+//    default String getCurrentUserId() {
+//        return SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getName();
+//    }
+
 }

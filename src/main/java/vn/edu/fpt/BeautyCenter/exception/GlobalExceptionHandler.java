@@ -72,6 +72,6 @@ public class GlobalExceptionHandler {
         apiResponse.setMessage(errorCode.getErrorMessage());
         System.out.println("Error Code: "+apiResponse.getCode());
         System.out.println("Error Msg: "+apiResponse.getMessage());
-        return "redirect:/services";
+        return "redirect:/admin/services";
     }
 }

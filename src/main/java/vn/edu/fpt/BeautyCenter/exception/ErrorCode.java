@@ -14,6 +14,7 @@ public enum ErrorCode {
     PASSWORD_INVALID(1004,"Password must be at least 8 characters"),
     SERVICE_EXISTED(3000, "Service already exists"),
     SERVICE_NOT_FOUND(3001, "Service not found"),
+
     ;
 
     ErrorCode(int errorCode, String errorMessage) {

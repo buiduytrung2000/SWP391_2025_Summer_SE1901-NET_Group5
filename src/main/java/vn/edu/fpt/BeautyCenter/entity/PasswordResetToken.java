@@ -30,6 +30,6 @@ public class PasswordResetToken {
     private boolean used;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false,columnDefinition = "char(36)")
     private User user;
 }

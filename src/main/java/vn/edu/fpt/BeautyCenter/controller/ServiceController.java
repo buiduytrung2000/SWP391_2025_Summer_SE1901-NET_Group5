@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceCreationRequest;
+import vn.edu.fpt.BeautyCenter.dto.request.ServiceUpdateRequest;
 import vn.edu.fpt.BeautyCenter.dto.response.ServiceResponse;
 import vn.edu.fpt.BeautyCenter.entity.Service;
 import vn.edu.fpt.BeautyCenter.service.ServiceService;
@@ -24,28 +25,31 @@ import java.util.stream.IntStream;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ServiceController {
     ServiceService serviceService;
+
     //Hiển thị toàn bộ service
     @GetMapping
     public String GetAllService(@RequestParam(name = "page", defaultValue = "0") int page,
-                                @RequestParam(name = "size", defaultValue = "5") int size,Model model) {
+                                @RequestParam(name = "size", defaultValue = "5") int size, Model model) {
         Page<Service> services = serviceService.getAllServices(page, size);
         int numOfPage = services.getTotalPages();
-        if(numOfPage > 0){
+        if (numOfPage > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, numOfPage)
                     .boxed()
                     .toList();
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        model.addAttribute("pageTitle","Services List");
+        model.addAttribute("pageTitle", "Services List");
         model.addAttribute("services", services);
         return "admin/services/list";
     }
+
     // Hiển thị form add service
     @GetMapping("/add")
     public String ShowAddForm(Model model) {
-        model.addAttribute("pageTitle","Add New Service");
+        model.addAttribute("pageTitle", "Add New Service");
         return "admin/services/add";
     }
+
     // Xử lý add service
     @PostMapping("/add")
     public String save(@ModelAttribute @Valid ServiceCreationRequest request) {
@@ -64,11 +68,33 @@ public class ServiceController {
 
         if (serviceOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Dịch vụ không tồn tại");
-            return "redirect:/services";
+            return "redirect:/admin/services";
         }
-
         model.addAttribute("service", serviceOpt.get());
-        model.addAttribute("pageTitle",serviceOpt.get().getName().trim());
+        model.addAttribute("pageTitle", serviceOpt.get().getName().trim());
         return "admin/services/view";
+    }
+
+    @GetMapping("/edit/{serviceId}")
+    public String viewUpdateService(@PathVariable String serviceId, Model model) {
+        System.out.println(serviceService.getServiceById(serviceId));
+        Optional<ServiceResponse> serviceOpt = serviceService.getServiceById(serviceId);
+        String formatedTags = null;
+        String time = null;
+        if (serviceOpt.isPresent()) {
+            List<String> tags = serviceOpt.get().getTags();
+            formatedTags = tags.toString().replaceAll("^\\[|]$", "");
+            time = serviceService.formatVietnameseDurationToTotalMinutes(serviceOpt.get().getDuration());
+        }
+        model.addAttribute("duration", time);
+        model.addAttribute("tags", formatedTags);
+        model.addAttribute("service", serviceOpt);
+        return "admin/services/edit";
+    }
+
+    @PostMapping("/edit/{serviceId}")
+    String updateService(@PathVariable String serviceId, @ModelAttribute @Valid ServiceUpdateRequest request) {
+        serviceService.updateService(serviceId, request);
+        return "redirect:/admin/services";
     }
 }
