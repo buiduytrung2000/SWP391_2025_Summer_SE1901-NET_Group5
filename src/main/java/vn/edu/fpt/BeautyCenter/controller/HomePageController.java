@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HomePageController {
-    @GetMapping
+    @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("pageTitle","Home Page");
         return "home/index-5"; // trả về file home/index-5.html trong templates
