@@ -14,3 +14,14 @@ spring:
     show-sql: true
     properties:
       hibernate.hibernate.dialect: MySQL8Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dungbnhe173185@fpt.edu.vn
+    password: xcjxjvqsravhigzq
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
