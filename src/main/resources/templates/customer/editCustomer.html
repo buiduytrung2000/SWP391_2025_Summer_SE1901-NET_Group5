@@ -9,12 +9,26 @@
     <link rel="stylesheet" href="css/crudUser/editCustomer.css">
 </head>
 <body>
-<form th:action="@{/customer/editCustomer}" method="post">
-    <div id="drop-area">
-        <p>Kéo ảnh vào đây hoặc bấm để chọn ảnh</p>
-        <input type="file" id="fileElem" accept="image/*" onchange="handleFiles(this.files)">
-        <img id="preview" src="" style="display:none; max-width: 100%; margin-top: 10px;" />
+<form th:action="@{/edit_customer}" method="post">
+    <div class="avatar-upload" id="drop-area">
+        <input type="file" id="fileElem" accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+        <label for="fileElem" class="avatar-label">
+            <img id="avatarPreview" src="https://via.placeholder.com/80" alt="Avatar" />
+        </label>
     </div>
+    <label class="editLabel">Username</label>
+    <input type="text" name="" id=""><br><br>
+    <label class="editLabel">Password</label>
+    <input type="password" name="" id=""><br><br>
+    <label class="editLabel">Full Name</label>
+    <input type="text" name="" id=""><br><br>
+    <label class="editLabel">Phone</label>
+    <input type="tel" name="" id=""><br><br>
+
+    <button type="submit">Edit</button>
+    <button type="reset">Cancel</button>
+
 </form>
 </body>
+<script src="js/editCustomerAvatar.js"></script>
 </html>
