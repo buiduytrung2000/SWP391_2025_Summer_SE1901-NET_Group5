@@ -1,5 +1,7 @@
 package vn.edu.fpt.BeautyCenter.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,8 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HomePageController {
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
         model.addAttribute("pageTitle","Home Page");
+        System.out.println("sessionId "+ session.getId());
+        System.out.println("loginTime "+session.getAttribute("loginTime"));
+        System.out.println("user: "+session.getAttribute("user"));
         return "home/index-5"; // trả về file home/index-5.html trong templates
+    }
+    @GetMapping("/admin")
+    public String admin(HttpServletRequest request, Model model) {
+        model.addAttribute("pageTitle","Admin Page");
+        model.addAttribute("currentUri", request.getRequestURI());
+        return "dashboard/home";
     }
 }
