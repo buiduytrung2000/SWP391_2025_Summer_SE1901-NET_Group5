@@ -108,17 +108,17 @@
                             <label>Phone Number</label>
                             <input type="text" th:field="*{phone}" class="form-control"  required />
                         </div>
-                        <div class="mb-3">
-                            <label><strong>Gender</strong></label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:field="*{gender}" value="Male" id="genderMale">
-                                <label class="form-check-label" for="genderMale">Male</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:field="*{gender}" value="Female" id="genderFemale">
-                                <label class="form-check-label" for="genderFemale">Female</label>
-                            </div>
-                        </div>
+<!--                        <div class="mb-3">-->
+<!--                            <label><strong>Gender</strong></label><br>-->
+<!--                            <div class="form-check form-check-inline">-->
+<!--                                <input class="form-check-input" type="radio" th:field="*{gender}" value="Male" id="genderMale">-->
+<!--                                <label class="form-check-label" for="genderMale">Male</label>-->
+<!--                            </div>-->
+<!--                            <div class="form-check form-check-inline">-->
+<!--                                <input class="form-check-input" type="radio" th:field="*{gender}" value="Female" id="genderFemale">-->
+<!--                                <label class="form-check-label" for="genderFemale">Female</label>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
 
                     <!-- Professional Info -->
@@ -178,7 +178,7 @@
                         <p><strong>Full Name:</strong> <span th:text="${staff.fullName}">---</span></p>
                         <p><strong>Email:</strong> <span th:text="${staff.email}">---</span></p>
                         <p><strong>Phone:</strong> <span th:text="${staff.phone}">---</span></p>
-                        <p><strong>Gender:</strong> <span th:text="${staff.gender}">---</span></p>
+<!--                        <p><strong>Gender:</strong> <span th:text="${staff.gender}">-&#45;&#45;</span></p>-->
                     </div>
 
                     <!-- Professional Info -->
