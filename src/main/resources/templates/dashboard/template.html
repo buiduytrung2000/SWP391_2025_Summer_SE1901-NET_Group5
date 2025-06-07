@@ -1,0 +1,30 @@
+<!-- File: templates/admin/template.html -->
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="dashboard/fragments/head :: admin-head"></head>
+
+<body class="nk-body bg-lighter npc-general has-sidebar">
+<div class="nk-app-root">
+    <div class="nk-main">
+        <!-- Include Sidebar -->
+        <div th:replace="dashboard/fragments/sidebar :: admin-sidebar"></div>
+
+        <div class="nk-wrap">
+            <!-- Include Header -->
+            <div th:replace="dashboard/fragments/header :: admin-header"></div>
+
+            <!-- Main Content -->
+            <div class="nk-content">
+                <!-- Page content -->
+            </div>
+
+            <!-- Include Footer -->
+            <div th:replace="dashboard/fragments/footer :: admin-footer"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Scripts -->
+<div th:replace="dashboard/fragments/footer :: admin-scripts"></div>
+</body>
+</html>

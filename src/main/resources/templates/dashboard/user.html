@@ -1,0 +1,102 @@
+
+<div class="nk-content ">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block">
+                    <div class="card card-bordered">
+                        <div class="card-aside-wrap">
+                            <div class="card-inner card-inner-lg">
+                                <div class="nk-block-head nk-block-head-lg">
+                                    <div class="nk-block-between">
+                                        <div class="nk-block-head-content">
+                                            <h5 class="title fw-medium">User settings</h5>
+                                            <span style="color: red;">${error}</span>
+                                        </div>
+                                        <div class="nk-block-head-content align-self-start d-lg-none"><a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a></div>
+                                    </div>
+                                </div>
+                                <div class="nk-block">
+                                    <form action="user-profile" method="post" class="form-settings gy-3">
+                                        <div class="row g-3 align-center">
+                                            <div class="col-lg-5">
+                                                <div class="form-group"><label class="form-label" for="site-name">User Name</label></div>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <div class="form-group">
+                                                    <div class="form-control-wrap"><input type="text" class="form-control" id="site-name" value="${sessionScope.user.getUsername()}" readonly=""></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 align-center">
+                                            <div class="col-lg-5">
+                                                <div class="form-group"><label class="form-label" for="tagline">First Name</label></div>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <div class="form-group">
+                                                    <div class="form-control-wrap"><input type="text" class="form-control" name="firstName" id="tagline" value="${sessionScope.user.getFirstName()}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 align-center">
+                                            <div class="col-lg-5">
+                                                <div class="form-group"><label class="form-label" for="site-url">Last Name</label></div>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <div class="form-group">
+                                                    <div class="form-control-wrap"><input type="text" class="form-control" name="lastName" id="site-url" value="${sessionScope.user.getLastName()}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 align-center">
+                                            <div class="col-lg-5">
+                                                <div class="form-group"><label class="form-label" for="admin-email">Email Address</label></div>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <div class="form-group">
+                                                    <div class="form-control-wrap"><input type="text" class="form-control" name="email" id="admin-email" value="${sessionScope.user.getEmail()}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row g-3 align-center">
+                                            <div class="col-lg-5">
+                                                <div class="form-group"><label class="form-label" for="site-copyright">Password</label></div>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <div class="form-group">
+                                                    <div class="form-control-wrap"><input type="password" name="pass" class="form-control" id="" ></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row g-3 align-center">
+                                            <div class="col-lg-5">
+                                                <div class="form-group"><label class="form-label" for="site-copyright">Re-Password</label></div>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <div class="form-group">
+                                                    <div class="form-control-wrap"><input type="password" class="form-control" name="re-pass" id="site-copyright" ></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row g-3">
+                                            <div class="col-lg-7">
+                                                <div class="form-group mt-2"><button type="submit" class="btn btn-lg btn-primary">Update</button></div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

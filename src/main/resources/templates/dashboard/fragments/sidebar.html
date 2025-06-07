@@ -1,0 +1,31 @@
+<!-- File: templates/fragments/sidebar.html -->
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="admin-sidebar">
+    <div class="nk-sidebar" data-content="sidebarMenu">
+        <div class="nk-sidebar-inner" data-simplebar>
+            <ul class="nk-menu nk-menu-md">
+                <li class="nk-menu-heading">
+                    <h6 class="overline-title text-primary-alt">Dashboard</h6>
+                </li>
+                <li class="nk-menu-item"><a th:href="@{admin}" class="nk-menu-link"><span class="nk-menu-icon"><em
+                        class="icon ni ni-dashboard"></em></span><span class="nk-menu-text">Dashboard</span></a>
+                </li>
+                <li class="nk-menu-item">
+                    <a href="post-list" class="nk-menu-link"><span class="nk-menu-icon"><em
+                            class="icon ni ni-template"></em></span><span class="nk-menu-text">Post</span></a>
+                </li>
+                <li class="nk-menu-item">
+                    <a href="post-add" class="nk-menu-link"><span class="nk-menu-icon"><em
+                            class="icon ni ni-template"></em></span><span
+                            class="nk-menu-text">Add Post</span></a>
+                </li>
+                <li class="nk-menu-item">
+                    <a href="user-profile" class="nk-menu-link "><span class="nk-menu-icon"><em
+                            class="icon ni ni-user-alt"></em></span><span class="nk-menu-text">Users</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+</html>

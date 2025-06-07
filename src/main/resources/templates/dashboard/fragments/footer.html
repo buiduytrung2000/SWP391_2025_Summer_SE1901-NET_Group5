@@ -1,0 +1,20 @@
+<!-- File: templates/fragments/footer.html -->
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="admin-footer">
+    <footer class="nk-footer">
+        <!-- Footer content from original code -->
+        <div class="nk-footer-copyright">
+            &copy; 2024 Beauty Center. Phiên bản:
+            <span th:text="${@environment.getProperty('app.version')}">1.0.0</span>
+        </div>
+    </footer>
+
+    <!-- Scripts fragment -->
+    <div th:fragment="admin-scripts">
+        <script th:src="@{/dashboard/assets/js/bundle.js}"></script>
+        <script th:src="@{/dashboard/assets/js/scripts.js}"></script>
+        <script th:src="@{dashboard/assets/js/demo-settings.js}"></script>
+        <script th:src="@{/dashboard/assets/js/charts/chart-cms.js}"></script>
+    </div>
+</div>
+</html>
