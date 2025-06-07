@@ -12,6 +12,7 @@ public class StaffCreationRequest {
     private String phone;
     private String gender;
     private String role;
+    private String position;
     private LocalDate startDate;
     private MultipartFile avatar;
 }
