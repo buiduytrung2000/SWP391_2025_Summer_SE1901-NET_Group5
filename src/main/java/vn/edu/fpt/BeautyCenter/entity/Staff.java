@@ -65,6 +65,14 @@ public class Staff {
     @Column(name = "status")
     private String status;
 
+    @Lob
+    @Column(name = "gender")
+    private String gender;
+
+    @Size(max = 100)
+    @Column(name = "position", length = 100)
+    private String position;
+
     @PrePersist
     protected void onCreate() {
         if (userId == null || userId.isBlank()) {
