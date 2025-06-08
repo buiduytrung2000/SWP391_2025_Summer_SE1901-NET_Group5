@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="common-head">
+<head th:fragment="common-head(title)">
   <script src="https://kit.fontawesome.com/e0090b6b7e.js" crossorigin="anonymous"></script>
 
+  <!--  LOGIN STYLE-->
+  <link rel="stylesheet" href="css/auth/login.css">
+
+  <!--  REGISTER STYLE-->
+  <link rel="stylesheet" href="css/auth/register.css">
+  
+<!--  EDIT CUSTOMER STYLE-->
+  <link rel="stylesheet" href="css/crudUser/editCustomer.css">
   <!-- META -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,7 +24,8 @@
   <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.png}" >
 
   <!-- PAGE TITLE HERE -->
-<!--  <title>Spa Template | Error 404</title>-->
+  <title th:text="${title}">Spa Template</title>
+
 
   <!-- MOBILE SPECIFIC -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -84,14 +93,14 @@
           <div class="header-nav navbar-collapse collapse ">
             <ul class=" nav navbar-nav">
               <li class="active">
-                <a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
-                <ul class="sub-menu">
-                  <li><a th:href="@{/index.html}">Home 1</a></li>
-                  <li><a href="index-2.html">Home 2</a></li>
-                  <li><a th:href="@{/index-3.html}">Home 3</a></li>
-                  <li><a th:href="@{/index-4.html}">Home 4</a></li>
-                  <li><a th:href="@{/index-5.html}">Home 5</a></li>
-                </ul>
+                <a th:href="@{/}">Home</a>
+<!--                <ul class="sub-menu">-->
+<!--                  <li><a th:href="@{/index.html}">Home 1</a></li>-->
+<!--                  <li><a href="index-2.html">Home 2</a></li>-->
+<!--                  <li><a th:href="@{/index-3.html}">Home 3</a></li>-->
+<!--                  <li><a th:href="@{/index-4.html}">Home 4</a></li>-->
+<!--                  <li><a th:href="@{/index-5.html}">Home 5</a></li>-->
+<!--                </ul>-->
               </li>
 
 <!--              <li>-->
@@ -313,69 +322,27 @@
                 </div>
               </div>
             </div>
-            <div class="extra-cell">
-              <a href="javascript:"
+            <div class="extra-cell" style="width: 40.3px">
+              <a th:href="@{/login}"
+                 th:if="${session.user == null}"
                  class="wt-cart cart-btn dropdown-toggle"
-                 data-bs-toggle="dropdown">
-                <i class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: black; margin-left:15px"></i>
-                <div class="dropdown-menu cart-dropdown-item-wraper">
-                  <div class="nav-cart-content">
+              >
+                <i
+                        class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: black; margin-left:15px"></i>
 
-                    <div class="nav-cart-items p-a15">
-                      <div class="nav-cart-item clearfix">
-                        <div class="nav-cart-item-image">
-                          <a th:href="@{/#}"><img th:src="@{/images/cart/pic-1.jpg}" alt="p-1"></a>
-                        </div>
-                        <div class="nav-cart-item-desc">
-                          <a th:href="@{/#}">Safety helmet</a>
-                          <span class="nav-cart-item-price"><strong>2</strong> x $19.99</span>
-                          <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                        </div>
-                      </div>
-                      <div class="nav-cart-item clearfix">
-                        <div class="nav-cart-item-image">
-                          <a th:href="@{/#}"><img th:src="@{/images/cart/pic-2.jpg}" alt="p-2"></a>
-                        </div>
-                        <div class="nav-cart-item-desc">
-                          <a th:href="@{/#}">Hammer drill machine</a>
-                          <span class="nav-cart-item-price"><strong>1</strong> x $24.99</span>
-                          <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                        </div>
-                      </div>
-                      <div class="nav-cart-item clearfix">
-                        <div class="nav-cart-item-image">
-                          <a th:href="@{/#}"><img th:src="@{/images/cart/pic-3.jpg}" alt="p-1"></a>
-                        </div>
-                        <div class="nav-cart-item-desc">
-                          <a th:href="@{/#}">Safety helmet</a>
-                          <span class="nav-cart-item-price"><strong>2</strong> x $19.99</span>
-                          <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                        </div>
-                      </div>
-                      <div class="nav-cart-item clearfix">
-                        <div class="nav-cart-item-image">
-                          <a th:href="@{/#}"><img th:src="@{/images/cart/pic-4.jpg}" alt="p-2"></a>
-                        </div>
-                        <div class="nav-cart-item-desc">
-                          <a th:href="@{/#}">Hammer drill machine</a>
-                          <span class="nav-cart-item-price"><strong>1</strong> x $24.99</span>
-                          <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="nav-cart-title p-tb10 p-lr15 clearfix">
-                      <h4  class="pull-left m-a0">Subtotal:</h4>
-                      <h5 class="pull-right m-a0">$114.95</h5>
-                    </div>
-                    <div class="nav-cart-action p-a15 clearfix">
-                      <button class="site-button  btn-block m-b15 " type="button">View Cart</button>
-                      <button class="site-button  btn-block" type="button">Checkout </button>
-                    </div>
-                  </div>
-                </div>
               </a>
-            </div>
-          </div>
+              <a href="javascript:;">
+                <img id="avatar"
+                     th:if="${session.user != null && session.userAvatar != null}"
+                     th:src="${session.userAvatar}" alt=""
+                     style="width: 121px !important; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; margin-left:15px"
+                >
+                <i
+                        th:if="${session.user != null && session.userAvatar == null}"
+
+                        class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i></a>
+              <div class="dropdown-menu cart-dropdown-item-wraper">
+              </div>
           <!-- NAV Toggle Button -->
           <button id="mobile-side-drawer" data-target=".header-nav" data-toggle="collapse" type="button" class="navbar-toggler collapsed">
             <span class="sr-only">Toggle navigation</span>

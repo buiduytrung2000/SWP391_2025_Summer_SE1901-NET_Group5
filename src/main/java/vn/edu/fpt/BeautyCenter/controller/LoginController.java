@@ -54,6 +54,7 @@ public class LoginController {
 
         // Set session attributes
         newSession.setAttribute("user", user);
+        newSession.setAttribute("userAvatar",user.getAvatarUrl());
         newSession.setAttribute("loginTime", LocalDateTime.now());
         newSession.setAttribute("userId", user.getUserId());
         newSession.setAttribute("username", user.getUsername());

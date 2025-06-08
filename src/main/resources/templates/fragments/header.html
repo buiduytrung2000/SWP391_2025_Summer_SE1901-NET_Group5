@@ -101,16 +101,15 @@
           <div class="header-nav navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active">
-                <a href="javascript:"
-                >Home<i class="fa fa-chevron-down"></i
-                ></a>
-                <ul class="sub-menu">
-                  <li><a th:href="@{/index.html}">Home 1</a></li>
-                  <li><a th:href="@{/index-2.html}">Home 2</a></li>
-                  <li><a th:href="@{/index-3.html}">Home 3</a></li>
-                  <li><a th:href="@{/index-4.html}">Home 4</a></li>
-                  <li><a th:href="@{/index-5.html}">Home 5</a></li>
-                </ul>
+                <a th:href="@{/}"
+                >Home</a>
+<!--                <ul class="sub-menu">-->
+<!--                  <li><a th:href="@{/index.html}">Home 1</a></li>-->
+<!--                  <li><a th:href="@{/index-2.html}">Home 2</a></li>-->
+<!--                  <li><a th:href="@{/index-3.html}">Home 3</a></li>-->
+<!--                  <li><a th:href="@{/index-4.html}">Home 4</a></li>-->
+<!--                  <li><a th:href="@{/index-5.html}">Home 5</a></li>-->
+<!--                </ul>-->
               </li>
 
 <!--              <li>-->
@@ -430,13 +429,28 @@
               </div>
             </div>
 
-            <div class="extra-cell">
+            <div class="extra-cell" style="width: 40.3px">
               <a th:href="@{/login}"
+                 th:if="${session.user == null}"
                  class="wt-cart cart-btn dropdown-toggle"
-                 data-bs-toggle="dropdown">
-                <i class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i>
+                 >
+                <i
+                   class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i>
 
               </a>
+              <a href="javascript:;">
+              <img id="avatar"
+                   th:if="${session.user != null && session.userAvatar != null}"
+                   th:src="${session.userAvatar}" alt=""
+                   style="width: 121px !important; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; margin-left:15px"
+              >
+              <i
+                 th:if="${session.user != null && session.userAvatar == null}"
+
+                 class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i></a>
+              <div class="dropdown-menu cart-dropdown-item-wraper">
+                Logout
+              </div>
           </div>
           <!-- SITE Search -->
           <div id="search">
@@ -468,6 +482,7 @@
       </div>
     </div>
     </div>
+
   </header>
 </div>
   <!-- HEADER END -->
