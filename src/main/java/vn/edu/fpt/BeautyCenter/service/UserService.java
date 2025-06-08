@@ -17,5 +17,7 @@ public interface UserService {
 
     void resetPassword(String email, String password);
 
-    String getUserName(String serviceId);
+    void updateUser(User user);
+
+    String getUserName(String createdBy);
 }

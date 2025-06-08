@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import vn.edu.fpt.BeautyCenter.entity.User;
 import vn.edu.fpt.BeautyCenter.repository.UserRepository;
+import vn.edu.fpt.BeautyCenter.service.UserService;
 
 @Controller
 @RequestMapping("/edit_customer")
 public class EditCustomerController {
     @Autowired
-    private UserRepository userRepository;
+    UserService userService;
     @GetMapping
     public String gotoEditCustomer(HttpSession session, Model model) {
         Object user = session.getAttribute("user");
@@ -32,7 +33,7 @@ public class EditCustomerController {
         // Có thể cập nhật lại session
         session.setAttribute("user", user);
         // Lưu xuống DB nếu cần
-        userRepository.save(user);
+        userService.updateUser(user);
         return "customer/editCustomer"; // Hoặc trang bạn muốn
     }
 }

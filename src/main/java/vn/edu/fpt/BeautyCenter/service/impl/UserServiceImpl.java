@@ -2,7 +2,6 @@ package vn.edu.fpt.BeautyCenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import vn.edu.fpt.BeautyCenter.entity.PasswordResetToken;
 import vn.edu.fpt.BeautyCenter.entity.User;
 import vn.edu.fpt.BeautyCenter.entity.enums.Role;
@@ -103,7 +102,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void updateUser(User user) {
         User oldUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -123,8 +121,12 @@ public class UserServiceImpl implements UserService {
         oldUser.setPhone(user.getPhone());
         // ... các trường cần update khác
 
-        userRepository.save(oldUser); // Đây là UPDATE, không phải INSERT
+        userRepository.save(oldUser);
+    }
 
+    @Override
+    public String getUserName(String createdBy) {
+        return "";
     }
 
     private String generateOtp() {
