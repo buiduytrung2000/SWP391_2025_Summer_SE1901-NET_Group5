@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{/dashboard/fragments/head::admin-head}">
+</head>
+<body class="nk-body npc-default has-apps-sidebar has-sidebar ">
+<div class="nk-app-root">
+
+    <div class="nk-main ">
+        <div class="nk-wrap ">
+            <div class="nk-header nk-header-fixed" th:replace="~{/dashboard/fragments/header::admin-header}">
+            </div>
+            <div class="nk-sidebar" data-content="sidebarMenu" th:replace="~{/dashboard/fragments/sidebar::admin-sidebar}">
+            </div>
+            <div class="nk-content ">
+                <!-- Fill Content here -->
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/dashboard/fragments/footer::admin-scripts}"></div>
+</body>
+</html>

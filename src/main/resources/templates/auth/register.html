@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header::common-head}">
+  <!-- PAGE TITLE HERE -->
+  <title>Register Page</title>
+</head>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .register-container {
+        width: 400px;
+        padding: 30px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .register-title {
+        color: #9b4e9b;
+        font-weight: bold;
+    }
+    .btn-purple {
+        background-color: #9b4e9b;
+        color: white;
+    }
+    .btn-purple:hover {
+        background-color: #803a80;
+    }
+</style>
+
+<body id="bg">
+<div class="page-wraper">
+  <!-- HEADER START -->
+  <header class="site-header header-style-3 mobile-sider-drawer-menu">
+    <!-- Search Form -->
+
+    <div class="sticky-header main-bar-wraper">
+      <div class="main-bar site-bg-primary" style="background-color: #1a1a1a">
+        <div class="container">
+          <div class="logo-header">
+            <a th:href="@{/index.html}">
+              <img
+                      th:src="@{/images/logo-light-7.png}"
+                      width="216"
+                      height="37"
+                      alt=""
+              />
+            </a>
+          </div>
+
+          <!-- MAIN Vav -->
+          <div class="header-nav navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active">
+                <a href="javascript:"
+                >Home<i class="fa fa-chevron-down"></i
+                ></a>
+                <ul class="sub-menu">
+                  <li><a th:href="@{/index.html}">Home 1</a></li>
+                  <li><a th:href="@{/index-2.html}">Home 2</a></li>
+                  <li><a th:href="@{/index-3.html}">Home 3</a></li>
+                  <li><a th:href="@{/index-4.html}">Home 4</a></li>
+                  <li><a th:href="@{/index-5.html}">Home 5</a></li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="javascript:"
+                >Pages<i class="fa fa-chevron-down"></i
+                ></a>
+                <ul class="sub-menu">
+                  <li>
+                    <a href="javascript:">About us</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/about-1.html}">About us 1</a></li>
+                      <li><a th:href="@{/about-2.html}">About us 2</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">FAQ</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/faq-1.html}">FAQ 1</a></li>
+                      <li><a th:href="@{/faq-2.html}">FAQ 2</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a th:href="@{/career.html}">Career</a>
+                  </li>
+                  <li>
+                    <a href="javascript:">Portfolio</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/portfolio-1.html}">Portfolio 1</a></li>
+                      <li><a th:href="@{/portfolio-2.html}">Portfolio 2</a></li>
+                      <li><a th:href="@{/portfolio-3.html}">Portfolio 3</a></li>
+                      <li>
+                        <a th:href="@{/portfolio-detail.html}">Portfolio Detail</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">Our Team</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/our-team.html}">Our Team 1</a></li>
+                      <li>
+                        <a th:href="@{/our-team-detail.html}">Our Team Detail</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">Services</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/services-1.html}">Services 1</a></li>
+                      <li><a th:href="@{/services-2.html}">Services 2</a></li>
+                      <li>
+                        <a th:href="@{/services-detail.html}">Services Detail</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">Galley</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a th:href="@{/gallery-grid-1.html}">Galley Grid 1</a>
+                      </li>
+                      <li>
+                        <a th:href="@{/gallery-grid-2.html}">Galley Grid 2</a>
+                      </li>
+                      <li>
+                        <a th:href="@{/gallery-grid-3.html}">Galley Grid 3</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">Error</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/error-403.html}">Error 403</a></li>
+                      <li><a th:href="@{/error-404.html}">Error 404</a></li>
+                      <li><a th:href="@{/error-500.html}">Error 500</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">Contact us</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/contact-1.html}">Contact us 1</a></li>
+                      <li><a th:href="@{/contact-2.html}">Contact us 2</a></li>
+                      <li><a th:href="@{/contact-3.html}">Contact us 3</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="javascript:"
+                >Features<i class="fa fa-chevron-down"></i
+                ></a>
+                <ul class="sub-menu">
+                  <li>
+                    <a href="javascript:">Header</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/header-style-1.html}">Header 1</a></li>
+                      <li><a th:href="@{/header-style-2.html}">Header 2</a></li>
+                      <li><a th:href="@{/header-style-3.html}">Header 3</a></li>
+                      <li><a th:href="@{/header-style-4.html}">Header 4</a></li>
+                      <li><a th:href="@{/header-style-5.html}">Header 5</a></li>
+                      <li><a th:href="@{/header-style-6.html}">Header 6</a></li>
+                      <li><a th:href="@{/header-style-7.html}">Header 7</a></li>
+                      <li><a th:href="@{/header-style-8.html}">Header 8</a></li>
+                      <li><a th:href="@{/header-style-9.html}">Header 9</a></li>
+                      <li><a th:href="@{/header-style-10.html}">Header 10</a></li>
+                    </ul>
+                  </li>
+                  <li><a th:href="@{/footer-fixed.html}">Footer Fixed</a></li>
+                  <li><a th:href="@{/footer-light.html}">Footer Light</a></li>
+                  <li><a th:href="@{/footer-dark.html}">Footer Dark</a></li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="javascript:"
+                >Product<i class="fa fa-chevron-down"></i
+                ></a>
+                <ul class="sub-menu">
+                  <li><a th:href="@{/product.html}">Product</a></li>
+                  <li><a th:href="@{/product-detail.html}">Product Detail</a></li>
+                  <li><a th:href="@{/shopping-cart.html}">Shopping cart</a></li>
+                  <li><a th:href="@{/wish-list.html}">Wishlist</a></li>
+                  <li><a th:href="@{/checkout.html}">Checkout</a></li>
+                </ul>
+              </li>
+
+              <li class="submenu-direction">
+                <a href="javascript:"
+                >Blog<i class="fa fa-chevron-down"></i
+                ></a>
+                <ul class="sub-menu">
+                  <li>
+                    <a href="javascript:">Media</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/blog-media-list.html}">Media list</a></li>
+                      <li><a th:href="@{/blog-media-grid.html}">Media grid</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">list</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/blog-half-img.html}">Half image</a></li>
+                      <li>
+                        <a th:href="@{/blog-half-img-sidebar.html}"
+                        >Half image sidebar</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/blog-half-img-left-sidebar.html}"
+                        >Half image sidebar left</a
+                        >
+                      </li>
+                      <li><a th:href="@{/blog-large-img.html}">Large image</a></li>
+                      <li>
+                        <a th:href="@{/blog-large-img-sidebar.html}"
+                        >Large image sidebar</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/blog-large-img-left-sidebar.html}"
+                        >Large image sidebar left</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">Grid</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/blog-grid-2.html}">Grid 2</a></li>
+                      <li>
+                        <a th:href="@{/blog-grid-2-sidebar.html}"
+                        >Grid 2 sidebar</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/blog-grid-2-sidebar-left.html}"
+                        >Grid 2 sidebar left</a
+                        >
+                      </li>
+                      <li><a th:href="@{/blog-grid-3.html}">Grid 3</a></li>
+                      <li>
+                        <a th:href="@{/blog-grid-3-sidebar.html}"
+                        >Grid 3 sidebar</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/blog-grid-3-sidebar-left.html}"
+                        >Grid 3 sidebar left</a
+                        >
+                      </li>
+                      <li><a th:href="@{/blog-grid-4.html}">Grid 4</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="javascript:">Single</a>
+                    <ul class="sub-menu">
+                      <li><a th:href="@{/blog-single.html}">Single full</a></li>
+                      <li>
+                        <a th:href="@{/blog-single-left-sidebar.html}"
+                        >Single sidebar</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/blog-single-sidebar.html}"
+                        >Single sidebar right</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="has-mega-menu">
+                <a href="javascript:"
+                >Elements<i class="fa fa-chevron-down"></i
+                ></a>
+                <ul class="mega-menu">
+                  <li>
+                    <ul>
+                      <li>
+                        <a th:href="@{/shortcode-animations.html}"
+                        ><i class="fa fa-ravelry"></i> Animations</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-accordians.html}">
+                          <i class="fa fa-bars"></i>Accordians</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-alert-box.html}">
+                          <i class="fa fa-bell-o"></i>Alert box</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-buttons.html}">
+                          <i class="fa fa-toggle-on"></i>Buttons</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-client.html}">
+                          <i class="fa fa-group"></i>Clients</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-client-slider.html}">
+                          <i class="fa fa-drivers-license-o"></i>Clients
+                          slider</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-carousel-sliders.html}">
+                          <i class="fa fa-sliders"></i>Carousel sliders</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <ul>
+                      <li>
+                        <a th:href="@{/shortcode-counters.html}">
+                          <i class="fa fa-calculator"></i>Counters</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-dividers.html}">
+                          <i class="fa fa-ellipsis-h"></i>Dividers</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-google-map.html}">
+                          <i class="fa fa-map-o"></i>Google map</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-icons.html}">
+                          <i class="fa fa-ellipsis-h"></i>Icons
+                          Shortcodes</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-icon-box.html}">
+                          <i class="fa fa-square-o"></i>Icon-box</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-icon-box-styles.html}">
+                          <i class="fa fa-square-o"></i>Icon box styles</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-image-box-content.html}">
+                          <i class="fa fa-address-card-o"></i>Image box
+                          content</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <ul>
+                      <li>
+                        <a th:href="@{/shortcode-images-effects.html}">
+                          <i class="fa fa-photo"></i>Images effects</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-list-group.html}">
+                          <i class="fa fa-list-ol"></i>List group</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-modal-popup.html}">
+                          <i class="fa fa-window-maximize"></i>Modal
+                          popup</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-pagination.html}">
+                          <i class="fa fa-terminal"></i>Pagination</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-pricing-table.html}">
+                          <i class="fa fa-dollar"></i>Pricing table</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-toggles.html}">
+                          <i class="fa fa-plus-square-o"></i>Toggles</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-tooltips.html}">
+                          <i class="fa fa-window-maximize"></i>Tooltips</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <ul>
+                      <li>
+                        <a th:href="@{/shortcode-tabs.html}">
+                          <i class="fa fa-th-list"></i>Tabs</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-table.html}">
+                          <i class="fa fa-table"></i>Table</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-testimonials.html}">
+                          <i class="fa fa-twitch"></i>Testimonials</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-testimonials-grid.html}">
+                          <i class="fa fa-twitch"></i>Testimonials grid</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-title-separators.html}">
+                          <i class="fa fa-ellipsis-h"></i
+                          >Title-separators</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-video.html}">
+                          <i class="fa fa-video-camera"></i>Video</a
+                        >
+                      </li>
+                      <li>
+                        <a th:href="@{/shortcode-all-widgets.html}">
+                          <i class="fa fa-retweet"></i>Widgets</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <!-- NAV Toggle Button -->
+          <button
+                  id="mobile-side-drawer"
+                  data-target=".header-nav"
+                  data-toggle="collapse"
+                  type="button"
+                  class="navbar-toggler collapsed"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar icon-bar-first"></span>
+            <span class="icon-bar icon-bar-two"></span>
+            <span class="icon-bar icon-bar-three"></span>
+          </button>
+          <!-- ETRA Nav -->
+          <div class="extra-nav">
+            <div class="extra-cell">
+              <a th:href="@{/#search}" class="site-search-btn"
+              ><i class="fa fa-search"></i
+              ></a>
+            </div>
+            <div class="extra-cell">
+              <a
+                      href="javascript:"
+                      class="wt-cart cart-btn dropdown-toggle"
+                      title="Your Cart"
+                      id="ID-MSG_dropdown"
+                      data-bs-toggle="dropdown"
+              >
+                    <span class="link-inner">
+                      <span class="woo-cart-total"> </span>
+                      <span class="woo-cart-count">
+                        <span class="shopping-bag wcmenucart-count">4</span>
+                      </span>
+                    </span>
+              </a>
+
+              <div class="dropdown-menu cart-dropdown-item-wraper">
+                <div class="nav-cart-content">
+                  <div class="nav-cart-items p-a15">
+                    <div class="nav-cart-item clearfix">
+                      <div class="nav-cart-item-image">
+                        <a th:href="@{/#}"
+                        ><img th:src="@{/images/cart/pic-1.jpg}" alt="p-1"
+                        /></a>
+                      </div>
+                      <div class="nav-cart-item-desc">
+                        <a th:href="@{/#}">Safety helmet</a>
+                        <span class="nav-cart-item-price"
+                        ><strong>2</strong> x $19.99</span
+                        >
+                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                      </div>
+                    </div>
+                    <div class="nav-cart-item clearfix">
+                      <div class="nav-cart-item-image">
+                        <a th:href="@{/#}"
+                        ><img th:src="@{/images/cart/pic-2.jpg}" alt="p-2"
+                        /></a>
+                      </div>
+                      <div class="nav-cart-item-desc">
+                        <a th:href="@{/#}">Hammer drill machine</a>
+                        <span class="nav-cart-item-price"
+                        ><strong>1</strong> x $24.99</span
+                        >
+                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                      </div>
+                    </div>
+                    <div class="nav-cart-item clearfix">
+                      <div class="nav-cart-item-image">
+                        <a th:href="@{/#}"
+                        ><img th:src="@{/images/cart/pic-3.jpg}" alt="p-1"
+                        /></a>
+                      </div>
+                      <div class="nav-cart-item-desc">
+                        <a th:href="@{/#}">Safety helmet</a>
+                        <span class="nav-cart-item-price"
+                        ><strong>2</strong> x $19.99</span
+                        >
+                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                      </div>
+                    </div>
+                    <div class="nav-cart-item clearfix">
+                      <div class="nav-cart-item-image">
+                        <a th:href="@{/#}"
+                        ><img th:src="@{/images/cart/pic-4.jpg}" alt="p-2"
+                        /></a>
+                      </div>
+                      <div class="nav-cart-item-desc">
+                        <a th:href="@{/#}">Hammer drill machine</a>
+                        <span class="nav-cart-item-price"
+                        ><strong>1</strong> x $24.99</span
+                        >
+                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nav-cart-title p-tb10 p-lr15 clearfix">
+                    <h4 class="pull-left m-a0">Subtotal:</h4>
+                    <h5 class="pull-right m-a0">$114.95</h5>
+                  </div>
+                  <div class="nav-cart-action p-a15 clearfix">
+                    <button
+                            class="site-button btn-block m-b15"
+                            type="button"
+                    >
+                      View Cart
+                    </button>
+                    <button class="site-button btn-block" type="button">
+                      Checkout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- SITE Search -->
+          <div id="search">
+            <span class="close"></span>
+            <form
+                    role="search"
+                    id="searchform"
+                    action="/search"
+                    method="get"
+                    class="radius-xl"
+            >
+              <div class="input-group">
+                <label>
+                  <input
+                          value=""
+                          name="q"
+                          type="search"
+                          placeholder="Type to search"
+                  />
+                </label>
+                <span class="input-group-btn"
+                ><button type="button" class="search-btn">
+                        <i class="fa fa-search"></i></button
+                ></span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- HEADER END -->
+
+  <div class="container" style="display: flex; justify-content: center; padding: 100px 0">
+    <div class="register-container">
+      <h2 class="text-center register-title">Register</h2>
+      <div th:if="${error}" style="margin-bottom: 20px; color: red" th:text="${error}"></div>
+      <form method="POST" action="/sbs/register">
+        <div class="mb-3">
+          <label for="fullname" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="fullname" name="fullname" required />
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required />
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="tel" class="form-control" id="phone" name="phone" required />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required />
+        </div>
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required />
+        </div>
+        <p class="text-center mt-3 mb-3">
+          Already have an account? <a href="/sbs/login" style="color: #9b4e9b; text-decoration: underline;">Login</a>
+        </p>
+        <button type="submit" class="btn btn-purple w-100">Register</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- FOOTER START -->
+  <footer th:replace="~{fragments/footer :: footer}">
+
+  </footer>
+  <!-- FOOTER END -->
+
+  <!-- BUTTON TOP START -->
+  <button class="scroltop">
+    <span class="iconmoon-house relative" id="btn-vibrate"></span>Top
+  </button>
+</div>
+
+<!-- LOADING AREA START ===== -->
+<div class="loading-area">
+  <div class="loading-box"></div>
+  <div class="loading-pic">
+    <div class="cssload-container">
+      <div class="cssload-progress cssload-float cssload-shadow">
+        <div class="cssload-progress-item"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- LOADING AREA  END ====== -->
+<!-- STYLE SWITCHER  ======= -->
+<div class="styleswitcher">
+  <div class="switcher-btn-bx">
+    <a class="switch-btn">
+      <span class="fa fa-cog fa-spin"></span>
+    </a>
+  </div>
+
+  <div class="styleswitcher-inner">
+    <h6 class="switcher-title">Color Skin</h6>
+    <ul class="color-skins">
+      <li>
+        <a
+                class="theme-skin skin-1"
+                th:href="@{/css/skin/skin-1}"
+                title="default Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-2"
+                th:href="@{/css/skin/skin-2}"
+                title="pink Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-3"
+                th:href="@{/css/skin/skin-3}"
+                title="sky Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-4"
+                th:href="@{/css/skin/skin-4}"
+                title="green Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-5"
+                th:href="@{/css/skin/skin-5}"
+                title="red Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-6"
+                th:href="@{/css/skin/skin-6}"
+                title="orange Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-7"
+                th:href="@{/css/skin/skin-7}"
+                title="purple Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-8"
+                th:href="@{/css/skin/skin-8}"
+                title="blue Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-9"
+                th:href="@{/css/skin/skin-9}"
+                title="gray Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-10"
+                th:href="@{/css/skin/skin-10}"
+                title="brown Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-11"
+                th:href="@{/css/skin/skin-11}"
+                title="gray Theme"
+        ></a>
+      </li>
+      <li>
+        <a
+                class="theme-skin skin-12"
+                th:href="@{/css/skin/skin-12}"
+
+                title="golden Theme"
+        ></a>
+      </li>
+    </ul>
+
+    <h6 class="switcher-title">Nav</h6>
+    <ul class="nav-view">
+      <li class="nav-light active">Light</li>
+      <li class="nav-dark">Dark</li>
+    </ul>
+
+    <h6 class="switcher-title">Nav</h6>
+    <ul class="nav-width">
+      <li class="nav-boxed active">Boxed</li>
+      <li class="nav-wide">Wide</li>
+    </ul>
+
+    <h6 class="switcher-title">Header</h6>
+    <ul class="header-view">
+      <li class="header-fixed active">Fixed</li>
+      <li class="header-static">Static</li>
+    </ul>
+
+    <h6 class="switcher-title">Layout</h6>
+    <ul class="layout-view">
+      <li class="wide-layout active">Wide</li>
+      <li class="boxed">Boxed</li>
+    </ul>
+
+    <h6 class="switcher-title">Background Image</h6>
+    <ul class="background-switcher">
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-bg/thum/bg1.jpg}"
+                rel="images/switcher/switcher-bg/large/bg1.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-bg/thum/bg2.jpg}"
+                rel="images/switcher/switcher-bg/large/bg2.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-bg/thum/bg3.jpg}"
+                rel="images/switcher/switcher-bg/large/bg3.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-bg/thum/bg4.jpg}"
+                rel="images/switcher/switcher-bg/large/bg4.jpg"
+                alt=""
+        />
+      </li>
+    </ul>
+
+    <h6 class="switcher-title">Background Pattern</h6>
+    <ul class="pattern-switcher">
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg1.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt1.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg2.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt2.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg3.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt3.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg4.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt4.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg5.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt5.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg6.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt6.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg7.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt7.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg8.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt8.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg9.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt9.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg10.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt10.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg11.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt11.jpg"
+                alt=""
+        />
+      </li>
+      <li>
+        <img
+                th:src="@{/images/switcher/switcher-patterns/thum/bg12.jpg}"
+                rel="images/switcher/switcher-patterns/large/pt12.jpg"
+                alt=""
+        />
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- STYLE SWITCHER END ==== -->
+
+<!-- JAVASCRIPT  FILES ========================================= -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
+</body>
+</html>
