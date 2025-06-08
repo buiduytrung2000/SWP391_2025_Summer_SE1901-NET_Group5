@@ -1,13 +1,23 @@
 package vn.edu.fpt.BeautyCenter.controller;
+
 /*
- * Copyright(C) 2025,  FPT University.
+ * Copyright(C) 2025, FPT University.
  * SBS :
  *  Smart Beauty System
  *
  * Record of change:
- * DATE                       Version             AUTHOR                       DESCRIPTION
- * <2025-06-8/6/2025>           <1.0>              TrungBD                      First Implement
+ * DATE         Version  AUTHOR   DESCRIPTION
+ * 2025-06-08   1.0      TrungBD  First Implement
  */
+
+/*
+ * HomePageController handles HTTP requests for the home and admin pages of the Smart Beauty System.
+ * <p>
+ * This controller maps the root ("/") and "/admin" endpoints, providing the necessary data
+ * to the corresponding views and managing session information for the home page.
+ * </p>
+ */
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
@@ -23,18 +33,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HomePageController {
+
+    /**
+     * Handles GET requests to the root URL ("/").
+     * <p>
+     * Adds the page title to the model, logs session information for debugging,
+     * and returns the view for the home page.
+     * </p>
+     *
+     * @param model   the model to pass attributes to the view
+     * @param session the current HTTP session
+     * @return the name of the view template for the home page
+     */
     @GetMapping("/")
     public String home(Model model, HttpSession session) {
-        model.addAttribute("pageTitle","Home Page");
-        System.out.println("sessionId "+ session.getId());
-        System.out.println("loginTime "+session.getAttribute("loginTime"));
-        System.out.println("user: "+session.getAttribute("user"));
-        return "home/index-5"; // trả về file home/index-5.html trong templates
+        // Set the page title attribute for the home page view
+        model.addAttribute("pageTitle", "Home Page");
+
+        // Log session details for debugging purposes
+        System.out.println("sessionId " + session.getId()); // Output the session ID
+        System.out.println("loginTime " + session.getAttribute("loginTime")); // Output the login time
+        System.out.println("user: " + session.getAttribute("user")); // Output the user object
+
+        // Return the view template located at templates/home/index-5.html
+        return "home/index-5";
     }
+
+    /*
+     * Handles GET requests to the "/admin" URL.
+     * <p>
+     * Adds the page title and current URI to the model and returns the admin dashboard view.
+     * </p>
+     *
+     * @param request the HTTP servlet request
+     * @param model   the model to pass attributes to the view
+     * @return the name of the view template for the admin dashboard
+     */
     @GetMapping("/admin")
     public String admin(HttpServletRequest request, Model model) {
-        model.addAttribute("pageTitle","Admin Page");
+        // Set the page title attribute for the admin page view
+        model.addAttribute("pageTitle", "Admin Page");
+
+        // Add the current request URI to the model for navigation or display
         model.addAttribute("currentUri", request.getRequestURI());
+
+        // Return the view template located at templates/dashboard/home.html
         return "dashboard/home";
     }
 }
