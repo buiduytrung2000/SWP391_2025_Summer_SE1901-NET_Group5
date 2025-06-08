@@ -13,6 +13,8 @@ public class StaffCreationRequest {
     private String gender;
     private String role;
     private String position;
+    private String password;
+    private String username;
     private LocalDate startDate;
     private MultipartFile avatar;
 }

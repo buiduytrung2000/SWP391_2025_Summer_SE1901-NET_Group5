@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -19,8 +20,7 @@ import java.util.UUID;
 public class Staff {
 
     @Id
-    @Size(max = 36)
-    @Column(name = "user_id", nullable = false, length = 36)
+    @Column(name = "user_id", nullable = false,columnDefinition = "char(36)")
     private String userId;
 
     @Size(max = 50)
@@ -46,8 +46,21 @@ public class Staff {
     @Column(name = "phone", length = 20)
     private String phone;
 
+    @Column(name = "gender", columnDefinition = "varchar(10)")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    public enum Gender {
+        Male,
+        Female,
+        Other;
+    }
+
+    @Size(max = 100)
+    @Column(name = "position", length = 100)
+    private String position;
+
     @NotNull
-    @Lob
     @Column(name = "role", nullable = false)
     private String role;
 
@@ -55,35 +68,30 @@ public class Staff {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @Column(name = "created_at")
-    private Instant createdAt;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    private LocalDateTime updatedAt;
 
-    @Lob
-    @Column(name = "status")
-    private String status;
+    @Column(name = "status", columnDefinition = "enum")
+    @Enumerated(EnumType.STRING)
+    private Status  status;
+    public enum Status{
+        active,
+//        inactive
+    }
 
-    @Lob
-    @Column(name = "gender")
-    private String gender;
 
-    @Size(max = 100)
-    @Column(name = "position", length = 100)
-    private String position;
 
     @PrePersist
     protected void onCreate() {
-        if (userId == null || userId.isBlank()) {
-            userId = UUID.randomUUID().toString(); // 👈 sinh UUID nếu chưa có
-        }
-        createdAt = Instant.now();
-        updatedAt = Instant.now();
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = Instant.now();
+        updatedAt = LocalDateTime.now();
     }
 }
