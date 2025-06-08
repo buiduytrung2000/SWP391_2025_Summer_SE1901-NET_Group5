@@ -2,6 +2,7 @@ package vn.edu.fpt.BeautyCenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.fpt.BeautyCenter.entity.PasswordResetToken;
 import vn.edu.fpt.BeautyCenter.entity.User;
 import vn.edu.fpt.BeautyCenter.entity.enums.Role;
@@ -102,9 +103,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getUserName(String serviceId) {
-        if(serviceId == null) return null;
-        return userRepository.findById(serviceId).map(User::getUsername).orElse("Unknown User");
+    @Transactional
+    public void updateUser(User user) {
+        User oldUser = userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Nếu đổi username, phải kiểm tra trùng
+        if (!oldUser.getUsername().equals(user.getUsername())) {
+            User existing = userRepository.findByUsername(user.getUsername()).orElse(null);
+            if (existing != null && !existing.getUserId().equals(oldUser.getUserId())) {
+                throw new RuntimeException("Username đã tồn tại!");
+            }
+            oldUser.setUsername(user.getUsername());
+        }
+
+        // Update các trường khác
+        oldUser.setFullName(user.getFullName());
+        oldUser.setEmail(user.getEmail());
+        oldUser.setPhone(user.getPhone());
+        // ... các trường cần update khác
+
+        userRepository.save(oldUser); // Đây là UPDATE, không phải INSERT
+
     }
 
     private String generateOtp() {

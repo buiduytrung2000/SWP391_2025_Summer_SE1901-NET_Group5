@@ -1,34 +1,64 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/crudUser/editCustomer.css">
-</head>
-<body>
-<form th:action="@{/edit_customer}" method="post">
-    <div class="avatar-upload" id="drop-area">
-        <input type="file" id="fileElem" accept="image/*" style="display:none" onchange="handleFiles(this.files)">
-        <label for="fileElem" class="avatar-label">
-            <img id="avatarPreview" src="https://via.placeholder.com/80" alt="Avatar" />
-        </label>
+<head th:replace="~{fragments/header2 :: common-head('Edit Customer')}"></head>
+
+<body id = "bg">
+<div class="page-wraper">
+    <header th:replace="~{fragments/header2 :: header}">
+    </header>
+    <form class="editCustomerForm" th:action="@{/edit_customer}" th:object="${user}" method="post">
+        <div class="avatar-upload" id="drop-area">
+            <input type="file" id="fileElem" accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+            <label for="fileElem" class="avatar-label">
+                <img id="avatarPreview" src="https://via.placeholder.com/80" alt="Avatar" />
+            </label>
+        </div>
+        <label class="editLabel">Username</label>
+        <input type="text" th:field="*{username}" id="username"><br><br>
+
+        <label class="editLabel">Password</label>
+        <input type="password" th:field="*{password}" id="password"><br><br>
+
+        <label class="editLabel">Email</label>
+        <input type="password" th:field="*{email}" id="email"><br><br>
+
+        <label class="editLabel">Full Name</label>
+        <input type="text" th:field="*{fullName}" id="fullName"><br><br>
+
+        <label class="editLabel">Phone</label>
+        <input type="tel" th:field="*{phone}" id="phone"><br><br>
+
+        <input type="hidden" th:field="*{status}" id="status"><br><br>
+
+        <input type="hidden" th:field="*{role}" id="role"><br><br>
+
+        <button type="submit">Edit</button>
+        <button type="reset">Cancel</button>
+
+    </form>
+    <!-- FOOTER START -->
+    <footer th:replace="~{fragments/footer :: footer}">
+
+    </footer>
+    <!-- FOOTER END -->
+
+
+</div>
+<!-- LOADING AREA START ===== -->
+<div class="loading-area">
+    <div class="loading-box"></div>
+    <div class="loading-pic">
+        <div class="cssload-container">
+            <div class="cssload-progress cssload-float cssload-shadow">
+                <div class="cssload-progress-item"></div>
+            </div>
+        </div>
     </div>
-    <label class="editLabel">Username</label>
-    <input type="text" name="" id=""><br><br>
-    <label class="editLabel">Password</label>
-    <input type="password" name="" id=""><br><br>
-    <label class="editLabel">Full Name</label>
-    <input type="text" name="" id=""><br><br>
-    <label class="editLabel">Phone</label>
-    <input type="tel" name="" id=""><br><br>
+</div>
+<!-- LOADING AREA  END ====== -->
 
-    <button type="submit">Edit</button>
-    <button type="reset">Cancel</button>
-
-</form>
+<!-- JAVASCRIPT  FILES ========================================= -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
 </body>
 <script src="js/editCustomerAvatar.js"></script>
 </html>
