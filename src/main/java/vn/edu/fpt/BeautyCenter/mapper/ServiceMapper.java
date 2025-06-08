@@ -1,8 +1,14 @@
 package vn.edu.fpt.BeautyCenter.mapper;
-
+/*
+ * Copyright(C) 2025,  FPT University.
+ * SBS :
+ *  Smart Beauty System
+ *
+ * Record of change:
+ * DATE                       Version             AUTHOR                       DESCRIPTION
+ * <2025-06-8/6/2025>           <1.0>              TrungBD                      First Implement
+ */
 import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceCreationRequest;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceUpdateRequest;
 import vn.edu.fpt.BeautyCenter.dto.response.ServiceResponse;
@@ -22,8 +28,6 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ServiceMapper {
 
-    ServiceMapper INSTANCE = Mappers.getMapper(ServiceMapper.class);
-
     @Mapping(target = "serviceId", ignore = true)
 //    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
 //    @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
@@ -34,6 +38,8 @@ public interface ServiceMapper {
     @Mapping(target = "duration",
             expression = "java(formatDuration(entity.getDuration()))")
     @Mapping(target = "tags", source = "serviceTags", qualifiedByName = "mapTags")
+    @Mapping(target = "createdAt", source = "createdAt", dateFormat = "dd/MM/yyyy HH:mm")
+    @Mapping(target = "createdBy", source = "createdBy")
     ServiceResponse toResponse(Service entity);
 
     @Named("mapTags")
@@ -52,19 +58,8 @@ public interface ServiceMapper {
         return instant == null ? null : LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
     }
 
-    default Instant localDateTimeToInstant(LocalDateTime localDateTime) {
-        return localDateTime == null ? null : localDateTime.toInstant(ZoneOffset.UTC);
-    }
-
     default String formatDuration(Integer minutes) {
         if (minutes == null) return "";
-        return String.format("%d giờ %02d phút", minutes / 60, minutes % 60);
+        return String.format("%d hour %02d minute", minutes / 60, minutes % 60);
     }
-
-//    default String getCurrentUserId() {
-//        return SecurityContextHolder.getContext()
-//                .getAuthentication()
-//                .getName();
-//    }
-
 }

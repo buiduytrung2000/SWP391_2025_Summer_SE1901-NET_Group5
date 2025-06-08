@@ -1,5 +1,13 @@
 package vn.edu.fpt.BeautyCenter.entity;
-
+/*
+ * Copyright(C) 2025,  FPT University.
+ * SBS :
+ *  Smart Beauty System
+ *
+ * Record of change:
+ * DATE                       Version             AUTHOR                       DESCRIPTION
+ * <2025-06-8/6/2025>           <1.0>              TrungBD                      First Implement
+ */
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

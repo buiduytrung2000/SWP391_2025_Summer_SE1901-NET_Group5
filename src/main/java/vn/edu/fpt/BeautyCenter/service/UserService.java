@@ -11,10 +11,11 @@ public interface UserService {
     void registerUser(String fullName, String username, String email, String phone, String password);
     void verifyEmail(String email);
     Optional<User> findByUsernameAndPassword(String username, String password);
-
     void sendPasswordResetEmail(String email);
 
     User verifyOtp(String otp);
 
     void resetPassword(String email, String password);
+
+    String getUserName(String serviceId);
 }

@@ -101,6 +101,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public String getUserName(String serviceId) {
+        if(serviceId == null) return null;
+        return userRepository.findById(serviceId).map(User::getUsername).orElse("Unknown User");
+    }
+
     private String generateOtp() {
         StringBuilder otp = new StringBuilder(6);
         SecureRandom random = new SecureRandom();

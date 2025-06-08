@@ -1,13 +1,18 @@
 package vn.edu.fpt.BeautyCenter.service;
-
+/*
+ * Copyright(C) 2025,  FPT University.
+ * SBS :
+ *  Smart Beauty System
+ *
+ * Record of change:
+ * DATE                       Version             AUTHOR                       DESCRIPTION
+ * <2025-06-8/6/2025>           <1.0>              TrungBD                      First Implement
+ */
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceCreationRequest;
@@ -85,7 +90,7 @@ public class ServiceService {
     }
 
 
-    public void createService(@Valid ServiceCreationRequest request) {
+    public void createService(@Valid ServiceCreationRequest request, String userId) {
         if (serviceRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.SERVICE_EXISTED);
         }
@@ -94,7 +99,7 @@ public class ServiceService {
                 .content(request.getContent())
                 .duration(request.getDuration())
                 .price(request.getPrice())
-                .createdBy("f00eec64-3a0b-11f0-9cf0-005056c00001")
+                .createdBy(userId)
                 .build();
         if (request.getTagNames() != null && !request.getTagNames().isEmpty()) {
             Set<ServiceTag> tags = processServiceTags(request.getTagNames());
@@ -185,5 +190,32 @@ public class ServiceService {
         long totalMinutes = (long)hours * 60 + minutes;
         return String.valueOf(totalMinutes);
     }
+    public Page<ServiceResponse> getAllServicesWithFormattedTags(int page, int size) {
+        Page<vn.edu.fpt.BeautyCenter.entity.Service> services = getAllServices(page, size);
+        return services.map(service -> {
+            ServiceResponse response = serviceMapper.toResponse(service);
+            // Format tags ngay tại đây
+            if (response.getTags() != null && !response.getTags().isEmpty()) {
+                // Có thể thêm formatted tags vào response hoặc xử lý khác
+            }
+            return response;
+        });
+    }
+    public Page<ServiceResponse> searchServices(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<vn.edu.fpt.BeautyCenter.entity.Service> services;
 
+        if (keyword == null || keyword.trim().isEmpty()) {
+            // Nếu không có keyword, trả về tất cả services
+            services = serviceRepository.findAll(pageable);
+        } else {
+            // Tìm kiếm theo tên (case-insensitive)
+            services = serviceRepository.findByNameContainingIgnoreCase(keyword.trim(), pageable);
+            // Hoặc sử dụng search nhiều field:
+            // services = serviceRepository.findByNameOrDescriptionContaining(keyword.trim(), pageable);
+        }
+
+        // Convert Entity to DTO
+        return services.map(serviceMapper::toResponse);
+    }
 }
