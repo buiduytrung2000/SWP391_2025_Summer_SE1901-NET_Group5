@@ -103,30 +103,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        User oldUser = userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Nếu đổi username, phải kiểm tra trùng
-        if (!oldUser.getUsername().equals(user.getUsername())) {
-            User existing = userRepository.findByUsername(user.getUsername()).orElse(null);
-            if (existing != null && !existing.getUserId().equals(oldUser.getUserId())) {
-                throw new RuntimeException("Username đã tồn tại!");
-            }
-            oldUser.setUsername(user.getUsername());
-        }
 
-        // Update các trường khác
-        oldUser.setFullName(user.getFullName());
-        oldUser.setEmail(user.getEmail());
-        oldUser.setPhone(user.getPhone());
-        // ... các trường cần update khác
-
-        userRepository.save(oldUser);
+        userRepository.save(user);
     }
 
     @Override
-    public String getUserName(String createdBy) {
-        return "";
+    public String getUserName(String serviceId) {
+        if(serviceId == null) return null;
+        return userRepository.findById(serviceId).map(User::getUsername).orElse("Unknown User");
     }
 
     private String generateOtp() {

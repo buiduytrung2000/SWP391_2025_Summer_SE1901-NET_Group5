@@ -19,5 +19,5 @@ public interface UserService {
 
     void updateUser(User user);
 
-    String getUserName(String createdBy);
+    String getUserName(String serviceId);
 }

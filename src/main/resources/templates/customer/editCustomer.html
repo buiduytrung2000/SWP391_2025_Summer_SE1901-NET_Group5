@@ -10,7 +10,7 @@
         <div class="avatar-upload" id="drop-area">
             <input type="file" id="fileElem" accept="image/*" style="display:none" onchange="handleFiles(this.files)">
             <label for="fileElem" class="avatar-label">
-                <img id="avatarPreview" src="https://via.placeholder.com/80" alt="Avatar" />
+                <img id="avatarPreview" th:src="*{avatarUrl}" alt="Avatar" />
             </label>
         </div>
         <label class="editLabel">Username</label>
@@ -28,9 +28,7 @@
         <label class="editLabel">Phone</label>
         <input type="tel" th:field="*{phone}" id="phone"><br><br>
 
-        <input type="hidden" th:field="*{status}" id="status"><br><br>
 
-        <input type="hidden" th:field="*{role}" id="role"><br><br>
 
         <button type="submit">Edit</button>
         <button type="reset">Cancel</button>
