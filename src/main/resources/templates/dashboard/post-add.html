@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="zxx" class="js">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Softnio">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+        <link rel="shortcut icon" href="./images/favicon.png">
+        <title>Add Post | CMS | DashLite Admin Template</title>
+        <link rel="stylesheet" href="./assets/css/dashlite.css?ver=3.2.3">
+        <link id="skin-default" rel="stylesheet" href="./assets/css/theme.css?ver=3.2.3">
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91615293-4"></script><script>window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', 'UA-91615293-4');</script> 
+    </head>
+    <body class="nk-body npc-default has-apps-sidebar has-sidebar " >
+        <div class="nk-app-root">
+
+            <div class="nk-main ">
+                <div class="nk-wrap ">
+                    <div class="nk-header nk-header-fixed">
+                        <div class="container-fluid">
+                            <div class="nk-header-wrap">
+                                <div class="nk-menu-trigger d-xl-none ms-n1"><a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu"><em class="icon ni ni-menu"></em></a></div>
+                                <div class="nk-header-app-name">
+                                    <div class="nk-header-app-logo"><em class="icon ni ni-dashlite bg-purple-dim"></em></div>
+                                    <div class="nk-header-app-info"><span class="sub-text">DashLite</span><span class="lead-text">Dashboard</span></div>
+                                </div>
+                                <div class="nk-header-menu is-light">
+                                    <div class="nk-header-menu-inner">
+                                        <ul class="nk-menu nk-menu-main">
+                                            <li class="nk-menu-item"><a href="index" class="nk-menu-link"><span class="nk-menu-text">Overview</span></a></li>
+                                            <li class="nk-menu-item"><a href="../index" class="nk-menu-link"><span class="nk-menu-text">Trang chủ</span></a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="nk-header-tools">
+                                    <ul class="nk-quick-nav">
+
+                                        <li class="dropdown user-dropdown">
+                                            <a href="#" class="dropdown-toggle me-n1" data-bs-toggle="dropdown">
+                                                <div class="user-toggle">
+                                                    <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
+                                                </div>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-md dropdown-menu-end">
+                                                <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+                                                    <div class="user-card">
+                                                        <div class="user-avatar"><span>AB</span></div>
+                                                        <div class="user-info"><span class="lead-text">${sessionScope.user.getLastName()}</span><span class="sub-text">${sessionScope.user.getEmail()}</span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-inner">
+                                                    <ul class="link-list">
+                                                        <li><a href="./cms/user-profile.html"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
+                                                        <li><a href="./cms/user-profile.html"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
+                                                        <li><a href="./cms/user-profile.html"><em class="icon ni ni-activity-alt"></em><span>Login Activity</span></a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="dropdown-inner">
+                                                    <ul class="link-list">
+                                                        <li><a href="../logout"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nk-sidebar" data-content="sidebarMenu">
+                        <div class="nk-sidebar-inner" data-simplebar>
+                            <ul class="nk-menu nk-menu-md">
+                                <li class="nk-menu-heading">
+                                    <h6 class="overline-title text-primary-alt">Dashboard</h6>
+                                </li>
+                                <li class="nk-menu-item"><a href="index" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-dashboard"></em></span><span class="nk-menu-text">Dashboard</span></a></li>
+                                <li class="nk-menu-item">
+                                    <a href="post-list" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-template"></em></span><span class="nk-menu-text">Post</span></a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="post-add" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-template"></em></span><span class="nk-menu-text">Add Post</span></a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="user-profile" class="nk-menu-link "><span class="nk-menu-icon"><em class="icon ni ni-user-alt"></em></span><span class="nk-menu-text">Users</span></a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="nk-content ">
+                        <div class="container-fluid">
+                            <div class="nk-content-inner">
+                                <div class="nk-content-body">
+                                    <div class="nk-block-head nk-block-head-sm">
+                                        <div class="nk-block-between">
+                                            <div class="nk-block-head-content">
+                                                <h3 class="nk-block-title page-title">Add Post</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nk-block">
+                                        <form action="post-add" method="POST" enctype="multipart/form-data">
+                                            <div class="row g-gs">
+                                                <div class="col-lg-8">
+                                                    <div class="card card-bordered">
+                                                        <div class="card-inner">
+
+                                                            <div class="row g-gs">
+                                                                <div class="col-12">
+                                                                    <div class="form-group"><label class="form-label" for="addTitle">Title</label><input type="text" class="form-control" name="addTitle" id="addTitle" placeholder="Title"></div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Content</label>
+
+                                                                        <div class="form-control-wrap">
+                                                                            <textarea id="summernote" name="editordata"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="card card-bordered">
+                                                        <div class="card-inner">
+
+                                                            <div class="row g-gs">
+
+                                                                <div class="col-lg-12 col-sm-6">
+                                                                    <div class="form-group"><label class="form-label" for="addSlug">Slug</label><input type="text" class="form-control" id="addSlug" placeholder="Slug" name="slug"></div>
+                                                                </div>
+
+                                                                <div class="col-lg-12 col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Tags</label>
+                                                                        <div class="form-control-wrap">
+
+                                                                            <select class="form-select js-select2" name="post-tag" multiple="multiple" data-placeholder="Categories">
+
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-sm-6">
+
+                                                                </div>
+                                                                <div class="col-lg-12 col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Select Status</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select class="form-select js-select2" name="status" data-placeholder="Status">
+                                                                                <option value="1">Published</option>
+                                                                                <option value="0">Draft</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <ul class="align-center flex-wrap flex-sm-nowrap gx-4 mt-1">
+                                                                            <li><button type="submit" id="btn-submit" class="btn btn-primary">Save</button></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="region">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                    <div class="modal-body modal-body-md">
+                        <h5 class="title mb-4">Select Your Country</h5>
+                        <div class="nk-country-region">
+                            <ul class="country-list text-center gy-2">
+                                <li><a href="#" class="country-item"><img src="./images/flags/arg.png" alt="" class="country-flag"><span class="country-name">Argentina</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/aus.png" alt="" class="country-flag"><span class="country-name">Australia</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/bangladesh.png" alt="" class="country-flag"><span class="country-name">Bangladesh</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/canada.png" alt="" class="country-flag"><span class="country-name">Canada <small>(English)</small></span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/china.png" alt="" class="country-flag"><span class="country-name">Centrafricaine</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/china.png" alt="" class="country-flag"><span class="country-name">China</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/french.png" alt="" class="country-flag"><span class="country-name">France</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/germany.png" alt="" class="country-flag"><span class="country-name">Germany</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/iran.png" alt="" class="country-flag"><span class="country-name">Iran</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/italy.png" alt="" class="country-flag"><span class="country-name">Italy</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/mexico.png" alt="" class="country-flag"><span class="country-name">México</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/philipine.png" alt="" class="country-flag"><span class="country-name">Philippines</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/portugal.png" alt="" class="country-flag"><span class="country-name">Portugal</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/s-africa.png" alt="" class="country-flag"><span class="country-name">South Africa</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/spanish.png" alt="" class="country-flag"><span class="country-name">Spain</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/switzerland.png" alt="" class="country-flag"><span class="country-name">Switzerland</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/uk.png" alt="" class="country-flag"><span class="country-name">United Kingdom</span></a></li>
+                                <li><a href="#" class="country-item"><img src="./images/flags/english.png" alt="" class="country-flag"><span class="country-name">United State</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="nk-demo-panel toggle-slide toggle-slide-right" data-content="settingPanel" data-toggle-overlay="true" data-toggle-body="true" data-toggle-screen="any">
+            <div class="nk-demo-head">
+                <h6 class="mb-0">Preview Settings</h6>
+                <a class="nk-demo-close toggle btn btn-icon btn-trigger revarse mr-n2" data-target="settingPanel" href="#"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="nk-opt-panel" data-simplebar>
+                <div class="nk-opt-set">
+                    <div class="nk-opt-set-title">Direction Change</div>
+                    <div class="nk-opt-list col-2x">
+                        <div class="nk-opt-item only-text active" data-key="dir" data-update="ltr"><span class="nk-opt-item-bg"><span class="nk-opt-item-name">LTR Mode</span></span></div>
+                        <div class="nk-opt-item only-text" data-key="dir" data-update="rtl"><span class="nk-opt-item-bg"><span class="nk-opt-item-name">RTL Mode</span></span></div>
+                    </div>
+                </div>
+                <div class="nk-opt-set">
+                    <div class="nk-opt-set-title">Main UI Style</div>
+                    <div class="nk-opt-list col-3x">
+                        <div class="nk-opt-item only-text active" data-key="style" data-update="ui-default"><span class="nk-opt-item-bg"><span class="nk-opt-item-name">Default</span></span></div>
+                        <div class="nk-opt-item only-text" data-key="style" data-update="ui-shady"><span class="nk-opt-item-bg"><span class="nk-opt-item-name">Shady</span></span></div>
+                        <div class="nk-opt-item only-text" data-key="style" data-update="ui-clean"><span class="nk-opt-item-bg"><span class="nk-opt-item-name">Clean</span></span></div>
+                    </div>
+                </div>
+                <div class="nk-opt-set nk-opt-set-aside-apps">
+                    <div class="nk-opt-set-title">Apps Sidebar Style</div>
+                    <div class="nk-opt-list col-4x">
+                        <div class="nk-opt-item" data-key="appside" data-update="is-light"><span class="nk-opt-item-bg is-light"><span class="bg-lighter"></span></span><span class="nk-opt-item-name">White</span></div>
+                        <div class="nk-opt-item" data-key="appside" data-update="is-default"><span class="nk-opt-item-bg is-light"><span class="bg-light"></span></span><span class="nk-opt-item-name">Light</span></div>
+                        <div class="nk-opt-item active" data-key="appside" data-update="is-dark"><span class="nk-opt-item-bg"><span class="bg-dark"></span></span><span class="nk-opt-item-name">Dark</span></div>
+                        <div class="nk-opt-item" data-key="appside" data-update="is-theme"><span class="nk-opt-item-bg"><span class="bg-theme"></span></span><span class="nk-opt-item-name">Theme</span></div>
+                    </div>
+                </div>
+                <div class="nk-opt-set nk-opt-set-header">
+                    <div class="nk-opt-set-title">Header Style</div>
+                    <div class="nk-opt-list col-4x">
+                        <div class="nk-opt-item active" data-key="header" data-update="is-light"><span class="nk-opt-item-bg is-light"><span class="bg-lighter"></span></span><span class="nk-opt-item-name">White</span></div>
+                        <div class="nk-opt-item" data-key="header" data-update="is-default"><span class="nk-opt-item-bg is-light"><span class="bg-light"></span></span><span class="nk-opt-item-name">Light</span></div>
+                        <div class="nk-opt-item" data-key="header" data-update="is-dark"><span class="nk-opt-item-bg"><span class="bg-dark"></span></span><span class="nk-opt-item-name">Dark</span></div>
+                        <div class="nk-opt-item" data-key="header" data-update="is-theme"><span class="nk-opt-item-bg"><span class="bg-theme"></span></span><span class="nk-opt-item-name">Theme</span></div>
+                    </div>
+                </div>
+                <div class="nk-opt-set nk-opt-set-aside">
+                    <div class="nk-opt-set-title">Sidebar Style</div>
+                    <div class="nk-opt-list col-4x">
+                        <div class="nk-opt-item" data-key="aside" data-update="is-light"><span class="nk-opt-item-bg is-light"><span class="bg-lighter"></span></span><span class="nk-opt-item-name">White</span></div>
+                        <div class="nk-opt-item" data-key="aside" data-update="is-default"><span class="nk-opt-item-bg is-light"><span class="bg-light"></span></span><span class="nk-opt-item-name">Light</span></div>
+                        <div class="nk-opt-item active" data-key="aside" data-update="is-dark"><span class="nk-opt-item-bg"><span class="bg-dark"></span></span><span class="nk-opt-item-name">Dark</span></div>
+                        <div class="nk-opt-item" data-key="aside" data-update="is-theme"><span class="nk-opt-item-bg"><span class="bg-theme"></span></span><span class="nk-opt-item-name">Theme</span></div>
+                    </div>
+                </div>
+                <div class="nk-opt-set nk-opt-set-skin">
+                    <div class="nk-opt-set-title">Primary Skin</div>
+                    <div class="nk-opt-list">
+                        <div class="nk-opt-item active" data-key="skin" data-update="default"><span class="nk-opt-item-bg"><span class="skin-default"></span></span><span class="nk-opt-item-name">Default</span></div>
+                        <div class="nk-opt-item" data-key="skin" data-update="blue"><span class="nk-opt-item-bg"><span class="skin-blue"></span></span><span class="nk-opt-item-name">Blue</span></div>
+                        <div class="nk-opt-item" data-key="skin" data-update="egyptian"><span class="nk-opt-item-bg"><span class="skin-egyptian"></span></span><span class="nk-opt-item-name">Egyptian</span></div>
+                        <div class="nk-opt-item" data-key="skin" data-update="bluelite"><span class="nk-opt-item-bg"><span class="skin-bluelite"></span></span><span class="nk-opt-item-name">Blue Light</span></div>
+                        <div class="nk-opt-item" data-key="skin" data-update="green"><span class="nk-opt-item-bg"><span class="skin-green"></span></span><span class="nk-opt-item-name">Green</span></div>
+                        <div class="nk-opt-item" data-key="skin" data-update="red"><span class="nk-opt-item-bg"><span class="skin-red"></span></span><span class="nk-opt-item-name">Red</span></div>
+                    </div>
+                </div>
+                <div class="nk-opt-set">
+                    <div class="nk-opt-set-title">Skin Mode</div>
+                    <div class="nk-opt-list col-2x">
+                        <div class="nk-opt-item active" data-key="mode" data-update="light-mode"><span class="nk-opt-item-bg is-light"><span class="theme-light"></span></span><span class="nk-opt-item-name">Light Skin</span></div>
+                        <div class="nk-opt-item" data-key="mode" data-update="dark-mode"><span class="nk-opt-item-bg"><span class="theme-dark"></span></span><span class="nk-opt-item-name">Dark Skin</span></div>
+                    </div>
+                </div>
+                <div class="nk-opt-reset"><a href="#" class="reset-opt-setting">Reset Setting</a></div>
+            </div>
+        </div>
+        <div class="pmo-lv pmo-dark">
+            <a class="pmo-close" href="#"><em class="ni ni-cross"></em></a>
+            <a class="pmo-wrap" target="_blank" href="https://softnio.com/get-early-access/">
+                <div class="pmo-text text-white">Looking for functional script for Investment Platform? Check out <em class="ni ni-arrow-long-right"></em></div>
+            </a>
+        </div>
+        <a class="pmo-st pmo-dark" target="_blank" href="https://softnio.com/get-early-access/">
+            <div class="pmo-st-img"><img src="https://dashlite.net/images/landing/promo-investorm.png" alt="Investorm"></div>
+            <div class="pmo-st-text">Looking for Advanced <br> Investment Platform?</div>
+        </a>
+        <script src="./assets/js/bundle.js?ver=3.2.3"></script><script src="./assets/js/scripts.js?ver=3.2.3"></script><script src="./assets/js/demo-settings.js?ver=3.2.3"></script>
+        <link rel="stylesheet" href="./assets/css/editors/summernote.css?ver=3.2.3">
+        <script src="./assets/js/libs/editors/summernote.js?ver=3.2.3"></script><script src="./assets/js/editors.js?ver=3.2.3"></script>
+        <script>
+
+            $(document).ready(function () {
+                $('#summernote').summernote({
+                    toolbar: [
+                        // [groupName, [list of button]]
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['insert', ['link', 'picture', 'video']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['view', ['fullscreen', 'codeview', 'help']],
+                    ],
+                    height: 300,
+                    placeholder: 'Content here',
+                });
+            });
+            $(document).ready(function () {
+                $('#summernote').summernote({
+                    height: "300px",
+                    dialogsInBody: true,
+                    callbacks: {
+                        onImageUpload: function (files) {
+                            uploadFile(files[0]);
+                        }
+                    }
+                });
+            });
+
+            function uploadFile(file) {
+                data = new FormData();
+                data.append("file", file);
+
+                $.ajax({
+                    data: data,
+                    type: "POST",
+                    url: "C:\\Users\\ADMIN\\OneDrive\\Documents\\NetBeansProjects\\TravelBlog\\web\\dashboard\\images\\uploads\\", //replace with your url
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (url) {
+                        $('#summernote').summernote("insertImage", url);
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
+
