@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.ApiResponse;
 
 import java.util.NoSuchElementException;
@@ -137,4 +138,6 @@ public class GlobalExceptionHandler {
         // Redirect to admin services page
         return "redirect:/admin/services";
     }
+
+
 }

@@ -20,4 +20,6 @@ public interface UserService {
     void updateUser(User user);
 
     String getUserName(String serviceId);
+
+    User getUserById(String userId);
 }
