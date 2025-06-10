@@ -46,6 +46,7 @@
                             <th>Role</th>
                             <th>Position</th>
                             <th>Start Date</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -61,15 +62,23 @@
                             <td th:text="${staff.role}">Admin</td>
                             <td th:text="${staff.position}">sale</td>
                             <td th:text="${#temporals.format(staff.createdAt, 'dd/MM/yyyy')}"></td>
-
+                            <td>
+                                <span th:text="${staff.status}"
+                                      th:classappend="${staff.status?.name() == 'active'} ? 'text-success fw-bold' : 'text-danger fw-bold'">
+                                </span>
+                            </td>
                             <td>
                                 <button class="btn btn-info btn-sm"
                                         data-bs-toggle="modal"
                                         th:attr="data-bs-target='#staffDetailModal__' + ${staff.userId}">
                                     Detail
                                 </button>
-                                <a th:href="@{/admin/staff/delete/{id}(id=${staff.userId})}" class="btn btn-danger btn-sm"
-                                   onclick="return confirm('Are you sure?')">Delete</a>
+                                <a th:href="@{/admin/staff/toggle-status/{id}(id=${staff.userId})}"
+                                   class="btn btn-sm"
+                                   th:classappend="${staff.status?.name() == 'active'} ? 'btn-warning' : 'btn-success'"
+                                   th:text="${staff.status?.name() == 'active'} ? 'Deactivate' : 'Activate'">
+                                </a>
+
                             </td>
                         </tr>
                         </tbody>
@@ -215,28 +224,37 @@
                         <!-- Professional Info -->
                         <div class="col-md-6">
                             <h5 class="text-center text-danger">Professional Details</h5>
-                            <p><strong>Position:</strong> <span class="view-only" th:text="${staff.role}"></span>
-                                <select name="role" class="form-select edit-only d-none">
-                                    <option value="it" th:selected="${staff.role == 'it'}">IT</option>
-                                    <option value="sale" th:selected="${staff.role == 'sale'}">Sale</option>
-                                    <option value="Manager" th:selected="${staff.role == 'Manager'}">Manager</option>
+                            <p>
+                                <strong>Role:</strong> <span th:text="${staff.role}"></span>
+                                <input type="hidden" name="role" th:value="${staff.role}" />
+                            </p>
+
+                            <p><strong>Position:</strong> <span class="view-only" th:text="${staff.position}"></span>
+                                <select name="position" class="form-select edit-only d-none">
+                                    <option value="it" th:selected="${staff.position == 'it'}">IT</option>
+                                    <option value="sale" th:selected="${staff.position == 'sale'}">Sale</option>
+                                    <option value="Manager" th:selected="${staff.position == 'Manager'}">Manager</option>
                                 </select>
                             </p>
                             <p><strong>Start Date:</strong> <span class="view-only" th:text="${#temporals.format(staff.createdAt, 'dd/MM/yyyy')}"></span>
                                 <input type="date" name="createdAt" class="form-control edit-only d-none"
                                        th:value="${#temporals.format(staff.createdAt, 'yyyy-MM-dd')}" />
                             </p>
-                            <p><strong>Employee ID:</strong> <span th:text="${staff.userId}"></span></p>
-                            <p><strong>Status:</strong> <span class="fw-bold text-success">Active</span></p>
+<!--                            <p><strong>Employee ID:</strong> <span th:text="${staff.userId}"></span></p>-->
+                            <p><strong>Status:</strong>
+                                <span th:text="${staff.status}"
+                                      th:classappend="${staff.status == 'active'} ? 'text-success fw-bold' : 'text-secondary fw-bold'">
+                                </span>
+                            </p>
 
-                            <div>
-                                <h6 class="text-danger">Employment History</h6>
-                                <ul style="padding-left: 16px;">
-                                    <li>Promoted to Senior Therapist (2023)</li>
-                                    <li>Completed Advanced Skincare Training (2022)</li>
-                                    <li>Employee of the Month (2021)</li>
-                                </ul>
-                            </div>
+<!--                            <div>-->
+<!--                                <h6 class="text-danger">Employment History</h6>-->
+<!--                                <ul style="padding-left: 16px;">-->
+<!--                                    <li>Promoted to Senior Therapist (2023)</li>-->
+<!--                                    <li>Completed Advanced Skincare Training (2022)</li>-->
+<!--                                    <li>Employee of the Month (2021)</li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
                         </div>
                     </div>
 

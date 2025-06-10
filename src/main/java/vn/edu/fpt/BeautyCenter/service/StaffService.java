@@ -56,6 +56,7 @@ public class StaffService {
             staff.setPosition(dto.getPosition());
             staff.setPhone(dto.getPhone());
             staff.setRole(dto.getRole() != null ? dto.getRole() : "Staff");
+            staff.setStatus(Staff.Status.active);
             staff.setUsername(dto.getEmail());
             staff.setPassword("123456");
 
@@ -93,7 +94,7 @@ public class StaffService {
             existing.setFullName(updatedStaff.getFullName());
             existing.setEmail(updatedStaff.getEmail());
             existing.setPhone(updatedStaff.getPhone());
-            existing.setRole(updatedStaff.getRole());
+//            existing.setRole(updatedStaff.getRole());
             existing.setGender(updatedStaff.getGender());
             existing.setPosition(updatedStaff.getPosition());
             existing.setCreatedAt(updatedStaff.getCreatedAt());

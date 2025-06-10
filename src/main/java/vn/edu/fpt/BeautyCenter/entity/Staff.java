@@ -79,7 +79,7 @@ public class Staff {
     private Status  status;
     public enum Status{
         active,
-//        inactive
+        inactive
     }
 
 
