@@ -4,19 +4,23 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vn.edu.fpt.BeautyCenter.entity.User;
-import vn.edu.fpt.BeautyCenter.repository.UserRepository;
+import vn.edu.fpt.BeautyCenter.service.S3Service;
 import vn.edu.fpt.BeautyCenter.service.UserService;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/edit_customer")
-public class EditCustomerController {
+public class EditUserController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    private S3Service s3Service;
+
     @GetMapping
     public String gotoEditCustomer(HttpSession session, Model model) {
         Object user = session.getAttribute("user");
@@ -29,13 +33,20 @@ public class EditCustomerController {
     }
 
     @PostMapping
-    public String editCustomer(@ModelAttribute User user, HttpSession session) {
+    public String editCustomer(@ModelAttribute User user, HttpSession session, @RequestParam("avatar") MultipartFile file) {
         // Lấy user thật sự từ session (chắc chắn đúng user đang đăng nhập)
         User sessionUser = (User) session.getAttribute("user");
         if (sessionUser == null) {
             return "redirect:/login";
         }
-        sessionUser.setAvatarUrl(user.getAvatarUrl());
+        if (file != null && !file.isEmpty()) {
+            try {
+                String url = s3Service.uploadFile(file);
+                sessionUser.setAvatarUrl(url);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         if(user.getFullName() != null && !user.getFullName().isEmpty())
             sessionUser.setFullName(user.getFullName());
         if(user.getPhone() != null && !user.getPhone().isEmpty())
@@ -48,7 +59,8 @@ public class EditCustomerController {
              sessionUser.setUsername(user.getUsername());
         userService.updateUser(sessionUser);
 
-        session.setAttribute("user", sessionUser); // Cập nhật lại session nếu muốn
+        User updatedUser = userService.getUserById(sessionUser.getUserId());
+        session.setAttribute("user", updatedUser);
 
         return "customer/editCustomer";
     }

@@ -441,7 +441,7 @@
               <a href="javascript:;">
               <img id="avatar"
                    th:if="${session.user != null && session.userAvatar != null}"
-                   th:src="${session.userAvatar}" alt=""
+                   th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}"
                    style="width: 121px !important; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; margin-left:15px"
               >
               <i

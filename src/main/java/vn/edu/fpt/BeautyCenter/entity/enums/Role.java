@@ -4,5 +4,4 @@ public enum Role {
     admin,
     staff,
     customer
-
 }
