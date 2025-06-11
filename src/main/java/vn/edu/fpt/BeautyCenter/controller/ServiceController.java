@@ -138,7 +138,7 @@ public class ServiceController {
         }
 
         model.addAttribute("pageTitle", "Add New Service");
-        return "admin/services/add";
+        return "dashboard/services/add";
     }
 
     /**
@@ -284,7 +284,7 @@ public class ServiceController {
             model.addAttribute("duration", durationInMinutes);
             model.addAttribute("pageTitle", "Edit Service: " + service.getName());
 
-            return "admin/services/edit";
+            return "dashboard/services/edit";
 
         } catch (NumberFormatException e) {
             notificationService.addErrorMessage(redirectAttributes, "Lỗi định dạng dữ liệu: " + e.getMessage());
