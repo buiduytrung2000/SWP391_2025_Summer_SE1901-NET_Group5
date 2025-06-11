@@ -1,19 +1,20 @@
 package vn.edu.fpt.BeautyCenter.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.fpt.BeautyCenter.dto.request.StaffCreationRequest;
 import vn.edu.fpt.BeautyCenter.entity.Staff;
+import vn.edu.fpt.BeautyCenter.exception.AppException;
+import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
 import vn.edu.fpt.BeautyCenter.repository.StaffRepository;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,7 +22,9 @@ import java.util.UUID;
 public class StaffService {
 
     private final StaffRepository staffRepository;
-
+    public Page<Staff> getStaffPage(Pageable pageable) {
+        return staffRepository.findAll(pageable);
+    }
     public List<Staff> getAllStaff() {
         return staffRepository.findAll();
     }
@@ -39,25 +42,25 @@ public class StaffService {
     }
 
     public void addStaff(StaffCreationRequest dto) {
-        try {
-            if (staffRepository.findByEmail(dto.getEmail()).isPresent()) {
-                throw new RuntimeException("Email đã tồn tại: " + dto.getEmail());
-            }
+        validateStaff(dto, false, null);  // validate ở chế độ thêm mới
 
+        try {
             Staff staff = new Staff();
             staff.setUserId(UUID.randomUUID().toString());
             staff.setFullName(dto.getFullName());
             staff.setEmail(dto.getEmail());
+            staff.setPhone(dto.getPhone());
+            staff.setPosition(dto.getPosition());
+            staff.setRole(dto.getRole() != null ? dto.getRole() : "Staff");
+            staff.setStatus(Staff.Status.active);
+            staff.setUsername(dto.getEmail());
+            staff.setPassword("123456");
+
             try {
                 staff.setGender(Staff.Gender.valueOf(dto.getGender()));
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Giới tính không hợp lệ. Chỉ chấp nhận: Male, Female, Other.");
+                throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
             }
-            staff.setPosition(dto.getPosition());
-            staff.setPhone(dto.getPhone());
-            staff.setRole(dto.getRole() != null ? dto.getRole() : "Staff");
-            staff.setUsername(dto.getEmail());
-            staff.setPassword("123456");
 
             if (dto.getStartDate() != null) {
                 staff.setCreatedAt(dto.getStartDate().atStartOfDay());
@@ -68,38 +71,69 @@ public class StaffService {
                 String fileName = UUID.randomUUID() + "_" + avatar.getOriginalFilename();
                 String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
                 Path uploadPath = Paths.get(uploadDir);
-
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
-
                 Path filePath = uploadPath.resolve(fileName);
                 avatar.transferTo(filePath.toFile());
                 staff.setAvatarUrl(fileName);
             }
 
             staffRepository.save(staff);
-
+        } catch (AppException e) {
+            throw e;
         } catch (Exception e) {
-            System.err.println("Lỗi khi tạo staff:");
-            e.printStackTrace();
-            throw new RuntimeException("Không thể tạo staff: " + e.getMessage());
+            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
     }
 
     public void updateStaffFromModal(Staff updatedStaff) {
         Staff existing = getByUserId(updatedStaff.getUserId());
         if (existing != null) {
+            StaffCreationRequest fakeDto = new StaffCreationRequest();
+            fakeDto.setEmail(updatedStaff.getEmail());
+            fakeDto.setPhone(updatedStaff.getPhone());
+            fakeDto.setGender(updatedStaff.getGender() != null ? updatedStaff.getGender().name() : null);
+
+            validateStaff(fakeDto, true, existing.getEmail());
+
             existing.setFullName(updatedStaff.getFullName());
             existing.setEmail(updatedStaff.getEmail());
             existing.setPhone(updatedStaff.getPhone());
-            existing.setRole(updatedStaff.getRole());
             existing.setGender(updatedStaff.getGender());
             existing.setPosition(updatedStaff.getPosition());
             existing.setCreatedAt(updatedStaff.getCreatedAt());
 
-
             staffRepository.save(existing);
         }
     }
+
+    public void validateStaff(StaffCreationRequest request, boolean isEdit, String currentEmail) {
+        if (!isValidEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.STAFF_EMAIL_INVALID);
+        }
+
+        if (!isValidPhone(request.getPhone())) {
+            throw new AppException(ErrorCode.STAFF_PHONE_INVALID);
+        }
+
+        if (staffRepository.existsByEmail(request.getEmail())) {
+            if (!isEdit || (currentEmail != null && !request.getEmail().equals(currentEmail))) {
+                throw new AppException(ErrorCode.STAFF_EMAIL_EXISTED);
+            }
+        }
+        if (request.getGender() == null || request.getGender().isBlank()) {
+            throw new AppException(ErrorCode.STAFF_GENDER_REQUIRED);
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$";
+        return email != null && email.matches(regex);
+    }
+
+    private boolean isValidPhone(String phone) {
+        return phone != null && phone.matches("^0\\d{9}$");
+    }
+
 }

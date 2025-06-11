@@ -50,12 +50,10 @@ public class ServiceService {
      * Retrieves a paginated list of all services, formatting content for each service.
      * Removes image tags and limits description to 20 words.
      *
-     * @param page the page number to retrieve
-     * @param size the size of the page
+     * @param pageable @apiNote
      * @return a page of processed Service entities
      */
-    public Page<vn.edu.fpt.BeautyCenter.entity.Service> getAllServices(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<vn.edu.fpt.BeautyCenter.entity.Service> getAllServices(Pageable pageable) {
         Page<vn.edu.fpt.BeautyCenter.entity.Service> services = serviceRepository.findAll(pageable);
 
         // Process each service's content: remove <img> tags and limit to 20 words
@@ -187,12 +185,12 @@ public class ServiceService {
     }
 
     /**
-     * Converts a Vietnamese duration string (e.g., "2 giờ 30 phút") to total minutes as a string.
+     * Converts a Vietnamese duration string (e.g., "2 hour 30 minute") to total minutes as a string.
      *
      * @param durationString the duration in Vietnamese format
      * @return total minutes as a string, or "0" if input is invalid
      */
-    public String formatVietnameseDurationToTotalMinutes(String durationString) {
+    public String formatDurationToTotalMinutes(String durationString) {
         if (durationString == null || durationString.trim().isEmpty()) {
             return "0";
         }
@@ -200,7 +198,7 @@ public class ServiceService {
         int minutes = 0;
 
         // Extract hours from string
-        Pattern hourPattern = Pattern.compile("(\\d+)\\s*giờ");
+        Pattern hourPattern = Pattern.compile("(\\d+)\\s*hour");
         Matcher hourMatcher = hourPattern.matcher(durationString);
         if (hourMatcher.find()) {
             try {
@@ -211,7 +209,7 @@ public class ServiceService {
         }
 
         // Extract minutes from string
-        Pattern minutePattern = Pattern.compile("(\\d+)\\s*phút");
+        Pattern minutePattern = Pattern.compile("(\\d+)\\s*minute");
         Matcher minuteMatcher = minutePattern.matcher(durationString);
         if (minuteMatcher.find()) {
             try {
@@ -230,15 +228,15 @@ public class ServiceService {
      *
      * @param page the page number
      * @param size the page size
+     * a Pageable object with a Sort parameter for the 'createdAt' field in descending order.
      * @return a page of ServiceResponse objects
      */
     public Page<ServiceResponse> getAllServicesWithFormattedTags(int page, int size) {
-        Page<vn.edu.fpt.BeautyCenter.entity.Service> services = getAllServices(page, size);
-        return services.map(service -> {
-            ServiceResponse response = serviceMapper.toResponse(service);
-            // Additional tag formatting can be handled here if needed
-            return response;
-        });
+        // Create a Pageable object with sorting by 'createdAt' in descending order (newest first)
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<vn.edu.fpt.BeautyCenter.entity.Service> services = getAllServices(pageable);
+        // Additional tag formatting can be handled here if needed
+        return services.map(serviceMapper::toResponse);
     }
 
     /**
@@ -265,4 +263,5 @@ public class ServiceService {
         // Map entities to DTOs
         return services.map(serviceMapper::toResponse);
     }
+
 }
