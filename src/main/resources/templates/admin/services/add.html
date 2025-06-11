@@ -65,13 +65,18 @@
                             </div>
                             <div class="wt-box">
                                 <form th:action="@{/admin/services/add}" th:object="${serviceCreationRequest}" method="POST">
+                                    <!-- General notifications (success/error from redirect) -->
                                     <div th:replace="~{fragments/notifications :: notification}"></div>
+
+                                    <!-- Form validation errors (only for current form) -->
+                                    <div th:replace="~{fragments/form-validation :: validation-errors}"></div>
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6">
                                             <!--Nhập tên dịch vụ-->
                                             <div class="form-group">
                                                 <label for="name" class="form-label">Tên dịch vụ</label>
-                                                <input type="text" class="form-control" id="name" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                                <input type="text" class="form-control" id="name"
+                                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
                                                        th:field="*{name}"
                                                        placeholder="Nhập tên dịch vụ">
                                             </div>

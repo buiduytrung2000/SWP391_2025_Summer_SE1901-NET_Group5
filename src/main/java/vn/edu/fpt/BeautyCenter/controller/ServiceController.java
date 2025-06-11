@@ -31,6 +31,7 @@ import vn.edu.fpt.BeautyCenter.service.NotificationService;
 import vn.edu.fpt.BeautyCenter.service.ServiceService;
 import vn.edu.fpt.BeautyCenter.service.UserService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,15 +64,15 @@ public class ServiceController {
      * @param model   model to pass attributes to the view
      * @return the view name for the service list
      */
-    @GetMapping({"","/"})
+    @GetMapping({"", "/"})
     public String getAllService(@RequestParam(name = "page", defaultValue = "0") int page,
                                 @RequestParam(name = "size", defaultValue = "5") int size,
                                 @RequestParam(name = "keyword", required = false) String keyword,
                                 HttpSession session,
                                 Model model) {
         // Check if user is not permitted (not logged in or not admin)
-        if(isNotPermit(session)){
-            return "redirect:/";
+        if (isNotPermit(session)) {
+            return "redirect:/login";
         }
 
         try {
@@ -127,8 +128,8 @@ public class ServiceController {
     @GetMapping("/add")
     public String showAddForm(Model model, HttpSession session) {
         // Check if user is not permitted
-        if(isNotPermit(session)){
-            return "redirect:/";
+        if (isNotPermit(session)) {
+            return "redirect:/login";
         }
 
         // Add empty ServiceCreationRequest for form binding
@@ -143,10 +144,10 @@ public class ServiceController {
     /**
      * Handles the submission of the add service form with validation.
      *
-     * @param request             the service creation request data
-     * @param bindingResult       validation results
-     * @param session             current HTTP session for authentication
-     * @param redirectAttributes  attributes for redirect scenarios
+     * @param request            the service creation request data
+     * @param bindingResult      validation results
+     * @param session            current HTTP session for authentication
+     * @param redirectAttributes attributes for redirect scenarios
      * @return redirect to appropriate page based on validation results
      */
     @PostMapping("/add")
@@ -155,8 +156,8 @@ public class ServiceController {
                        HttpSession session,
                        RedirectAttributes redirectAttributes) {
         // Check if user is not permitted
-        if(isNotPermit(session)){
-            return "redirect:/";
+        if (isNotPermit(session)) {
+            return "redirect:/login";
         }
 
         // Handle validation errors
@@ -164,23 +165,23 @@ public class ServiceController {
             // Preserve the form data and validation errors
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.serviceCreationRequest", bindingResult);
             redirectAttributes.addFlashAttribute("serviceCreationRequest", request);
-            notificationService.addErrorMessage(redirectAttributes, "Vui lòng kiểm tra lại thông tin đã nhập!");
+            notificationService.addErrorMessage(redirectAttributes, "Please check input information");
             ;
             return "redirect:/admin/services/add";
         }
 
         try {
             // Get the current user from session and create the service
-            User user = (User)session.getAttribute("user");
+            User user = (User) session.getAttribute("user");
             serviceService.createService(request, user.getUserId());
 
             // Add success message
-            notificationService.addSuccessMessage(redirectAttributes, "Thêm dịch vụ thành công!");
+            notificationService.addSuccessMessage(redirectAttributes, "Add Service success");
 
             return "redirect:/admin/services";
         } catch (Exception e) {
             // Handle service creation errors
-            notificationService.addErrorMessage(redirectAttributes, "Có lỗi xảy ra khi thêm dịch vụ: " + e.getMessage());
+            notificationService.addErrorMessage(redirectAttributes, "Error while trying to add Service: " + e.getMessage());
 
             // Preserve form data for user to correct
             redirectAttributes.addFlashAttribute("serviceCreationRequest", request);
@@ -191,10 +192,10 @@ public class ServiceController {
     /**
      * Displays details of a specific service.
      *
-     * @param serviceId           the ID of the service to view
-     * @param model               model to pass attributes to the view
-     * @param session             current HTTP session for authentication
-     * @param redirectAttributes  attributes for redirect scenarios
+     * @param serviceId          the ID of the service to view
+     * @param model              model to pass attributes to the view
+     * @param session            current HTTP session for authentication
+     * @param redirectAttributes attributes for redirect scenarios
      * @return the view name for service details or redirect if not found
      */
     @GetMapping("/{serviceId}")
@@ -203,8 +204,8 @@ public class ServiceController {
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
         // Check if user is not permitted
-        if(isNotPermit(session)){
-            return "redirect:/";
+        if (isNotPermit(session)) {
+            return "redirect:/login";
         }
 
         try {
@@ -227,9 +228,9 @@ public class ServiceController {
     /**
      * Shows the form to edit an existing service.
      *
-     * @param serviceId the ID of the service to edit
-     * @param model     model to pass attributes to the view
-     * @param session   current HTTP session for authentication
+     * @param serviceId          the ID of the service to edit
+     * @param model              model to pass attributes to the view
+     * @param session            current HTTP session for authentication
      * @param redirectAttributes attributes for redirect scenarios
      * @return the view name for the edit service form
      */
@@ -239,8 +240,8 @@ public class ServiceController {
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes) {
         // Check if user is not permitted
-        if(isNotPermit(session)){
-            return "redirect:/";
+        if (isNotPermit(session)) {
+            return "redirect:/login";
         }
 
         try {
@@ -251,23 +252,43 @@ public class ServiceController {
                 return "redirect:/admin/services";
             }
 
-            String formattedTags = null;
-            String time = null;
-            List<String> tags = serviceOpt.get().getTags();
-            formattedTags = tags.toString().replaceAll("^\\[|]$", "");
-            time = serviceService.formatDurationToTotalMinutes(serviceOpt.get().getDuration());
+            ServiceResponse service = serviceOpt.get();
 
-            // Add empty ServiceUpdateRequest for form binding if not present
-            if (!model.containsAttribute("serviceUpdateRequest")) {
-                model.addAttribute("serviceUpdateRequest", new ServiceUpdateRequest());
+            // Prepare formatted data
+            String formattedTags = null;
+            String durationInMinutes = null;
+
+            if (service.getTags() != null && !service.getTags().isEmpty()) {
+                formattedTags = String.join(", ", service.getTags());
             }
 
-            model.addAttribute("duration", time);
+            if (service.getDuration() != null) {
+                durationInMinutes = serviceService.formatDurationToTotalMinutes(service.getDuration());
+            }
+
+            // Create and populate ServiceUpdateRequest with existing data
+            ServiceUpdateRequest serviceUpdateRequest;
+            if (!model.containsAttribute("serviceUpdateRequest")) {
+                serviceUpdateRequest = ServiceUpdateRequest.builder()
+                        .name(service.getName())
+                        .content(service.getContent())
+                        .duration(durationInMinutes != null ? Integer.parseInt(durationInMinutes) : null)
+                        .price(BigDecimal.valueOf(service.getPrice()))
+                        .tagNames(service.getTags())
+                        .build();
+                model.addAttribute("serviceUpdateRequest", serviceUpdateRequest);
+            }
+            // Add additional attributes for display purposes
+            model.addAttribute("service", service);
             model.addAttribute("tags", formattedTags);
-            model.addAttribute("service", serviceOpt.get());
-            model.addAttribute("pageTitle", "Edit Service: " + serviceOpt.get().getName());
+            model.addAttribute("duration", durationInMinutes);
+            model.addAttribute("pageTitle", "Edit Service: " + service.getName());
 
             return "admin/services/edit";
+
+        } catch (NumberFormatException e) {
+            notificationService.addErrorMessage(redirectAttributes, "Lỗi định dạng dữ liệu: " + e.getMessage());
+            return "redirect:/admin/services";
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes, "Có lỗi xảy ra khi tải thông tin dịch vụ: " + e.getMessage());
             return "redirect:/admin/services";
@@ -277,11 +298,11 @@ public class ServiceController {
     /**
      * Handles the submission of the edit service form with validation.
      *
-     * @param serviceId           the ID of the service to update
-     * @param session             current HTTP session for authentication
-     * @param request             the service update request data
-     * @param bindingResult       validation results
-     * @param redirectAttributes  attributes for redirect scenarios
+     * @param serviceId          the ID of the service to update
+     * @param session            current HTTP session for authentication
+     * @param request            the service update request data
+     * @param bindingResult      validation results
+     * @param redirectAttributes attributes for redirect scenarios
      * @return redirect to appropriate page based on validation results
      */
     @PostMapping("/edit/{serviceId}")
@@ -291,8 +312,8 @@ public class ServiceController {
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
         // Check if user is not permitted
-        if(isNotPermit(session)){
-            return "redirect:/";
+        if (isNotPermit(session)) {
+            return "redirect:/login";
         }
 
         // Handle validation errors
@@ -300,7 +321,7 @@ public class ServiceController {
             // Preserve the form data and validation errors
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.serviceUpdateRequest", bindingResult);
             redirectAttributes.addFlashAttribute("serviceUpdateRequest", request);
-            notificationService.addErrorMessage(redirectAttributes, "Vui lòng kiểm tra lại thông tin đã nhập!");
+            notificationService.addErrorMessage(redirectAttributes, "Please check input information");
             return "redirect:/admin/services/edit/" + serviceId;
         }
 
@@ -309,12 +330,12 @@ public class ServiceController {
             serviceService.updateService(serviceId, request);
 
             // Add success message
-            notificationService.addSuccessMessage(redirectAttributes, "Cập nhật dịch vụ thành công!");
+            notificationService.addSuccessMessage(redirectAttributes, "Update Service success");
 
             return "redirect:/admin/services";
         } catch (Exception e) {
             // Handle service update errors
-            notificationService.addErrorMessage(redirectAttributes, "Có lỗi xảy ra khi cập nhật dịch vụ: " + e.getMessage());
+            notificationService.addErrorMessage(redirectAttributes, "There's error occur while trying to edit Service: " + e.getMessage());
 
             // Preserve form data for user to correct
             redirectAttributes.addFlashAttribute("serviceUpdateRequest", request);
@@ -342,7 +363,7 @@ public class ServiceController {
      * @return true if user is not permitted, false otherwise
      */
     private boolean isNotPermit(HttpSession session) {
-        User user = (User)session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
         return user == null || user.getRole() != Role.admin;
     }
 }

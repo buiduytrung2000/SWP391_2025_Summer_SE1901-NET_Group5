@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="validation-errors">
+    <!-- Form Validation Errors (only use within forms with th:object) -->
+    <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
+        <ul class="mb-0">
+            <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
