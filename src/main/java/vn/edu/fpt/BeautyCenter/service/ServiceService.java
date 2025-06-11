@@ -187,12 +187,12 @@ public class ServiceService {
     }
 
     /**
-     * Converts a Vietnamese duration string (e.g., "2 giờ 30 phút") to total minutes as a string.
+     * Converts a Vietnamese duration string (e.g., "2 hour 30 minute") to total minutes as a string.
      *
      * @param durationString the duration in Vietnamese format
      * @return total minutes as a string, or "0" if input is invalid
      */
-    public String formatVietnameseDurationToTotalMinutes(String durationString) {
+    public String formatDurationToTotalMinutes(String durationString) {
         if (durationString == null || durationString.trim().isEmpty()) {
             return "0";
         }
@@ -200,7 +200,7 @@ public class ServiceService {
         int minutes = 0;
 
         // Extract hours from string
-        Pattern hourPattern = Pattern.compile("(\\d+)\\s*giờ");
+        Pattern hourPattern = Pattern.compile("(\\d+)\\s*hour");
         Matcher hourMatcher = hourPattern.matcher(durationString);
         if (hourMatcher.find()) {
             try {
@@ -211,7 +211,7 @@ public class ServiceService {
         }
 
         // Extract minutes from string
-        Pattern minutePattern = Pattern.compile("(\\d+)\\s*phút");
+        Pattern minutePattern = Pattern.compile("(\\d+)\\s*minute");
         Matcher minuteMatcher = minutePattern.matcher(durationString);
         if (minuteMatcher.find()) {
             try {

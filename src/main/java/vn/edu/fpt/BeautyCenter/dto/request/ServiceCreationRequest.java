@@ -66,7 +66,13 @@ public class ServiceCreationRequest {
     String createdBy;
 
     /**
-     * List of tag names associated with the service.
+     * List of tag names associated with the service. No more than 10 tags,
+     * tags can not be blank and no more than 50 characters
      */
-    List<String> tagNames;
+    @Size(max = 10, message = "No more than 10 tags allowed")
+    private List<
+            @NotBlank(message = "Tag name cannot be blank")
+            @Size(max = 50, message = "Tag name must not exceed 50 characters")
+                    String
+            > tagNames;
 }
