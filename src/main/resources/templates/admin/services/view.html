@@ -1,0 +1,607 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header::common-head}">
+  <!-- PAGE TITLE HERE -->
+  <title th:text="${service.name}">Tên dịch vụ</title>
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+
+  <!-- HEADER START -->
+  <header th:replace="~{fragments/header::header}">
+  </header>
+  <!-- HEADER END -->
+
+  <!-- CONTENT START -->
+  <div class="page-content">
+
+    <!-- INNER PAGE BANNER -->
+    <div class="wt-bnr-inr overlay-wraper" th:style="|background-image: url('@{/images/background/bg-1.jpg}')|">
+      <div class="overlay-main bg-black opacity-07"></div>
+      <div class="container">
+        <div class="wt-bnr-inr-entry">
+          <h1 class="text-white" th:text="${service.name}">Blog single on sidebar</h1>
+        </div>
+      </div>
+    </div>
+    <!-- INNER PAGE BANNER END -->
+
+    <!-- BREADCRUMB ROW -->
+    <div class="bg-gray-light p-tb20">
+      <div class="container">
+        <ul class="wt-breadcrumb breadcrumb-style-2">
+          <li><a href="javascript:void(0);"><i class="fa fa-home"></i> Home</a></li>
+          <li th:text="${service.name}">Blog single on sidebar</li>
+        </ul>
+      </div>
+    </div>
+    <!-- BREADCRUMB ROW END -->
+
+    <!-- SECTION CONTENT START -->
+    <div class="section-full p-t80 p-b50">
+      <div class="container">
+        <div class="wt-mid-page">
+
+          <!-- BLOG START -->
+          <div class="blog-post date-style-1 blog-post-single">
+            <div class="wt-post-media wt-img-effect">
+              <img src="images/blog/default/thum1.jpg" alt="">
+            </div>
+            <div class="post-description-area p-t30">
+              <div class="wt-post-meta ">
+                <ul>
+                  <li class="post-date"> <i class="fa fa-credit-card"></i><span th:text="'Price: ' + ${#numbers.formatCurrency(service.price)}">Price</span> </li>
+                  <li class="post-author"><i class="fa fa-clock-o"></i><span th:text="'Duration: ' + ${service.duration} ">Time</span></li>
+                </ul>
+              </div>
+              <div class="wt-post-text" th:utext="${service.content}">
+              </div>
+              <div class="widget bg-white  widget_tag_cloud">
+                <h4 class="tagcloud">Tags</h4>
+                <div class="tagcloud" th:if="${not #lists.isEmpty(service.tags)}">
+                  <a href="about-1.html" th:each="tag : ${service.tags}"
+                     class="tag"
+                     th:text="${tag}">Tag 1</a>
+
+                </div>
+              </div>
+              <div class="wt-divider bg-gray-dark"><i class="icon-dot c-square"></i></div>
+              <div class="wt-box">
+
+                <div class="b-detail-social d-flex justify-content-between">
+                  <h4 class="tagcloud pull-left m-t5 m-b10">Share this Post:</h4>
+                  <div class="widget_social_inks">
+                    <ul class="social-icons social-md social-square social-dark m-b0">
+                      <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
+                      <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
+                      <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
+                      <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
+                      <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+              <div class="wt-divider bg-gray-dark"><i class="icon-dot c-square"></i></div>
+            </div>
+          </div>
+
+          <div class="section-content p-t50">
+            <!-- TITLE START -->
+            <div class="section-head">
+              <h2 class="text-uppercase">Related Blog Post</h2>
+              <div class="wt-separator-outer">
+                <div class="wt-separator style-square">
+                  <span class="separator-left site-bg-primary"></span>
+                  <span class="separator-right site-bg-primary"></span>
+                </div>
+              </div>
+            </div>
+            <!-- TITLE END -->
+
+            <!-- CAROUSEL -->
+            <div class="section-content">
+              <div class="owl-carousel blog-related-slider  owl-btn-vertical-center">
+                <!-- COLUMNS 1 -->
+                <div class="item">
+                  <div class="blog-post blog-grid date-style-1">
+                    <div class="wt-post-media wt-img-effect zoom-slow">
+                      <a href="blog-single-left-sidebar.html"><img src="images/blog/grid/pic1.jpg" alt=""></a>
+                    </div>
+                    <div class="wt-post-info p-tb30 p-m30">
+                      <div class="wt-post-title ">
+                        <h3 class="post-title"><a href="blog-single-left-sidebar.html">Blogpost With Image</a></h3>
+                      </div>
+                      <div class="wt-post-meta ">
+                        <ul>
+                          <li class="post-date"> <i class="fa fa-calendar"></i><strong>20 Dec</strong> <span> 2023</span> </li>
+                          <li class="post-author"><i class="fa fa-user"></i><a href="blog-single-left-sidebar.html">By <span>John</span></a> </li>
+                          <li class="post-comment"><i class="fa fa-comments"></i> <a href="blog-single-left-sidebar.html">0 Comments</a> </li>
+                        </ul>
+                      </div>
+                      <div class="wt-post-text">
+                        <p>Hic perferendis velit deserunt soluta iste repellendus officia in neque veniam debitis</p>
+                      </div>
+                      <div class="clearfix">
+                        <div class="wt-post-readmore pull-left">
+                          <a href="blog-single-left-sidebar.html" title="READ MORE" rel="bookmark" class="site-button-link">Read More</a>
+                        </div>
+                        <div class="widget_social_inks pull-right">
+                          <ul class="social-icons social-radius social-dark m-b0">
+                            <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- COLUMNS 2 -->
+                <div class="item">
+                  <div class="blog-post blog-grid date-style-1">
+                    <div class="wt-post-media wt-img-effect zoom-slow">
+                      <a href="blog-single-left-sidebar.html"><img src="images/blog/grid/pic2.jpg" alt=""></a>
+                    </div>
+                    <div class="wt-post-info p-tb30 p-m30">
+                      <div class="wt-post-title ">
+                        <h3 class="post-title"><a href="blog-single-left-sidebar.html">Blogpost With Image</a></h3>
+                      </div>
+                      <div class="wt-post-meta ">
+                        <ul>
+                          <li class="post-date"> <i class="fa fa-calendar"></i><strong>20 Dec</strong> <span> 2023</span> </li>
+                          <li class="post-author"><i class="fa fa-user"></i><a href="blog-single-left-sidebar.html">By <span>John</span></a> </li>
+                          <li class="post-comment"><i class="fa fa-comments"></i> <a href="blog-single-left-sidebar.html">0 Comments</a> </li>
+                        </ul>
+                      </div>
+                      <div class="wt-post-text">
+                        <p>Hic perferendis velit deserunt soluta iste repellendus officia in neque veniam debitis</p>
+                      </div>
+                      <div class="clearfix">
+                        <div class="wt-post-readmore pull-left">
+                          <a href="blog-single-left-sidebar.html" title="READ MORE" rel="bookmark" class="site-button-link">Read More</a>
+                        </div>
+                        <div class="widget_social_inks pull-right">
+                          <ul class="social-icons social-radius social-dark m-b0">
+                            <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- COLUMNS 3 -->
+                <div class="item">
+                  <div class="blog-post blog-grid date-style-1">
+                    <div class="wt-post-media wt-img-effect zoom-slow">
+                      <a href="blog-single-left-sidebar.html"><img src="images/blog/grid/pic3.jpg" alt=""></a>
+                    </div>
+                    <div class="wt-post-info p-tb30 p-m30">
+                      <div class="wt-post-title ">
+                        <h3 class="post-title"><a href="blog-single-left-sidebar.html">Blogpost With Image</a></h3>
+                      </div>
+                      <div class="wt-post-meta ">
+                        <ul>
+                          <li class="post-date"> <i class="fa fa-calendar"></i><strong>20 Dec</strong> <span> 2023</span> </li>
+                          <li class="post-author"><i class="fa fa-user"></i><a href="blog-single-left-sidebar.html">By <span>John</span></a> </li>
+                          <li class="post-comment"><i class="fa fa-comments"></i> <a href="blog-single-left-sidebar.html">0 Comments</a> </li>
+                        </ul>
+                      </div>
+                      <div class="wt-post-text">
+                        <p>Hic perferendis velit deserunt soluta iste repellendus officia in neque veniam debitis</p>
+                      </div>
+                      <div class="clearfix">
+                        <div class="wt-post-readmore pull-left">
+                          <a href="blog-single-left-sidebar.html" title="READ MORE" rel="bookmark" class="site-button-link">Read More</a>
+                        </div>
+                        <div class="widget_social_inks pull-right">
+                          <ul class="social-icons social-radius social-dark m-b0">
+                            <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- COLUMNS 4 -->
+                <div class="item">
+                  <div class="blog-post blog-grid date-style-1">
+                    <div class="wt-post-media wt-img-effect zoom-slow">
+                      <a href="blog-single-left-sidebar.html"><img src="images/blog/grid/pic4.jpg" alt=""></a>
+                    </div>
+                    <div class="wt-post-info p-tb30 p-m30">
+                      <div class="wt-post-title ">
+                        <h3 class="post-title"><a href="blog-single-left-sidebar.html">Blogpost With Image</a></h3>
+                      </div>
+                      <div class="wt-post-meta ">
+                        <ul>
+                          <li class="post-date"> <i class="fa fa-calendar"></i><strong>20 Dec</strong> <span> 2023</span> </li>
+                          <li class="post-author"><i class="fa fa-user"></i><a href="blog-single-left-sidebar.html">By <span>John</span></a> </li>
+                          <li class="post-comment"><i class="fa fa-comments"></i> <a href="blog-single-left-sidebar.html">0 Comments</a> </li>
+                        </ul>
+                      </div>
+                      <div class="wt-post-text">
+                        <p>Hic perferendis velit deserunt soluta iste repellendus officia in neque veniam debitis</p>
+                      </div>
+                      <div class="clearfix">
+                        <div class="wt-post-readmore pull-left">
+                          <a href="blog-single-left-sidebar.html" title="READ MORE" rel="bookmark" class="site-button-link">Read More</a>
+                        </div>
+                        <div class="widget_social_inks pull-right">
+                          <ul class="social-icons social-radius social-dark m-b0">
+                            <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- COLUMNS 5 -->
+                <div class="item">
+                  <div class="blog-post blog-grid date-style-1">
+                    <div class="wt-post-media wt-img-effect zoom-slow">
+                      <a href="blog-single-left-sidebar.html"><img src="images/blog/grid/pic5.jpg" alt=""></a>
+                    </div>
+                    <div class="wt-post-info p-tb30 p-m30">
+                      <div class="wt-post-title ">
+                        <h3 class="post-title"><a href="blog-single-left-sidebar.html">Blogpost With Image</a></h3>
+                      </div>
+                      <div class="wt-post-meta ">
+                        <ul>
+                          <li class="post-date"> <i class="fa fa-calendar"></i><strong>20 Dec</strong> <span> 2023</span> </li>
+                          <li class="post-author"><i class="fa fa-user"></i><a href="blog-single-left-sidebar.html">By <span>John</span></a> </li>
+                          <li class="post-comment"><i class="fa fa-comments"></i> <a href="blog-single-left-sidebar.html">0 Comments</a> </li>
+                        </ul>
+                      </div>
+                      <div class="wt-post-text">
+                        <p>Hic perferendis velit deserunt soluta iste repellendus officia in neque veniam debitis</p>
+                      </div>
+                      <div class="clearfix">
+                        <div class="wt-post-readmore pull-left">
+                          <a href="blog-single-left-sidebar.html" title="READ MORE" rel="bookmark" class="site-button-link">Read More</a>
+                        </div>
+                        <div class="widget_social_inks pull-right">
+                          <ul class="social-icons social-radius social-dark m-b0">
+                            <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
+                            <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- COLUMNS 6 -->
+
+
+              </div>
+            </div>
+          </div>
+
+          <div class="clear" id="comment-list">
+            <div class="comments-area" id="comments">
+              <h2 class="comments-title">8 Comments</h2>
+              <div class="p-tb30">
+
+                <!-- COMMENT LIST START -->
+                <ol class="comment-list">
+                  <li class="comment">
+
+                    <!-- COMMENT BLOCK -->
+                    <div class="comment-body">
+
+                      <div class="comment-author vcard">
+                        <img  class="avatar photo" src="images/testimonials/pic2.jpg" alt="">
+                        <cite class="fn">Steffan</cite>
+                        <span class="says">says:</span>
+                      </div>
+                      <div class="comment-meta">
+                        <a href="javascript:void(0);">October 6, 2023 at 7:15 am</a>
+                      </div>
+                      <p>Vulputate cursus a sit amet mauris http://themeforest.net Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat </p>
+                      <div class="reply">
+                        <a href="javascript:void(0);" class="comment-reply-link"></a>
+                      </div>
+
+                    </div>
+
+                  </li>
+                  <li class="comment">
+
+                    <!-- COMMENT BLOCK -->
+                    <div class="comment-body">
+
+                      <div class="comment-author vcard">
+                        <img  class="avatar photo" src="images/testimonials/pic3.jpg" alt="">
+                        <cite class="fn">Devin</cite>
+                        <span class="says">says:</span>
+                      </div>
+                      <div class="comment-meta">
+                        <a href="javascript:void(0);">October 6, 2023 at 7:15 am</a>
+                      </div>
+                      <p>Asperiores, tenetur, blanditiis, quaerat odit ex exercitationem pariatur quibus dam veritatis quisquam </p>
+                      <div class="reply">
+                        <a href="javascript:void(0);" class="comment-reply-link"></a>
+                      </div>
+
+                    </div>
+
+                  </li>
+                  <li class="comment">
+
+                    <!-- COMMENT BLOCK -->
+                    <div class="comment-body">
+
+                      <div class="comment-author vcard">
+                        <img  class="avatar photo" src="images/testimonials/pic1.jpg" alt="">
+                        <cite class="fn">Hugo</cite>
+                        <span class="says">says:</span>
+                      </div>
+                      <div class="comment-meta">
+                        <a href="javascript:void(0);">October 6, 2023 at 7:15 am</a>
+                      </div>
+                      <p>Sit amet nibh vulputate cursus a sit amet mauris lorem ipsum dolor sit amet of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio http://themeforest.net Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat </p>
+                      <div class="reply">
+                        <a href="javascript:void(0);" class="comment-reply-link"></a>
+                      </div>
+
+                    </div>
+
+                    <!-- SUB COMMENT BLOCK -->
+                    <ol class="children">
+                      <li class="comment odd parent">
+
+                        <div class="comment-body">
+
+                          <div class="comment-author vcard">
+                            <img  class="avatar photo" src="images/testimonials/pic2.jpg" alt="">
+                            <cite class="fn">Brayden</cite>
+                            <span class="says">says:</span>
+                          </div>
+                          <div class="comment-meta">
+                            <a href="javascript:void(0);">October 6, 2023 at 7:15 am</a>
+                          </div>
+                          <p>Asperiores, tenetur, blanditiis, quaerat odit ex exercitationem pariatur quibus dam veritatis quisquam </p>
+                          <div class="reply">
+                            <a href="javascript:void(0);" class="comment-reply-link"></a>
+                          </div>
+
+                        </div>
+
+                        <ol class="children">
+                          <li class="comment odd parent">
+                            <div class="comment-body">
+
+                              <div class="comment-author vcard">
+                                <img  class="avatar photo" src="images/testimonials/pic3.jpg" alt="">
+                                <cite class="fn">Diego</cite>
+                                <span class="says">says:</span>
+                              </div>
+                              <div class="comment-meta">
+                                <a href="javascript:void(0);">October 6, 2023 at 7:15 am</a>
+                              </div>
+                              <p>Vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor Lorem ipsum dolor sit amet of Lorem Ipsum. Proin gravida nibh..</p>
+                              <div class="reply">
+                                <a href="javascript:void(0);" class="comment-reply-link"></a>
+                              </div>
+
+                            </div>
+                          </li>
+                        </ol>
+
+                      </li>
+                    </ol>
+
+                  </li>
+                  <li class="comment">
+
+                    <!-- COMMENT BLOCK -->
+                    <div class="comment-body">
+
+                      <div class="comment-author vcard">
+                        <img  class="avatar photo" src="images/testimonials/pic1.jpg" alt="">
+                        <cite class="fn">Stacy poe</cite>
+                        <span class="says">says:</span>
+                      </div>
+                      <div class="comment-meta">
+                        <a href="javascript:void(0);">October 6, 2023 at 7:15 am</a>
+                      </div>
+                      <p>Asperiores, tenetur, blanditiis, quaerat odit ex exercitationem pariatur quibus dam veritatis quisquam </p>
+                      <div class="reply">
+                        <a href="javascript:void(0);" class="comment-reply-link"></a>
+                      </div>
+
+                    </div>
+
+                  </li>
+
+                </ol>
+                <!-- COMMENT LIST END -->
+
+                <!-- LEAVE A REPLY START -->
+                <div class="comment-respond" id="respond">
+
+                  <h3 class="comment-reply-title" id="reply-title">Leave a Comments
+                    <small>
+                      <a style="display:none;" href="#" id="cancel-comment-reply-link" rel="nofollow">Cancel reply</a>
+                    </small>
+                  </h3>
+
+                  <form class="comment-form" id="commentform" method="post" >
+
+                    <p class="comment-form-author">
+                      <label for="author">Name <span class="required">*</span></label>
+                      <input type="text" value="" name="user-comment"  placeholder="Author" id="author">
+                    </p>
+
+                    <p class="comment-form-email">
+                      <label for="email">Email <span class="required">*</span></label>
+                      <input type="text" value="" placeholder="Email" name="email" id="email">
+                    </p>
+
+                    <p class="comment-form-url">
+                      <label for="url">Website</label>
+                      <input type="text"  value=""  placeholder="Website"  name="url" id="url">
+                    </p>
+
+                    <p class="comment-form-comment">
+                      <label for="comment">Comment</label>
+                      <textarea rows="8" name="comment" placeholder="Comment" id="comment"></textarea>
+                    </p>
+
+                    <p class="form-submit">
+                      <button class="site-button text-uppercase" type="button">Submit Comment</button>
+                    </p>
+
+                  </form>
+
+                </div>
+                <!-- LEAVE A REPLY END -->
+
+              </div>
+            </div>
+          </div>
+          <!-- BLOG END -->
+
+        </div>
+      </div>
+    </div>
+    <!-- SECTION CONTENT END -->
+
+  </div>
+  <!-- CONTENT END -->
+
+  <!-- FOOTER START -->
+  <footer th:replace="~{fragments/footer :: footer}">
+
+  </footer>
+  <!-- FOOTER END -->
+
+  <!-- BUTTON TOP START -->
+  <button class="scroltop"><span class=" iconmoon-house relative" id="btn-vibrate"></span>Top</button>
+
+</div>
+
+
+<!-- LOADING AREA START ===== -->
+<div class="loading-area">
+  <div class="loading-box"></div>
+  <div class="loading-pic">
+    <div class="cssload-container">
+      <div class="cssload-progress cssload-float cssload-shadow">
+        <div class="cssload-progress-item"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- LOADING AREA  END ====== -->
+<!-- STYLE SWITCHER  ======= -->
+<div class="styleswitcher">
+
+  <div class="switcher-btn-bx">
+    <a class="switch-btn">
+      <span class="fa fa-cog fa-spin"></span>
+    </a>
+  </div>
+
+  <div class="styleswitcher-inner">
+
+    <h6 class="switcher-title">Color Skin</h6>
+    <ul class="color-skins">
+      <li><a class="theme-skin skin-1" href="?theme=css/skin/skin-1" title="default Theme"></a></li>
+      <li><a class="theme-skin skin-2" href="?theme=css/skin/skin-2" title="pink Theme"></a></li>
+      <li><a class="theme-skin skin-3" href="?theme=css/skin/skin-3" title="sky Theme"></a></li>
+      <li><a class="theme-skin skin-4" href="?theme=css/skin/skin-4" title="green Theme"></a></li>
+      <li><a class="theme-skin skin-5" href="?theme=css/skin/skin-5" title="red Theme"></a></li>
+      <li><a class="theme-skin skin-6" href="?theme=css/skin/skin-6" title="orange Theme"></a></li>
+      <li><a class="theme-skin skin-7" href="?theme=css/skin/skin-7" title="purple Theme"></a></li>
+      <li><a class="theme-skin skin-8" href="?theme=css/skin/skin-8" title="blue Theme"></a></li>
+      <li><a class="theme-skin skin-9" href="?theme=css/skin/skin-9" title="gray Theme"></a></li>
+      <li><a class="theme-skin skin-10" href="?theme=css/skin/skin-10" title="brown Theme"></a></li>
+      <li><a class="theme-skin skin-11" href="?theme=css/skin/skin-11" title="gray Theme"></a></li>
+      <li><a class="theme-skin skin-12" href="?theme=css/skin/skin-12" title="golden Theme"></a></li>
+    </ul>
+
+    <h6 class="switcher-title">Nav</h6>
+    <ul class="nav-view">
+      <li class="nav-light active">Light</li>
+      <li class="nav-dark">Dark</li>
+    </ul>
+
+    <h6 class="switcher-title">Nav</h6>
+    <ul class="nav-width">
+      <li class="nav-boxed active">Boxed</li>
+      <li class="nav-wide">Wide</li>
+    </ul>
+
+    <h6 class="switcher-title">Header</h6>
+    <ul class="header-view">
+      <li class="header-fixed active">Fixed</li>
+      <li class="header-static">Static</li>
+    </ul>
+
+    <h6 class="switcher-title">Layout</h6>
+    <ul class="layout-view">
+      <li class="wide-layout active">Wide</li>
+      <li class="boxed">Boxed</li>
+    </ul>
+
+    <h6 class="switcher-title">Background Image</h6>
+    <ul class="background-switcher">
+      <li><img src="images/switcher/switcher-bg/thum/bg1.jpg" rel="images/switcher/switcher-bg/large/bg1.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-bg/thum/bg2.jpg" rel="images/switcher/switcher-bg/large/bg2.jpg"  alt=""></li>
+      <li><img src="images/switcher/switcher-bg/thum/bg3.jpg" rel="images/switcher/switcher-bg/large/bg3.jpg"  alt=""></li>
+      <li><img src="images/switcher/switcher-bg/thum/bg4.jpg" rel="images/switcher/switcher-bg/large/bg4.jpg"  alt=""></li>
+    </ul>
+
+    <h6 class="switcher-title">Background Pattern</h6>
+    <ul class="pattern-switcher">
+      <li><img src="images/switcher/switcher-patterns/thum/bg1.jpg"  rel="images/switcher/switcher-patterns/large/pt1.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg2.jpg"  rel="images/switcher/switcher-patterns/large/pt2.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg3.jpg"  rel="images/switcher/switcher-patterns/large/pt3.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg4.jpg"  rel="images/switcher/switcher-patterns/large/pt4.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg5.jpg"  rel="images/switcher/switcher-patterns/large/pt5.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg6.jpg"  rel="images/switcher/switcher-patterns/large/pt6.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg7.jpg"  rel="images/switcher/switcher-patterns/large/pt7.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg8.jpg"  rel="images/switcher/switcher-patterns/large/pt8.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg9.jpg"  rel="images/switcher/switcher-patterns/large/pt9.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg10.jpg"  rel="images/switcher/switcher-patterns/large/pt10.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg11.jpg"  rel="images/switcher/switcher-patterns/large/pt11.jpg" alt=""></li>
+      <li><img src="images/switcher/switcher-patterns/thum/bg12.jpg"  rel="images/switcher/switcher-patterns/large/pt12.jpg" alt=""></li>
+    </ul>
+
+
+  </div>
+</div>
+<!-- STYLE SWITCHER END ==== -->
+
+<!-- JAVASCRIPT  FILES ========================================= -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
+
+</body>
+
+</html>

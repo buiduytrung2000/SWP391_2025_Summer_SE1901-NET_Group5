@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header::common-head}">
+    <!-- PAGE TITLE HERE -->
+    <title th:text="${pageTitle}">Default Title</title>
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+
+    <!-- HEADER START -->
+    <header th:replace="~{fragments/header::header}">
+
+    </header>
+    <!-- HEADER END -->
+
+    <!-- CONTENT START -->
+    <div class="page-content">
+
+        <!-- INNER PAGE BANNER -->
+        <div class="wt-bnr-inr overlay-wraper" th:style="|background-image: url('@{/images/background/bg-6.jpg}')|">
+            <div class="overlay-main bg-black opacity-05"></div>
+            <div class="container">
+                <div class="wt-bnr-inr-entry">
+                    <h1 class="text-white">Add Service</h1>
+                </div>
+            </div>
+        </div>
+        <!-- INNER PAGE BANNER END -->
+
+        <!-- BREADCRUMB ROW -->
+        <div class="bg-gray-light p-tb20">
+            <div class="container">
+                <ul class="wt-breadcrumb breadcrumb-style-1">
+                    <li><a href="javascript:void(0);">Home</a></li>
+                    <li>Add Service</li>
+                </ul>
+            </div>
+        </div>
+        <!-- BREADCRUMB  ROW END -->
+
+        <!-- SECTION CONTENT START -->
+        <div class="section-full p-t80 p-b50">
+
+            <!-- PRODUCT DETAILS -->
+            <div class="container woo-entry">
+
+
+                <!-- SECTION CONTENT START -->
+                <div class="section-content">
+                    <div class="row">
+                        <!-- FROM STYEL 1 -->
+                        <div class="col-md-6 m-b30" style="width: 80%">
+                            <div class="section-head">
+                                <h3 class="text-uppercase">Add New Service</h3>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator style-icon">
+                                        <i class="fa fa-leaf text-black"></i>
+                                        <span class="separator-left site-bg-primary"></span>
+                                        <span class="separator-right site-bg-primary"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wt-box">
+                                <form th:action="@{/admin/services/add}" th:object="${serviceCreationRequest}" method="POST">
+                                    <!-- General notifications (success/error from redirect) -->
+                                    <div th:replace="~{fragments/notifications :: notification}"></div>
+
+                                    <!-- Form validation errors (only for current form) -->
+                                    <div th:replace="~{fragments/form-validation :: validation-errors}"></div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6">
+                                            <!--Nhập tên dịch vụ-->
+                                            <div class="form-group">
+                                                <label for="name" class="form-label">Tên dịch vụ</label>
+                                                <input type="text" class="form-control" id="name"
+                                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                                       th:field="*{name}"
+                                                       placeholder="Nhập tên dịch vụ">
+                                            </div>
+                                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                                                <span th:each="err : ${#fields.errors('name')}" th:text="${err}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6">
+                                            <!--Nhập giá dịch vụ-->
+                                            <div class="form-group">
+                                                <label for="price" class="form-label">Price ($)</label>
+                                                <input type="number"
+                                                       step="0.01"
+                                                       class="form-control"
+                                                       id="price"
+                                                       th:classappend="${#fields.hasErrors('price')} ? 'is-invalid'"
+                                                       th:field="*{price}"
+                                                       placeholder="0.00">
+                                            </div>
+                                            <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}">
+                                                <span th:each="err : ${#fields.errors('price')}" th:text="${err}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Thời gian dịch vụ-->
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6">
+                                            <label for="tagNames" class="form-label">Tags (comma separated)</label>
+                                            <input type="text"
+                                                   id="tagInput"
+                                                   class="form-control"
+                                                   th:classappend="${#fields.hasErrors('tagNames')} ? 'is-invalid'"
+                                                   th:field="*{tagNames}"
+                                                   placeholder="Enter tags separated by commas (e.g., Facial, Relaxing, Premium)"/>
+                                            <input type="hidden" id="tagNames"/>
+                                            <div id="tagContainer" class="mt-2"></div>
+                                            <div class="invalid-feedback" th:if="${#fields.hasErrors('tagNames')}">
+                                                <span th:each="err : ${#fields.errors('tagNames')}" th:text="${err}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label for="duration" class="form-label">Duration (minutes)</label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       id="duration"
+                                                       th:classappend="${#fields.hasErrors('duration')} ? 'is-invalid'"
+                                                       th:field="*{duration}"
+                                                       placeholder="60">
+                                            </div>
+                                            <div class="invalid-feedback" th:if="${#fields.hasErrors('duration')}">
+                                                <span th:each="err : ${#fields.errors('duration')}" th:text="${err}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Service description-->
+                                    <div class="form-group">
+                                        <label for="summernote" class="form-label">Service Description</label>
+                                        <textarea id="summernote"
+                                                  th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'"
+                                                  th:field="*{content}"
+                                                  placeholder="Describe your service in detail..."></textarea>
+
+                                    </div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}">
+                                        <span th:each="err : ${#fields.errors('content')}" th:text="${err}"></span>
+                                    </div>
+                                    <a th:href="@{/admin/services}" class="site-button">Cancel</a>
+                                    <button type="submit" class="site-button">Publish Service</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- SECTION CONTENT END -->
+
+            </div>
+            <!-- PRODUCT DETAILS -->
+
+        </div>
+        <!-- CONTENT CONTENT END -->
+    </div>
+    <!-- CONTENT END -->
+
+    <!-- FOOTER START -->
+    <footer th:replace="~{fragments/footer :: footer}">
+    </footer>
+    <!-- FOOTER END -->
+
+    <!-- BUTTON TOP START -->
+    <button class="scroltop"><span class=" iconmoon-house relative" id="btn-vibrate"></span>Top</button>
+
+</div>
+
+
+<!-- LOADING AREA START ===== -->
+<div class="loading-area">
+    <div class="loading-box"></div>
+    <div class="loading-pic">
+        <div class="cssload-container">
+            <div class="cssload-progress cssload-float cssload-shadow">
+                <div class="cssload-progress-item"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOADING AREA  END ====== -->
+<!-- STYLE SWITCHER  ======= -->
+<div class="styleswitcher">
+
+    <div class="switcher-btn-bx">
+        <a class="switch-btn">
+            <span class="fa fa-cog fa-spin"></span>
+        </a>
+    </div>
+
+    <div class="styleswitcher-inner">
+        <h6 class="switcher-title">Color Skin</h6>
+        <ul class="color-skins">
+            <li>
+                <a
+                        class="theme-skin skin-1"
+                        th:href="@{/css/skin/skin-1}"
+                        title="default Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-2"
+                        th:href="@{/css/skin/skin-2}"
+                        title="pink Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-3"
+                        th:href="@{/css/skin/skin-3}"
+                        title="sky Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-4"
+                        th:href="@{/css/skin/skin-4}"
+                        title="green Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-5"
+                        th:href="@{/css/skin/skin-5}"
+                        title="red Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-6"
+                        th:href="@{/css/skin/skin-6}"
+                        title="orange Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-7"
+                        th:href="@{/css/skin/skin-7}"
+                        title="purple Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-8"
+                        th:href="@{/css/skin/skin-8}"
+                        title="blue Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-9"
+                        th:href="@{/css/skin/skin-9}"
+                        title="gray Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-10"
+                        th:href="@{/css/skin/skin-10}"
+                        title="brown Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-11"
+                        th:href="@{/css/skin/skin-11}"
+                        title="gray Theme"
+                ></a>
+            </li>
+            <li>
+                <a
+                        class="theme-skin skin-12"
+                        th:href="@{/css/skin/skin-12}"
+
+                        title="golden Theme"
+                ></a>
+            </li>
+        </ul>
+
+        <h6 class="switcher-title">Nav</h6>
+        <ul class="nav-view">
+            <li class="nav-light active">Light</li>
+            <li class="nav-dark">Dark</li>
+        </ul>
+
+        <h6 class="switcher-title">Nav</h6>
+        <ul class="nav-width">
+            <li class="nav-boxed active">Boxed</li>
+            <li class="nav-wide">Wide</li>
+        </ul>
+
+        <h6 class="switcher-title">Header</h6>
+        <ul class="header-view">
+            <li class="header-fixed active">Fixed</li>
+            <li class="header-static">Static</li>
+        </ul>
+
+        <h6 class="switcher-title">Layout</h6>
+        <ul class="layout-view">
+            <li class="wide-layout active">Wide</li>
+            <li class="boxed">Boxed</li>
+        </ul>
+
+        <h6 class="switcher-title">Background Image</h6>
+        <ul class="background-switcher">
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-bg/thum/bg1.jpg}"
+                        rel="images/switcher/switcher-bg/large/bg1.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-bg/thum/bg2.jpg}"
+                        rel="images/switcher/switcher-bg/large/bg2.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-bg/thum/bg3.jpg}"
+                        rel="images/switcher/switcher-bg/large/bg3.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-bg/thum/bg4.jpg}"
+                        rel="images/switcher/switcher-bg/large/bg4.jpg"
+                        alt=""
+                />
+            </li>
+        </ul>
+
+        <h6 class="switcher-title">Background Pattern</h6>
+        <ul class="pattern-switcher">
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg1.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt1.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg2.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt2.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg3.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt3.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg4.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt4.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg5.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt5.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg6.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt6.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg7.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt7.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg8.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt8.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg9.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt9.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg10.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt10.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg11.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt11.jpg"
+                        alt=""
+                />
+            </li>
+            <li>
+                <img
+                        th:src="@{/images/switcher/switcher-patterns/thum/bg12.jpg}"
+                        rel="images/switcher/switcher-patterns/large/pt12.jpg"
+                        alt=""
+                />
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- STYLE SWITCHER END ==== -->
+
+<!-- JAVASCRIPT  FILES ========================================= -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['insert', ['link', 'picture', 'video']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+            height: 300,
+            placeholder: 'Content here',
+        });
+        // Auto-dismiss alerts after 10 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 10000);
+    });
+
+
+</script>
+</body>
+
+</html>

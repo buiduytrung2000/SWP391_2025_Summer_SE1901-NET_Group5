@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common-head">
+  <script src="https://kit.fontawesome.com/e0090b6b7e.js" crossorigin="anonymous"></script>
+
+  <!-- META -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+  <meta name="robots" content="">
+  <meta name="description" content="">
+
+  <!-- FAVICONS ICON -->
+  <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon" >
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.png}" >
+
+  <!-- PAGE TITLE HERE -->
+<!--  <title>Spa Template | Error 404</title>-->
+
+  <!-- MOBILE SPECIFIC -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+  <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"><!-- BOOTSTRAP STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome/css/font-awesome.min.css}"><!-- FONTAWESOME STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/flaticon.min.css}"><!-- FLATICON STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"><!-- ANIMATE STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.min.css}"><!-- OWL CAROUSEL STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}"><!-- BOOTSTRAP SELECT BOX STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/magnific-popup.min.css}"><!-- MAGNIFIC POPUP STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/loader.min.css}"><!-- LOADER STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"><!-- MAIN STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" class="skin" th:href="@{/css/skin/skin-1.css}"><!-- THEME COLOR CHANGE STYLE SHEET -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/switcher.css}"><!-- SIDE SWITCHER STYLE SHEET -->
+
+
+  <!-- GOOGLE FONTS -->
+  <link href="/https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+
+  <!-- HEADER START -->
+  <header th:fragment="header" class="site-header header-style-1  mobile-sider-drawer-menu">
+
+    <div class="top-bar bg-secondry">
+      <div class="container">
+        <div class="wt-topbar-right">
+          <ul class="list-unstyled e-p-bx">
+            <li><i class="fa fa-envelope"></i>mail@thewebmax.com</li>
+            <li><i class="fa fa-phone"></i>(654) 321-7654</li>
+          </ul>
+          <ul class="social-bx list-inline">
+            <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
+            <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
+            <li><a href="javascript:void(0);" class="fa fa-linkedin"></a></li>
+            <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
+            <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
+            <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Search Link -->
+
+    <!-- Search Form -->
+
+    <div class="sticky-header main-bar-wraper">
+      <div class="main-bar bg-white">
+        <div class="container">
+          <div class="logo-header">
+            <a th:href="@{/index.html}">
+              <img th:src="@{/images/logo.png}" width="216" height="37" alt="" >
+            </a>
+          </div>
+
+          <!-- MAIN Vav -->
+          <div class="header-nav navbar-collapse collapse ">
+            <ul class=" nav navbar-nav">
+              <li class="active">
+                <a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
+                <ul class="sub-menu">
+                  <li><a th:href="@{/index.html}">Home 1</a></li>
+                  <li><a href="index-2.html">Home 2</a></li>
+                  <li><a th:href="@{/index-3.html}">Home 3</a></li>
+                  <li><a th:href="@{/index-4.html}">Home 4</a></li>
+                  <li><a th:href="@{/index-5.html}">Home 5</a></li>
+                </ul>
+              </li>
+
+<!--              <li>-->
+<!--                <a href="javascript:;">Pages<i class="fa fa-chevron-down"></i></a>-->
+<!--                <ul class="sub-menu">-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">About us</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/about-1.html}">About us 1</a></li>-->
+<!--                      <li><a th:href="@{/about-2.html}">About us 2</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">FAQ</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/faq-1.html}">FAQ 1</a></li>-->
+<!--                      <li><a th:href="@{/faq-2.html}">FAQ 2</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a th:href="@{/career.html}">Career</a>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Portfolio</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/portfolio-1.html}">Portfolio 1</a></li>-->
+<!--                      <li><a th:href="@{/portfolio-2.html}">Portfolio 2</a></li>-->
+<!--                      <li><a th:href="@{/portfolio-3.html}">Portfolio 3</a></li>-->
+<!--                      <li><a th:href="@{/portfolio-detail.html}">Portfolio Detail</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Our Team</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/our-team.html}">Our Team 1</a></li>-->
+<!--                      <li><a th:href="@{/our-team-detail.html}">Our Team Detail</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Services</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/services-1.html}">Services 1</a></li>-->
+<!--                      <li><a th:href="@{/services-2.html}">Services 2</a></li>-->
+<!--                      <li><a th:href="@{/services-detail.html}">Services Detail</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Galley</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/gallery-grid-1.html}">Galley Grid 1</a></li>-->
+<!--                      <li><a th:href="@{/gallery-grid-2.html}">Galley Grid 2</a></li>-->
+<!--                      <li><a th:href="@{/gallery-grid-3.html}">Galley Grid 3</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Error</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/error-403.html}">Error 403</a></li>-->
+<!--                      <li><a th:href="@{/error-404.html}">Error 404</a></li>-->
+<!--                      <li><a th:href="@{/error-500.html}">Error 500</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Contact us</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/contact-1.html}">Contact us 1</a></li>-->
+<!--                      <li><a th:href="@{/contact-2.html}">Contact us 2</a></li>-->
+<!--                      <li><a th:href="@{/contact-3.html}">Contact us 3</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                </ul>-->
+<!--              </li>-->
+
+<!--              <li>-->
+<!--                <a href="javascript:;">Features<i class="fa fa-chevron-down"></i></a>-->
+<!--                <ul class="sub-menu">-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Header</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/header-style-1.html}">Header 1</a></li>-->
+<!--                      <li><a th:href="@{/header-style-2.html}">Header 2</a></li>-->
+<!--                      <li><a th:href="@{/header-style-3.html}">Header 3</a></li>-->
+<!--                      <li><a th:href="@{/header-style-4.html}">Header 4</a></li>-->
+<!--                      <li><a th:href="@{/header-style-5.html}">Header 5</a></li>-->
+<!--                      <li><a th:href="@{/header-style-6.html}">Header 6</a></li>-->
+<!--                      <li><a th:href="@{/header-style-7.html}">Header 7</a></li>-->
+<!--                      <li><a th:href="@{/header-style-8.html}">Header 8</a></li>-->
+<!--                      <li><a th:href="@{/header-style-9.html}">Header 9</a></li>-->
+<!--                      <li><a th:href="@{/header-style-10.html}">Header 10</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li><a th:href="@{/footer-fixed.html}">Footer Fixed</a></li>-->
+<!--                  <li><a th:href="@{/footer-light.html}">Footer Light</a></li>-->
+<!--                  <li><a th:href="@{/footer-dark.html}">Footer Dark</a></li>-->
+<!--                </ul>-->
+<!--              </li>-->
+
+              <li>
+                <a href="javascript:;">Product<i class="fa fa-chevron-down"></i></a>
+                <ul class="sub-menu">
+                  <li><a th:href="@{/product.html}">Product</a></li>
+                  <li><a th:href="@{/product-detail.html}">Product Detail</a></li>
+                  <li><a th:href="@{/shopping-cart.html}">Shopping cart</a></li>
+                  <li><a th:href="@{/wish-list.html}">Wishlist</a></li>
+                  <li><a th:href="@{/checkout.html}">Checkout</a></li>
+                </ul>
+              </li>
+
+              <li class="submenu-direction">
+                <a href="javascript:;">Services<i class="fa fa-chevron-down"></i></a>
+<!--                <ul class="sub-menu">-->
+<!--                  <li>-->
+<!--                    -->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">list</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/blog-half-img.html}">Half image</a></li>-->
+<!--                      <li><a th:href="@{/blog-half-img-sidebar.html}">Half image sidebar</a></li>-->
+<!--                      <li><a th:href="@{/blog-half-img-left-sidebar.html}">Half image sidebar left</a></li>-->
+<!--                      <li><a th:href="@{/blog-large-img.html}">Large image</a></li>-->
+<!--                      <li><a th:href="@{/blog-large-img-sidebar.html}">Large image sidebar</a></li>-->
+<!--                      <li><a th:href="@{/blog-large-img-left-sidebar.html}">Large image sidebar left</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Grid</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/blog-grid-2.html}">Grid 2</a></li>-->
+<!--                      <li><a th:href="@{/blog-grid-2-sidebar.html}">Grid 2 sidebar</a></li>-->
+<!--                      <li><a th:href="@{/blog-grid-2-sidebar-left.html}">Grid 2 sidebar left</a></li>-->
+<!--                      <li><a th:href="@{/blog-grid-3.html}">Grid 3</a></li>-->
+<!--                      <li><a th:href="@{/blog-grid-3-sidebar.html}">Grid 3 sidebar</a></li>-->
+<!--                      <li><a th:href="@{/blog-grid-3-sidebar-left.html}">Grid 3 sidebar left</a></li>-->
+<!--                      <li><a th:href="@{/blog-grid-4.html}">Grid 4</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;">Single</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/blog-single.html}">Single full</a></li>-->
+<!--                      <li><a th:href="@{/blog-single-left-sidebar.html}">Single sidebar</a></li>-->
+<!--                      <li><a th:href="@{/blog-single-sidebar.html}">Single sidebar right</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                </ul>-->
+              </li>
+
+
+            </ul>
+          </div>
+          <div class="extra-nav">
+            <div class="extra-cell">
+              <a th:href="@{/#search}" class="site-search-btn"><i class="fa fa-search"></i></a>
+            </div>
+            <div class="extra-cell">
+              <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle" title="Your Cart" id="ID-MSG_dropdown" data-bs-toggle="dropdown">
+                                    <span class="link-inner">
+                                        <span class="woo-cart-total"> </span>
+                                        <span class="woo-cart-count">
+                                            <span class="shopping-bag wcmenucart-count ">4</span>
+                                        </span>
+                                    </span>
+              </a>
+
+              <div class="dropdown-menu cart-dropdown-item-wraper">
+                <div class="nav-cart-content">
+
+                  <div class="nav-cart-items p-a15">
+                    <div class="nav-cart-item clearfix">
+                      <div class="nav-cart-item-image">
+                        <a th:href="@{/#}"><img th:src="@{/images/cart/pic-1.jpg}" alt="p-1"></a>
+                      </div>
+                      <div class="nav-cart-item-desc">
+                        <a th:href="@{/#}">Safety helmet</a>
+                        <span class="nav-cart-item-price"><strong>2</strong> x $19.99</span>
+                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                      </div>
+                    </div>
+                    <div class="nav-cart-item clearfix">
+                      <div class="nav-cart-item-image">
+                        <a th:href="@{/#}"><img th:src="@{/images/cart/pic-2.jpg}" alt="p-2"></a>
+                      </div>
+                      <div class="nav-cart-item-desc">
+                        <a th:href="@{/#}">Hammer drill machine</a>
+                        <span class="nav-cart-item-price"><strong>1</strong> x $24.99</span>
+                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                      </div>
+                    </div>
+                    <div class="nav-cart-item clearfix">
+                      <div class="nav-cart-item-image">
+                        <a th:href="@{/#}"><img th:src="@{/images/cart/pic-3.jpg}" alt="p-1"></a>
+                      </div>
+                      <div class="nav-cart-item-desc">
+                        <a th:href="@{/#}">Safety helmet</a>
+                        <span class="nav-cart-item-price"><strong>2</strong> x $19.99</span>
+                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                      </div>
+                    </div>
+                    <div class="nav-cart-item clearfix">
+                      <div class="nav-cart-item-image">
+                        <a th:href="@{/#}"><img th:src="@{/images/cart/pic-4.jpg}" alt="p-2"></a>
+                      </div>
+                      <div class="nav-cart-item-desc">
+                        <a th:href="@{/#}">Hammer drill machine</a>
+                        <span class="nav-cart-item-price"><strong>1</strong> x $24.99</span>
+                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nav-cart-title p-tb10 p-lr15 clearfix">
+                    <h4  class="pull-left m-a0">Subtotal:</h4>
+                    <h5 class="pull-right m-a0">$114.95</h5>
+                  </div>
+                  <div class="nav-cart-action p-a15 clearfix">
+                    <button class="site-button  btn-block m-b15 " type="button">View Cart</button>
+                    <button class="site-button  btn-block" type="button">Checkout </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="extra-cell">
+              <a href="javascript:"
+                 class="wt-cart cart-btn dropdown-toggle"
+                 data-bs-toggle="dropdown">
+                <i class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: black; margin-left:15px"></i>
+                <div class="dropdown-menu cart-dropdown-item-wraper">
+                  <div class="nav-cart-content">
+
+                    <div class="nav-cart-items p-a15">
+                      <div class="nav-cart-item clearfix">
+                        <div class="nav-cart-item-image">
+                          <a th:href="@{/#}"><img th:src="@{/images/cart/pic-1.jpg}" alt="p-1"></a>
+                        </div>
+                        <div class="nav-cart-item-desc">
+                          <a th:href="@{/#}">Safety helmet</a>
+                          <span class="nav-cart-item-price"><strong>2</strong> x $19.99</span>
+                          <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                        </div>
+                      </div>
+                      <div class="nav-cart-item clearfix">
+                        <div class="nav-cart-item-image">
+                          <a th:href="@{/#}"><img th:src="@{/images/cart/pic-2.jpg}" alt="p-2"></a>
+                        </div>
+                        <div class="nav-cart-item-desc">
+                          <a th:href="@{/#}">Hammer drill machine</a>
+                          <span class="nav-cart-item-price"><strong>1</strong> x $24.99</span>
+                          <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                        </div>
+                      </div>
+                      <div class="nav-cart-item clearfix">
+                        <div class="nav-cart-item-image">
+                          <a th:href="@{/#}"><img th:src="@{/images/cart/pic-3.jpg}" alt="p-1"></a>
+                        </div>
+                        <div class="nav-cart-item-desc">
+                          <a th:href="@{/#}">Safety helmet</a>
+                          <span class="nav-cart-item-price"><strong>2</strong> x $19.99</span>
+                          <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                        </div>
+                      </div>
+                      <div class="nav-cart-item clearfix">
+                        <div class="nav-cart-item-image">
+                          <a th:href="@{/#}"><img th:src="@{/images/cart/pic-4.jpg}" alt="p-2"></a>
+                        </div>
+                        <div class="nav-cart-item-desc">
+                          <a th:href="@{/#}">Hammer drill machine</a>
+                          <span class="nav-cart-item-price"><strong>1</strong> x $24.99</span>
+                          <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nav-cart-title p-tb10 p-lr15 clearfix">
+                      <h4  class="pull-left m-a0">Subtotal:</h4>
+                      <h5 class="pull-right m-a0">$114.95</h5>
+                    </div>
+                    <div class="nav-cart-action p-a15 clearfix">
+                      <button class="site-button  btn-block m-b15 " type="button">View Cart</button>
+                      <button class="site-button  btn-block" type="button">Checkout </button>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <!-- NAV Toggle Button -->
+          <button id="mobile-side-drawer" data-target=".header-nav" data-toggle="collapse" type="button" class="navbar-toggler collapsed">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar icon-bar-first"></span>
+            <span class="icon-bar icon-bar-two"></span>
+            <span class="icon-bar icon-bar-three"></span>
+          </button>
+          <!-- SITE Search -->
+          <div id="search">
+            <span class="close"></span>
+            <form role="search" id="searchform" action="/search" method="get" class="radius-xl">
+              <div class="input-group">
+                <input value="" name="q" type="search" placeholder="Type to search">
+                <span class="input-group-btn"><button type="button" class="search-btn"><i class="fa fa-search"></i></button></span>
+              </div>
+            </form>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </header>
+</div>
