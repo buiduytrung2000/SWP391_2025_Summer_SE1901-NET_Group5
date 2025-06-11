@@ -65,7 +65,7 @@
               </div>
 
               <div class="wt-box">
-                <form th:action="@{/admin/services/edit/{id}(id=${service.get().getServiceId()})}" method="POST">
+                <form th:action="@{/admin/services/edit/{id}(id=${service.getServiceId()})}" method="POST">
 
                   <div class="row">
                     <div class="col-md-6 col-sm-6">
@@ -73,7 +73,7 @@
                       <div class="form-group">
                         <label for="name" class="form-label" >Tên dịch vụ</label>
                         <input type="text" class="form-control" id="name" name="name"
-                               th:value="${service.get().name}">
+                               th:value="${service.getName()}">
                       </div>
                     </div>
                     <div class="col-md-6 col-sm-6">
@@ -86,7 +86,7 @@
                                id="price"
                                name="price"
                                placeholder="0.00"
-                               th:value="${service.get().price}"
+                               th:value="${service.getPrice()}"
                         >
                       </div>
                     </div>
@@ -122,7 +122,7 @@
                     <label for="summernote" class="form-label">Service Description</label>
                     <textarea id="summernote"
                               name="content"
-                              th:utext="${service.get().content}"
+                              th:utext="${service.getContent()}"
                               placeholder="Describe your service in detail..."></textarea>
 
                   </div>
