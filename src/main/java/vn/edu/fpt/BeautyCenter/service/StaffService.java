@@ -90,10 +90,10 @@ public class StaffService {
     public void updateStaffFromModal(Staff updatedStaff) {
         Staff existing = getByUserId(updatedStaff.getUserId());
         if (existing != null) {
-            // Validate thông tin cập nhật
             StaffCreationRequest fakeDto = new StaffCreationRequest();
             fakeDto.setEmail(updatedStaff.getEmail());
             fakeDto.setPhone(updatedStaff.getPhone());
+            fakeDto.setGender(updatedStaff.getGender() != null ? updatedStaff.getGender().name() : null);
 
             validateStaff(fakeDto, true, existing.getEmail());
 

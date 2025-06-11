@@ -376,7 +376,7 @@
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    let successMessage = null;
+    let successMessage = /*[[${successMessage}]]*/ null;
     if (successMessage) {
         Swal.fire({
             icon: 'success',
@@ -390,6 +390,7 @@
     }
     /*]]>*/
 </script>
+
 
 <script>
     const addModalEl = document.getElementById('addStaffModal');

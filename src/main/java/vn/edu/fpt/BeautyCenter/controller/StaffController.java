@@ -28,7 +28,7 @@ public class StaffController {
 
     StaffService staffService;
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     public String showStaffList(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
                                 Model model) {
