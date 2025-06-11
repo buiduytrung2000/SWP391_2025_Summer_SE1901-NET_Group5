@@ -53,8 +53,8 @@
             <div class="post-description-area p-t30">
               <div class="wt-post-meta ">
                 <ul>
-                  <li class="post-date"> <i class="fa fa-credit-card"></i><span th:text="'Giá: ' + ${#numbers.formatCurrency(service.price)}">Price</span> </li>
-                  <li class="post-author"><i class="fa fa-clock-o"></i><span th:text="'Thời lượng: ' + ${service.duration} ">Time</span></li>
+                  <li class="post-date"> <i class="fa fa-credit-card"></i><span th:text="'Price: ' + ${#numbers.formatCurrency(service.price)}">Price</span> </li>
+                  <li class="post-author"><i class="fa fa-clock-o"></i><span th:text="'Duration: ' + ${service.duration} ">Time</span></li>
                 </ul>
               </div>
               <div class="wt-post-text" th:utext="${service.content}">
