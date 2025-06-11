@@ -21,7 +21,6 @@ import java.util.Optional;
 public class LoginController {
     private static final int SESSION_TIMEOUT = 60*60;
     private final UserService userService;
-    private final HttpSession httpSession;
 
     @GetMapping("/login")
     public String showLoginPage() {
@@ -72,7 +71,7 @@ public class LoginController {
                 System.out.println("User {"+user.getUsername()+"} logged out");
             }
             session.invalidate();
-            redirectAttributes.addFlashAttribute("successMessage", "Bạn đã đăng xuất thành công.");
+            redirectAttributes.addFlashAttribute("successMessage", "You are logged out!.");
 
         } catch (Exception e) {
             System.out.println("Error during logout process "+ e);
