@@ -265,4 +265,5 @@ public class ServiceService {
         // Map entities to DTOs
         return services.map(serviceMapper::toResponse);
     }
+
 }

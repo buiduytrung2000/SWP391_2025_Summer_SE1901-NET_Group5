@@ -3,12 +3,16 @@ package vn.edu.fpt.BeautyCenter.controller;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.StaffCreationRequest;
 import vn.edu.fpt.BeautyCenter.entity.Staff;
+import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.service.StaffService;
 
 import java.time.Instant;
@@ -25,35 +29,61 @@ public class StaffController {
     StaffService staffService;
 
     @GetMapping("/")
-    public String showStaffList(Model model) {
-        List<Staff> staffList = staffService.getAllStaff();
-        model.addAttribute("staffList", staffList);
+    public String showStaffList(@RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size,
+                                Model model) {
+        Page<Staff> staffPage = staffService.getStaffPage(PageRequest.of(page, size));
+
+        model.addAttribute("staffList", staffPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", staffPage.getTotalPages());
+        model.addAttribute("pageSize", size);
+
         model.addAttribute("newStaff", new StaffCreationRequest());
         return "admin.staffs/list";
     }
 
+
     @PostMapping("/add")
-    public String addStaff(@ModelAttribute("newStaff") StaffCreationRequest staffCreationRequest,
-                           Model model) {
+    public String addStaff(@ModelAttribute("newStaff") StaffCreationRequest request,
+                           RedirectAttributes redirectAttributes,
+                           Model model,
+                           @RequestParam(defaultValue = "0") int page,
+                           @RequestParam(defaultValue = "10") int size) {
         try {
-            staffService.addStaff(staffCreationRequest);
-            return "redirect:/admin/staff/";
-        } catch (RuntimeException e) {
-            // Trường hợp lỗi (vd: email đã tồn tại)
-            model.addAttribute("staffList", staffService.getAllStaff());
-            model.addAttribute("newStaff", staffCreationRequest);
-            model.addAttribute("emailError", e.getMessage());
+            staffService.addStaff(request);
+            redirectAttributes.addFlashAttribute("successMessage", "Staff added successfully!");
+            return "redirect:/admin/staff?page=" + page + "&size=" + size;
+        } catch (AppException e) {
+            Page<Staff> staffPage = staffService.getStaffPage(PageRequest.of(page, size));
+
+            model.addAttribute("staffList", staffPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", staffPage.getTotalPages());
+            model.addAttribute("pageSize", size);
+
+            model.addAttribute("newStaff", request);
             model.addAttribute("showAddModal", true);
+            model.addAttribute("formHasError", true);
+
+            switch (e.getErrorCode()) {
+                case STAFF_EMAIL_INVALID, STAFF_EMAIL_EXISTED -> model.addAttribute("emailError", e.getMessage());
+                case STAFF_PHONE_INVALID -> model.addAttribute("phoneError", e.getMessage());
+                case STAFF_GENDER_REQUIRED -> model.addAttribute("genderError", e.getMessage());
+            }
+
             return "admin.staffs/list";
         }
     }
+
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.setDisallowedFields("createdAt");  // Không binding tự động
     }
     @PostMapping("/edit")
     public String updateStaff(@ModelAttribute Staff staff,
-                              @RequestParam("createdAt") String createdAtStr) {
+                              @RequestParam("createdAt") String createdAtStr,RedirectAttributes redirectAttributes) {
         LocalDate localDate = LocalDate.parse(createdAtStr);
         staff.setCreatedAt(localDate.atStartOfDay());
 
@@ -64,6 +94,7 @@ public class StaffController {
         }
 
         staffService.updateStaffFromModal(staff);
+        redirectAttributes.addFlashAttribute("successMessage", "Staff updated successfully!");
         return "redirect:/admin/staff/";
     }
     @GetMapping("/toggle-status/{id}")
