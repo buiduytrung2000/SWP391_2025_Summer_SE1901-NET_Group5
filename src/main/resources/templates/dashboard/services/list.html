@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{/dashboard/fragments/head::admin-head}">
+</head>
+<body class="nk-body npc-default has-apps-sidebar has-sidebar ">
+<div class="nk-app-root">
+
+    <div class="nk-main ">
+        <div class="nk-wrap ">
+            <div class="nk-header nk-header-fixed" th:replace="~{/dashboard/fragments/header::admin-header}">
+            </div>
+            <div class="nk-sidebar" data-content="sidebarMenu"
+                 th:replace="~{/dashboard/fragments/sidebar::admin-sidebar}">
+            </div>
+            <div class="nk-content ">
+                <!-- Fill Content here -->
+                <div class="container-fluid">
+                    <div class="nk-content-inner">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">Services </h3>
+<!--                                        <div class="nk-block-des text-soft">-->
+<!--                                            <p th:text="|You have total ${services.getSize()} services.|">You have total-->
+<!--                                                0 services.</p>-->
+<!--                                        </div>-->
+                                    </div>
+                                    <div class="nk-block-head-content"><a th:href="@{/admin/services/add}"
+                                                                          class="btn btn-icon btn-primary d-md-none"><em
+                                            class="icon ni ni-plus"></em></a><a th:href="@{/admin/services/add}"
+                                                                                class="btn btn-primary d-none d-md-inline-flex"><em
+                                            class="icon ni ni-plus"></em><span>Add Services</span></a></div>
+                                </div>
+                            </div>
+                            <div class="nk-block">
+                                <div class="card card-bordered card-stretch">
+                                    <div class="card-inner-group">
+                                        <div class="card-inner position-relative card-tools-toggle">
+
+                                            <div class="card-title-group">
+                                                <div th:replace="~{fragments/notifications :: notification}"></div>
+                                                <div class="card-tools">
+                                                    <div class="form-inline flex-nowrap gx-3">
+                                                    </div>
+                                                </div>
+                                                <form method="get" th:action="@{/admin/services}">
+                                                    <div class="search-content">
+                                                        <a th:href="@{/admin/services}"
+                                                           class="btn btn-outline-secondary btn-sm"
+                                                           th:if="${keyword != null && !keyword.isEmpty()}">
+                                                            <em class="icon ni ni-arrow-left"></em>
+                                                        </a>
+                                                        <label>
+                                                            <input type="text"
+                                                                   name="keyword"
+                                                                   th:value="${keyword}"
+                                                                   class="form-control border-transparent form-focus-none"
+                                                                   placeholder="Seach by title">
+                                                        </label>
+                                                        <button type="submit" class="search-submit btn btn-icon">
+                                                            <em class="icon ni ni-search"></em>
+                                                        </button>
+                                                    </div>
+                                                    <!-- Giữ nguyên pagination parameters -->
+                                                    <input type="hidden" name="size" th:value="${services?.size ?: 5}" />
+                                                </form>
+                                            </div>
+                                            <div class="card-search search-wrap" data-search="search">
+                                                <div class="card-body">
+                                                    <form method="get" th:action="@{/admin/services}">
+                                                        <div class="search-content">
+                                                            <a href="#" class="search-back btn btn-icon toggle-search" data-target="search">
+                                                                <em class="icon ni ni-arrow-left"></em>
+                                                            </a>
+                                                            <input type="text"
+                                                                   name="keyword"
+                                                                   th:value="${keyword}"
+                                                                   class="form-control border-transparent form-focus-none"
+                                                                   placeholder="Tìm kiếm theo tên dịch vụ...">
+                                                            <button type="submit" class="search-submit btn btn-icon">
+                                                                <em class="icon ni ni-search"></em>
+                                                            </button>
+                                                        </div>
+                                                        <!-- Giữ nguyên pagination parameters -->
+                                                        <input type="hidden" name="size" th:value="${services?.size ?: 5}" />
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="card-inner p-0">
+                                            <div class="nk-tb-list nk-tb-ulist">
+                                                <div class="nk-tb-item nk-tb-head">
+                                                    <div class="nk-tb-col nk-tb-col-check">
+                                                        <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   onClick="toggle(this)" id="uid"><label
+                                                                class="custom-control-label" for="uid"></label></div>
+                                                    </div>
+                                                    <div class="nk-tb-col"><span class="sub-text">Title</span></div>
+                                                    <div class="nk-tb-col tb-col-mb"><span
+                                                            class="sub-text">Author</span></div>
+                                                    <div class="nk-tb-col tb-col-md"><span class="sub-text">Tags</span>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-md"><span
+                                                            class="sub-text">Time</span></div>
+                                                    <div class="nk-tb-col tb-col-md"><span class="sub-text"><a
+                                                            href=""></a></span></div>
+                                                    <div class="nk-tb-col tb-col-md"><span class="sub-text">View</span>
+                                                    </div>
+                                                </div>
+                                                <div class="nk-tb-item" th:each="s : ${services}">
+                                                    <div class="nk-tb-col nk-tb-col-check">
+                                                        <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   name="uid" id="uid${loop.count}"><label
+                                                                class="custom-control-label"
+                                                                for="uid${loop.count}"></label></div>
+                                                    </div>
+                                                    <div class="nk-tb-col"><span th:text="${s.name}"></span></div>
+                                                    <div class="nk-tb-col tb-col-mb">
+                                                        <a href="#">
+                                                            <div class="user-card">
+                                                                <div class="user-info"><span class="tb-lead"
+                                                                                             th:text="${s.createdBy}"></span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="nk-tb-col tb-col-md"><span
+                                                            th:text="${formattedTags.get(s.serviceId)}"></span>
+                                                    </div>
+
+                                                    <div class="nk-tb-col tb-col-md">
+                                                        <div>
+                                                            <span th:text="'Duration: ' + ${s.duration} "></span>
+                                                        </div>
+                                                        <div><span th:text="'Created At: '+ ${#temporals.format(s.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-md">
+                                                    </div>
+                                                    <div class="nk-tb-col nk-tb-col-tools">
+                                                        <ul class="nk-tb-actions gx-1">
+                                                            <li class="nk-tb-action-hidden"><a
+                                                                    class="btn btn-trigger btn-icon"
+                                                                    data-bs-toggle="tooltip"
+                                                                    th:href="@{/admin/services/edit/{id}(id=${s.getServiceId()})}"
+                                                                    data-bs-placement="top" title="Quick Edit"><em
+                                                                    class="icon ni ni-edit-fill"></em></a></li>
+                                                            <li class="nk-tb-action-hidden"><a
+                                                                    th:href="@{/admin/services/{id}(id=${s.getServiceId()})}"
+                                                                    class="btn btn-trigger btn-icon"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    aria-label="View" data-bs-original-title="View"><em
+                                                                    class="icon ni ni-eye-fill"></em></a></li>
+                                                            <li class="nk-tb-action-hidden"><a
+                                                                    th:href="@{/admin/services/delete/{id}(id=${s.getServiceId()})}"
+                                                                    class="btn btn-trigger btn-icon"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="Delete"><em
+                                                                    class="icon ni ni-trash-fill"></em></a></li>
+                                                            <li>
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-inner">
+                                            <div class="nk-block-between-md g-3">
+                                                <div class="g">
+                                                    <ul class="pagination justify-content-center justify-content-md-start">
+                                                        <li class="page-item" th:if="${services.hasPrevious()}">
+                                                            <a class="page-link"
+                                                               th:href="@{/admin/services(page=${services.number - 1}, size=${services.size})}"
+                                                               th:if="${services.hasPrevious()}">Prev</a>
+                                                            <span class="page-link" th:unless="${services.hasPrevious()}">Prev</span>
+                                                        </li>
+
+                                                        <li class="page-item" th:each="pageNum : ${pageNumbers}"
+                                                            th:classappend="${pageNum == (services.number + 1)} ? 'active' : ''">
+                                                            <a class="page-link"
+                                                               th:href="@{/admin/services(page=${pageNum - 1}, size=${services.size})}"
+                                                               th:text="${pageNum}"
+                                                               th:title="'Trang ' + ${pageNum}">1</a>
+                                                        </li>
+                                                        <!-- Next Page -->
+                                                        <li class="page-item" th:if="${services.hasNext()}">
+                                                            <a class="page-link"
+                                                               th:href="@{/admin/services(page=${services.number + 1}, size=${services.size})}"
+                                                               th:if="${services.hasNext()}">Next</a>
+                                                            <span class="page-link" th:unless="${services.hasNext()}">Next</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="g">
+                                                    <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+                                                        <div>Page</div>
+                                                        <div>
+                                                            <form method="get" th:action="@{/admin/services}">
+                                                                <label>
+                                                                    <select class="form-select js-select2"
+                                                                            name="page"
+                                                                            data-search="on"
+                                                                            data-dropdown="xs center"
+                                                                            onchange="this.form.submit()">
+                                                                        <option th:each="i : ${#numbers.sequence(1, services.getTotalPages())}"
+                                                                                th:value="${i - 1}"
+                                                                                th:text="${i}"
+                                                                                th:selected="${i - 1 == services.number}">
+                                                                        </option>
+                                                                    </select>
+                                                                </label>
+                                                                <!-- Giữ nguyên size nếu có -->
+                                                                <input type="hidden" name="size" th:value="${services.size}" />
+                                                            </form>
+                                                        </div>
+                                                        <div>OF <span th:text="${services.getTotalPages()}"></span></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/dashboard/fragments/footer::admin-scripts}"></div>
+</body>
+</html>

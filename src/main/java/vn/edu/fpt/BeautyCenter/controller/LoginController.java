@@ -19,7 +19,7 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
-    private static final int SESSION_TIMEOUT = 30*60;
+    private static final int SESSION_TIMEOUT = 60*60;
     private final UserService userService;
     private final HttpSession httpSession;
 

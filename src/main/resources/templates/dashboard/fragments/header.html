@@ -1,7 +1,7 @@
 <!-- File: templates/fragments/header.html -->
-<html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="admin-header">
-    <div class="nk-header nk-header-fixed">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <div class="nk-header nk-header-fixed" th:fragment="admin-header">
         <div class="container-fluid">
             <div class="nk-header-wrap">
                 <div class="nk-menu-trigger d-xl-none ms-n1"><a href="#" class="nk-nav-toggle nk-quick-nav-icon"
@@ -15,10 +15,10 @@
                 <div class="nk-header-menu is-light">
                     <div class="nk-header-menu-inner">
                         <ul class="nk-menu nk-menu-main">
-                            <li class="nk-menu-item"><a th:href="@{admin}" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a th:href="@{/admin}" class="nk-menu-link"><span
                                     class="nk-menu-text">Overview</span></a></li>
                             <li class="nk-menu-item"><a th:href="@{/}" class="nk-menu-link"><span
-                                    class="nk-menu-text">Trang chủ</span></a></li>
+                                    class="nk-menu-text">Home</span></a></li>
 
                         </ul>
                     </div>
@@ -59,5 +59,4 @@
             </div>
         </div>
     </div>
-</div>
 </html>
