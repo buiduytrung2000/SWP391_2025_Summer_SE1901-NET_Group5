@@ -101,8 +101,15 @@
           <div class="header-nav navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active">
-                <a href="javascript:"
+                <a th:href="@{/}"
                 >Home</a>
+<!--                <ul class="sub-menu">-->
+<!--                  <li><a th:href="@{/index.html}">Home 1</a></li>-->
+<!--                  <li><a th:href="@{/index-2.html}">Home 2</a></li>-->
+<!--                  <li><a th:href="@{/index-3.html}">Home 3</a></li>-->
+<!--                  <li><a th:href="@{/index-4.html}">Home 4</a></li>-->
+<!--                  <li><a th:href="@{/index-5.html}">Home 5</a></li>-->
+<!--                </ul>-->
               </li>
 
 <!--              <li>-->
@@ -219,8 +226,89 @@
               </li>
 
               <li class="submenu-direction">
-                <a th:href="@{/admin/services}"
-                >Services</a>
+                <a href="javascript:"
+                >Services<i class="fa fa-chevron-down"></i
+                ></a>
+<!--                <ul class="sub-menu">-->
+<!--                  <li>-->
+<!--                    <a href="javascript:">Media</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/blog-media-list.html}">Media list</a></li>-->
+<!--                      <li><a th:href="@{/blog-media-grid.html}">Media grid</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:">list</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/blog-half-img.html}">Half image</a></li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-half-img-sidebar.html}"-->
+<!--                        >Half image sidebar</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-half-img-left-sidebar.html}"-->
+<!--                        >Half image sidebar left</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                      <li><a th:href="@{/blog-large-img.html}">Large image</a></li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-large-img-sidebar.html}"-->
+<!--                        >Large image sidebar</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-large-img-left-sidebar.html}"-->
+<!--                        >Large image sidebar left</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:">Grid</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/blog-grid-2.html}">Grid 2</a></li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-grid-2-sidebar.html}"-->
+<!--                        >Grid 2 sidebar</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-grid-2-sidebar-left.html}"-->
+<!--                        >Grid 2 sidebar left</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                      <li><a th:href="@{/blog-grid-3.html}">Grid 3</a></li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-grid-3-sidebar.html}"-->
+<!--                        >Grid 3 sidebar</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-grid-3-sidebar-left.html}"-->
+<!--                        >Grid 3 sidebar left</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                      <li><a th:href="@{/blog-grid-4.html}">Grid 4</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:">Single</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                      <li><a th:href="@{/blog-single.html}">Single full</a></li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-single-left-sidebar.html}"-->
+<!--                        >Single sidebar</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                      <li>-->
+<!--                        <a th:href="@{/blog-single-sidebar.html}"-->
+<!--                        >Single sidebar right</a-->
+<!--                        >-->
+<!--                      </li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                </ul>-->
               </li>
 
 
@@ -341,13 +429,28 @@
               </div>
             </div>
 
-            <div class="extra-cell">
+            <div class="extra-cell" style="width: 40.3px">
               <a th:href="@{/login}"
+                 th:if="${session.user == null}"
                  class="wt-cart cart-btn dropdown-toggle"
-                 data-bs-toggle="dropdown">
-                <i class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i>
+                 >
+                <i
+                   class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i>
 
               </a>
+              <a href="javascript:;">
+              <img id="avatar"
+                   th:if="${session.user != null && session.userAvatar != null}"
+                   th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}"
+                   style="width: 121px !important; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; margin-left:15px"
+              >
+              <i
+                 th:if="${session.user != null && session.userAvatar == null}"
+
+                 class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i></a>
+              <div class="dropdown-menu cart-dropdown-item-wraper">
+                Logout
+              </div>
           </div>
           <!-- SITE Search -->
           <div id="search">
@@ -379,6 +482,7 @@
       </div>
     </div>
     </div>
+
   </header>
 </div>
   <!-- HEADER END -->
