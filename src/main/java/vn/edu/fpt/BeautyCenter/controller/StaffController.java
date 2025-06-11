@@ -57,13 +57,28 @@ public class StaffController {
         LocalDate localDate = LocalDate.parse(createdAtStr);
         staff.setCreatedAt(localDate.atStartOfDay());
 
+        // Giữ role cũ từ database
+        Staff existing = staffService.getByUserId(staff.getUserId());
+        if (existing != null) {
+            staff.setRole(existing.getRole());  // giữ nguyên role cũ
+        }
+
         staffService.updateStaffFromModal(staff);
         return "redirect:/admin/staff/";
     }
-
-    @GetMapping("/delete/{id}")
-    public String deleteStaff(@PathVariable String id) {
-        staffService.deleteById(id);
+    @GetMapping("/toggle-status/{id}")
+    public String toggleStatus(@PathVariable String id) {
+        Staff staff = staffService.getByUserId(id);
+        if (staff != null) {
+            if (staff.getStatus() == null || staff.getStatus() == Staff.Status.inactive) {
+                staff.setStatus(Staff.Status.active);
+            } else {
+                staff.setStatus(Staff.Status.inactive);
+            }
+            staffService.save(staff);
+        }
         return "redirect:/admin/staff/";
     }
+
+
 }
