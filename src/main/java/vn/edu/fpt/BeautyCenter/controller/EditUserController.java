@@ -13,7 +13,7 @@ import vn.edu.fpt.BeautyCenter.service.UserService;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/edit_profile")
+@RequestMapping("/edit_customer")
 public class EditUserController {
     @Autowired
     UserService userService;
