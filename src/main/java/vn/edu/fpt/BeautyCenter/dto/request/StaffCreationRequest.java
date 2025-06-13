@@ -15,7 +15,7 @@ public class StaffCreationRequest {
      * Must only contain letters (including Vietnamese accented letters) and spaces.
      */
     @NotBlank(message = "Full name is required")
-    @Size(max = 100, message = "Full name must not exceed 100 characters")
+    @Size(max = 20, message = "Full name must not exceed 20 characters")
     @Pattern(
             regexp = "^[A-Za-zÀ-ỹà-ỹ\\s]+$",
             message = "Full name must contain only letters and spaces"
