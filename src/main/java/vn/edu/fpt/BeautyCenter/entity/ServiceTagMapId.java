@@ -31,7 +31,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class SerivceTagMapId implements java.io.Serializable {
+public class ServiceTagMapId implements java.io.Serializable {
 
     /**
      * Serialization UID for consistent deserialization.
@@ -64,7 +64,7 @@ public class SerivceTagMapId implements java.io.Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        SerivceTagMapId entity = (SerivceTagMapId) o;
+        ServiceTagMapId entity = (ServiceTagMapId) o;
         return Objects.equals(this.tagId, entity.tagId) &&
                 Objects.equals(this.serviceId, entity.serviceId);
     }

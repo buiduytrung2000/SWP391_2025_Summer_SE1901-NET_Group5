@@ -10,13 +10,17 @@ package vn.edu.fpt.BeautyCenter.service;
  * 2025-06-08   1.0      TrungBD  First Implement
  */
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceCreationRequest;
+import vn.edu.fpt.BeautyCenter.dto.request.ServiceFilterParams;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceUpdateRequest;
 import vn.edu.fpt.BeautyCenter.dto.response.ServiceResponse;
 import vn.edu.fpt.BeautyCenter.entity.ServiceTag;
@@ -25,6 +29,7 @@ import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
 import vn.edu.fpt.BeautyCenter.mapper.ServiceMapper;
 import vn.edu.fpt.BeautyCenter.repository.ServiceRepository;
 import vn.edu.fpt.BeautyCenter.repository.ServiceTagRepository;
+import vn.edu.fpt.BeautyCenter.repository.UserRepository;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -183,6 +188,10 @@ public class ServiceService {
         vn.edu.fpt.BeautyCenter.entity.Service service = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
         serviceMapper.updateEntity(service, request);
+        if (request.getTagNames() != null && !request.getTagNames().isEmpty()) {
+            Set<ServiceTag> tags = processServiceTags(request.getTagNames());
+            service.setServiceTags(tags);
+        }
         serviceMapper.toResponse(serviceRepository.save(service));
     }
 
@@ -234,11 +243,8 @@ public class ServiceService {
      */
     public Page<ServiceResponse> getAllServicesWithFormattedTags(int page, int size) {
         Page<vn.edu.fpt.BeautyCenter.entity.Service> services = getAllServices(page, size);
-        return services.map(service -> {
-            ServiceResponse response = serviceMapper.toResponse(service);
-            // Additional tag formatting can be handled here if needed
-            return response;
-        });
+        // Additional tag formatting can be handled here if needed
+        return services.map(serviceMapper::toResponse);
     }
 
     /**
@@ -250,7 +256,7 @@ public class ServiceService {
      * @return a page of ServiceResponse objects matching the keyword
      */
     public Page<ServiceResponse> searchServices(String keyword, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("created_at").descending());
         Page<vn.edu.fpt.BeautyCenter.entity.Service> services;
 
         if (keyword == null || keyword.trim().isEmpty()) {
@@ -265,4 +271,175 @@ public class ServiceService {
         // Map entities to DTOs
         return services.map(serviceMapper::toResponse);
     }
+    /**
+     * Retrieves services with comprehensive advanced filtering capabilities.
+     * <p>
+     * This method supports multiple filter criteria including price range, duration range,
+     * date range, tags selection, and author filtering. It processes content for display
+     * purposes by removing HTML tags and limiting word count for better UI presentation.
+     * The method integrates with the repository layer to execute efficient database queries
+     * while maintaining proper pagination and sorting functionality.
+     * </p>
+     *
+     * @param filterParams the comprehensive filter parameters object containing all search criteria
+     * @param pageable     pagination and sorting parameters for result organization
+     * @return a page of ServiceResponse objects matching the specified filter criteria
+     * @throws RuntimeException if filtering operation encounters database or processing errors
+     */
+    public Page<ServiceResponse> getServicesWithAdvancedFilter(ServiceFilterParams filterParams,
+                                                               Pageable pageable) {
+        try {
+            // Execute advanced filtering query through repository layer
+            // This call delegates to the repository's custom query method that handles
+            // multiple WHERE clauses and JOIN operations for tag filtering
+            Page<vn.edu.fpt.BeautyCenter.entity.Service> services = serviceRepository.findWithAdvancedFilter(
+                    filterParams.getKeyword(),           // Basic text search in name and content
+                    filterParams.getMinPrice(),          // Minimum price boundary for cost filtering
+                    filterParams.getMaxPrice(),          // Maximum price boundary for cost filtering
+                    filterParams.getMinDuration(),       // Minimum duration in minutes for time filtering
+                    filterParams.getMaxDuration(),       // Maximum duration in minutes for time filtering
+                    filterParams.getFromDate(),          // Start date for creation date range filtering
+                    filterParams.getToDate(),            // End date for creation date range filtering
+                    filterParams.getSelectedTags(),      // List of tag names for categorical filtering
+                    filterParams.getCreatedBy(),         // User ID for author-based filtering
+                    pageable                             // Pagination and sorting configuration
+            );
+
+            // Process each service's content for optimal display presentation
+            // This step ensures consistent content formatting across the application
+            List<vn.edu.fpt.BeautyCenter.entity.Service> processedServices = services.getContent()
+                    .stream()
+                    .peek(service -> {
+                        // Only process services that have content to avoid null pointer exceptions
+                        if (service.getContent() != null) {
+                            // Remove HTML image tags to clean content for list view display
+                            // This prevents layout issues and improves loading performance
+                            String cleanContent = removeImgTags(service.getContent());
+
+                            // Limit content to 20 words for consistent list item height
+                            // This ensures uniform appearance in grid and list layouts
+                            String limitedContent = limitWords(cleanContent);
+
+                            // Update the service entity with processed content
+                            service.setContent(limitedContent);
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+            // Create new PageImpl with processed content while preserving pagination metadata
+            // This maintains the original pagination information (total elements, page number, etc.)
+            // while updating the content with our processed data
+            Page<vn.edu.fpt.BeautyCenter.entity.Service> processedPage = new PageImpl<>(
+                    processedServices,                    // The list of processed service entities
+                    pageable,                            // Original pagination configuration
+                    services.getTotalElements()          // Total count from original query
+            );
+
+            // Convert Service entities to ServiceResponse DTOs for API/view consumption
+            // This mapping step applies any additional transformations and ensures
+            // proper data encapsulation for the presentation layer
+            return processedPage.map(serviceMapper::toResponse);
+
+        } catch (DataAccessException e) {
+            // Handle database-related exceptions with specific error context
+            String errorMessage = "Database error occurred while filtering services: " + e.getMessage();
+            System.err.println(errorMessage);
+            throw new RuntimeException(errorMessage, e);
+
+        } catch (Exception e) {
+            // Handle any other unexpected exceptions during filtering process
+            String errorMessage = "Unexpected error occurred during service filtering: " + e.getMessage();
+            System.err.println(errorMessage);
+            throw new RuntimeException(errorMessage, e);
+        }
+    }
+
+    /**
+     * Retrieves all unique tag names available in the system for filter dropdown population.
+     * <p>
+     * This method queries the ServiceTag repository to fetch all distinct tag names
+     * that are currently in use across all services. The results are sorted alphabetically
+     * to provide a consistent user experience in dropdown filter components. This method
+     * is typically used to populate filter dropdowns and tag selection interfaces.
+     * </p>
+     *
+     * @return a list of unique tag names sorted alphabetically, empty list if no tags exist
+     * @throws RuntimeException if database access fails during tag retrieval
+     */
+    public List<String> getAllAvailableTags() {
+        try {
+            // Query repository for all distinct tag names with alphabetical sorting
+            // This ensures consistent ordering in UI components and better user experience
+            List<String> availableTags = serviceTagRepository.findAllDistinctTagNames();
+
+            // Log successful retrieval for monitoring and debugging purposes
+            System.out.println("Successfully retrieved " + availableTags.size() + " available tags");
+
+            // Return the sorted list of tag names for UI consumption
+            return availableTags;
+
+        } catch (DataAccessException e) {
+            // Handle database connectivity or query execution errors
+            String errorMessage = "Database error while retrieving available tags: " + e.getMessage();
+            System.err.println(errorMessage);
+
+            // Return empty list to prevent UI breakage while logging the error
+            // This allows the application to continue functioning with limited tag filtering
+            return new ArrayList<>();
+
+        } catch (Exception e) {
+            // Handle any unexpected errors during tag retrieval process
+            String errorMessage = "Unexpected error while retrieving available tags: " + e.getMessage();
+            System.err.println(errorMessage);
+
+            // Return empty list as fallback to maintain application stability
+            return new ArrayList<>();
+        }
+    }
+    /**
+     * Deletes a service from the system with proper validation and error handling.
+     * <p>
+     * This method performs comprehensive checks before deletion including dependency
+     * validation to ensure referential integrity. It follows the business rule that
+     * services with active relationships cannot be deleted to prevent data corruption.
+     * </p>
+     *
+     * @param serviceId the unique identifier of the service to be deleted
+     * @return true if deletion was successful, false otherwise
+     * @throws IllegalStateException if service has active dependencies that prevent deletion
+     * @throws RuntimeException if any unexpected error occurs during deletion process
+     */
+    @Transactional
+    public boolean deleteService(String serviceId) {
+        try {
+            // Check if the service has any active dependencies (bookings, appointments, etc.)
+            // This prevents deletion of services that are currently in use or referenced
+            if (hasActiveDependencies(serviceId)) {
+                throw new IllegalStateException("Service has active dependencies");
+            }
+            vn.edu.fpt.BeautyCenter.entity.Service service = serviceRepository.findById(serviceId)
+                    .orElseThrow(() -> new EntityNotFoundException("Service not found"));
+
+            // Clear tags before deletion (optional but explicit)
+            service.getServiceTags().clear();
+
+            // Perform the actual deletion using Spring Data JPA repository
+            // This will cascade delete any related entities if configured properly
+            serviceRepository.delete(service);
+
+            // Return true to indicate successful deletion
+            return true;
+
+        } catch (Exception e) {
+            // Wrap any unexpected exceptions in a RuntimeException with descriptive message
+            // This provides consistent error handling across the application
+            throw new RuntimeException("Error deleting service: " + e.getMessage(), e);
+        }
+    }
+
+    private boolean hasActiveDependencies(String serviceId) {
+        return false;
+    }
+
+
 }

@@ -1,0 +1,102 @@
+<!--
+    Delete Confirmation Template for Beauty Center Services
+
+    This template provides a user-friendly confirmation interface for service deletion.
+    It displays service details, warning messages, and confirmation actions to prevent
+    accidental deletions while maintaining consistent UI design patterns.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/dashboard/fragments/head :: admin-head}"></head>
+<body class="nk-body npc-default has-apps-sidebar has-sidebar">
+<div class="nk-app-root">
+    <div class="nk-main">
+        <!-- Include common header fragment for consistent navigation -->
+        <div th:replace="~{/dashboard/fragments/header :: admin-header}"></div>
+
+        <!-- Include sidebar fragment for admin menu navigation -->
+        <div th:replace="~{/dashboard/fragments/sidebar :: admin-sidebar}"></div>
+
+        <div class="nk-content">
+            <div class="container-fluid">
+                <div class="nk-content-inner">
+                    <div class="nk-content-body">
+
+                        <!-- Page header with delete icon and title -->
+                        <div class="nk-block-head nk-block-head-sm">
+                            <div class="nk-block-between">
+                                <div class="nk-block-head-content">
+                                    <!-- Red text color indicates destructive action -->
+                                    <h3 class="nk-block-title page-title text-danger">
+                                        <i class="icon ni ni-trash"></i>
+                                        Delete Service
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nk-block">
+                            <div class="row g-gs">
+                                <div class="col-lg-8">
+                                    <div class="card card-bordered">
+                                        <div class="card-inner">
+
+                                            <!-- Warning alert to emphasize the destructive nature of the action -->
+                                            <div class="alert alert-danger">
+                                                <strong>Warning!</strong> You are about to permanently delete this service.
+                                            </div>
+
+                                            <!-- Service details section for user confirmation -->
+                                            <div class="mb-4">
+                                                <h5 class="mb-3">Service Details:</h5>
+
+                                                <!-- Bootstrap description list for clean formatting -->
+                                                <dl class="row">
+                                                    <!-- Service name display -->
+                                                    <dt class="col-sm-3">Name</dt>
+                                                    <dd class="col-sm-9" th:text="${service.name}"></dd>
+
+                                                    <!-- Price with currency symbol -->
+                                                    <dt class="col-sm-3">Price</dt>
+                                                    <dd class="col-sm-9" th:text="'$' + ${service.price}"></dd>
+
+                                                    <!-- Duration with unit label -->
+                                                    <dt class="col-sm-3">Duration</dt>
+                                                    <dd class="col-sm-9" th:text="${service.duration} + ' minutes'"></dd>
+                                                </dl>
+                                            </div>
+
+                                            <!-- Deletion confirmation form -->
+                                            <form th:action="@{/admin/services/delete/{id}(id=${service.serviceId})}"
+                                                  method="POST">
+
+                                                <!-- Action buttons with appropriate styling -->
+                                                <div class="d-flex gap-2">
+                                                    <!-- Confirm deletion button with danger styling -->
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Confirm Delete
+                                                    </button>
+
+                                                    <!-- Cancel button returns to services list -->
+                                                    <a th:href="@{/admin/services}" class="btn btn-secondary">
+                                                        Cancel
+                                                    </a>
+                                                </div>
+
+                                                <!-- CSRF protection token for security -->
+                                                <input type="hidden" th:name="${_csrf.parameterName}"
+                                                       th:value="${_csrf.token}"/>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
