@@ -13,8 +13,13 @@ public class StaffUpdateRequest {
     @NotBlank(message = "User ID is required")
     private String userId;
 
+    // Only allow letters (uppercase/lowercase) and spaces, disallow numbers/special characters
     @NotBlank(message = "Full name is required")
     @Size(max = 100, message = "Full name must not exceed 100 characters")
+    @Pattern(
+            regexp = "^[A-Za-zÀ-ỹà-ỹ\\s]+$",
+            message = "Full name must contain only letters and spaces"
+    )
     private String fullName;
 
     @NotBlank(message = "Email is required")

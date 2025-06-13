@@ -19,7 +19,6 @@ import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
 import vn.edu.fpt.BeautyCenter.service.StaffService;
 
 import jakarta.validation.Valid;
-import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/admin/staff")
@@ -29,6 +28,9 @@ public class StaffController {
 
     StaffService staffService;
 
+    /**
+     * Display paginated list of staff members
+     */
     @GetMapping({"", "/"})
     public String showStaffList(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
@@ -44,6 +46,9 @@ public class StaffController {
         return "admin.staffs/list";
     }
 
+    /**
+     * Handle staff creation
+     */
     @PostMapping("/add")
     public String addStaff(@Valid @ModelAttribute("newStaff") StaffCreationRequest request,
                            BindingResult result,
@@ -52,17 +57,28 @@ public class StaffController {
                            @RequestParam(defaultValue = "0") int page,
                            @RequestParam(defaultValue = "10") int size) {
 
-        // Xử lý lỗi validate từ annotation
+        // If validation fails
         if (result.hasErrors()) {
-            result.getAllErrors().forEach(e -> System.out.println("❌ " + e.getDefaultMessage()));
+            Page<Staff> staffPage = staffService.getStaffPage(PageRequest.of(page, size));
 
+            model.addAttribute("staffList", staffPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", staffPage.getTotalPages());
+            model.addAttribute("pageSize", size);
+            model.addAttribute("formHasError", true);
+            model.addAttribute("showAddModal", true);
+            model.addAttribute("newStaff", request);
+
+            return "admin.staffs/list";
         }
 
         try {
             staffService.addStaff(request);
             redirectAttributes.addFlashAttribute("successMessage", "Staff added successfully!");
             return "redirect:/admin/staff?page=" + page + "&size=" + size;
+
         } catch (AppException e) {
+            // Handle business logic errors, e.g., email already exists
             Page<Staff> staffPage = staffService.getStaffPage(PageRequest.of(page, size));
 
             model.addAttribute("staffList", staffPage.getContent());
@@ -81,17 +97,23 @@ public class StaffController {
         }
     }
 
+    /**
+     * Prevent unwanted binding for sensitive fields (e.g., createdAt)
+     */
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setDisallowedFields("createdAt"); // tránh binding không mong muốn
+        binder.setDisallowedFields("createdAt");
     }
 
+    /**
+     * Update existing staff information
+     */
     @PostMapping("/edit")
     public String updateStaff(@Valid @ModelAttribute StaffUpdateRequest request,
                               BindingResult result,
                               RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
 
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Validation failed. Please check your input.");
             return "redirect:/admin/staff/";
         }
@@ -106,7 +128,9 @@ public class StaffController {
         return "redirect:/admin/staff/";
     }
 
-
+    /**
+     * Toggle staff status (Active/Inactive)
+     */
     @GetMapping("/toggle-status/{id}")
     public String toggleStatus(@PathVariable String id, RedirectAttributes redirectAttributes) {
         Staff staff = staffService.getByUserId(id);

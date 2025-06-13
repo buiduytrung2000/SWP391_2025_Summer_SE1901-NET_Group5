@@ -362,7 +362,6 @@
             modalEl.addEventListener('shown.bs.modal', resetAddStaffForm, { once: true });
         }
     } else {
-        // Nếu modal mở thủ công bằng nút "Add New Staff"
         document.querySelector('[data-bs-target="#addStaffModal"]').addEventListener('click', () => {
             modal.show();
             resetAddStaffForm();
