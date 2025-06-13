@@ -2,6 +2,7 @@ package vn.edu.fpt.BeautyCenter.service;
 
 import vn.edu.fpt.BeautyCenter.entity.User;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
@@ -17,9 +18,8 @@ public interface UserService {
 
     void resetPassword(String email, String password);
 
-    void updateUser(User user);
-
     String getUserName(String serviceId);
 
-    User getUserById(String userId);
+
+    Map<String, String> getAllAuthorsMap();
 }
