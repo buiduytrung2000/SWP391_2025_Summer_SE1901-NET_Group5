@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.fpt.BeautyCenter.dto.request.StaffCreationRequest;
+import vn.edu.fpt.BeautyCenter.dto.request.StaffUpdateRequest;
 import vn.edu.fpt.BeautyCenter.entity.Staff;
 import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
@@ -80,25 +81,30 @@ public class StaffService {
         }
     }
 
-    public void updateStaffFromModal(Staff updatedStaff) {
-        Staff existing = getByUserId(updatedStaff.getUserId());
-        if (existing != null) {
-            String newEmail = updatedStaff.getEmail() != null ? updatedStaff.getEmail().trim() : null;
-
-            if (!existing.getEmail().equals(newEmail) && staffRepository.existsByEmail(newEmail)) {
-                throw new AppException(ErrorCode.STAFF_EMAIL_EXISTED);
-            }
-
-            existing.setFullName(updatedStaff.getFullName() != null ? updatedStaff.getFullName().trim() : null);
-            existing.setEmail(newEmail);
-            existing.setPhone(updatedStaff.getPhone() != null ? updatedStaff.getPhone().trim() : null);
-            existing.setPosition(updatedStaff.getPosition() != null ? updatedStaff.getPosition().trim() : null);
-            existing.setCreatedAt(updatedStaff.getCreatedAt());
-            existing.setGender(updatedStaff.getGender());
-
-            staffRepository.save(existing);
+    public void updateStaffFromDto(StaffUpdateRequest dto) {
+        Staff existing = getByUserId(dto.getUserId());
+        if (existing == null) {
+            throw new AppException(ErrorCode.STAFF_NOT_FOUND);
         }
+
+        String newEmail = dto.getEmail() != null ? dto.getEmail().trim() : null;
+        if (!existing.getEmail().equals(newEmail) && staffRepository.existsByEmail(newEmail)) {
+            throw new AppException(ErrorCode.STAFF_EMAIL_EXISTED);
+        }
+
+        existing.setFullName(dto.getFullName().trim());
+        existing.setEmail(newEmail);
+        existing.setPhone(dto.getPhone().trim());
+        existing.setPosition(dto.getPosition().trim());
+        existing.setGender(Staff.Gender.valueOf(dto.getGender()));
+        if (dto.getStartDate() != null) {
+            existing.setCreatedAt(dto.getStartDate().atStartOfDay());
+        }
+
+        staffRepository.save(existing);
     }
+
+
 
 
     public void validateStaff(StaffCreationRequest request, boolean isEdit, String currentEmail) {

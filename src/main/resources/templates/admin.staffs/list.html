@@ -47,14 +47,7 @@
                                                 <tbody>
                                                 <tr th:each="staff : ${staffList}">
                                                     <td>
-                                                        <img th:src="${staff.avatarUrl != null and #strings.contains(staff.avatarUrl, 'http')}"
-                                                             th:attr="src=${staff.avatarUrl}"
-                                                             alt="Photo" width="60" height="60" style="object-fit: cover;" />
-
-                                                        <img th:if="${staff.avatarUrl == null or !#strings.contains(staff.avatarUrl, 'http')}"
-                                                             th:src="@{'/uploads/' + ${staff.avatarUrl != null ? staff.avatarUrl : 'default-avatar.png'}}"
-                                                             alt="Photo" width="60" height="60" style="object-fit: cover;" />
-
+                                                        <img th:src="@{'/uploads/' + ${staff.avatarUrl}}" alt="Photo" width="60" height="60" style="object-fit: cover;">
                                                     </td>
                                                     <td th:text="${staff.fullName}">Full Name</td>
                                                     <td th:text="${staff.email}">email@example.com</td>
@@ -110,7 +103,7 @@
                     </div>
                 </div>
 
-<!--                <div th:replace="~{/dashboard/fragments/footer :: admin-scripts}"></div>-->
+                <div th:replace="~{/dashboard/fragments/footer :: admin-scripts}"></div>
             </div>
         </div>
     </div>
@@ -144,6 +137,7 @@
                                     <label class="form-label">Email Address</label>
                                     <input type="email" th:field="*{email}" class="form-control" required />
                                     <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
+                                    <div th:if="${emailError}" class="text-danger" th:text="${emailError}"></div>
                                 </div>
 
                                 <div class="form-group mb-3">
@@ -151,8 +145,6 @@
                                     <input type="text" th:field="*{phone}" class="form-control" required />
                                     <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></div>
                                 </div>
-                                <input type="hidden" th:field="*{username}" />
-                                <input type="hidden" th:field="*{password}" />
                                 <div class="form-group mb-3">
                                     <label class="form-label d-block">Gender</label>
                                     <div class="form-check form-check-inline">
@@ -230,7 +222,7 @@
     <div class="modal fade" th:id="'staffDetailModal__' + ${staff.userId}" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content card card-bordered">
-                <form th:action="@{/admin/staff/edit}" method="post">
+                <form th:action="@{/admin/staff/edit}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="userId" th:value="${staff.userId}" />
 
                     <div class="card-inner">
@@ -253,19 +245,19 @@
                                     <div class="form-group mb-3">
                                         <label class="form-label">Full Name</label>
                                         <span class="form-control-plaintext view-only" th:text="${staff.fullName}"></span>
-                                        <input name="fullName" class="form-control edit-only d-none" th:value="${staff.fullName}" />
+                                        <input type="text" name="fullName" class="form-control edit-only d-none" th:value="${staff.fullName}" />
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label class="form-label">Email</label>
                                         <span class="form-control-plaintext view-only" th:text="${staff.email}"></span>
-                                        <input name="email" class="form-control edit-only d-none" th:value="${staff.email}" />
+                                        <input type="email" name="email" class="form-control edit-only d-none" th:value="${staff.email}" />
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label class="form-label">Phone</label>
                                         <span class="form-control-plaintext view-only" th:text="${staff.phone}"></span>
-                                        <input name="phone" class="form-control edit-only d-none" th:value="${staff.phone}" />
+                                        <input type="text" name="phone" class="form-control edit-only d-none" th:value="${staff.phone}" />
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -302,7 +294,7 @@
                                     <div class="form-group mb-3">
                                         <label class="form-label">Start Date</label>
                                         <span class="form-control-plaintext view-only" th:text="${#temporals.format(staff.createdAt, 'dd/MM/yyyy')}"></span>
-                                        <input type="date" name="createdAt" class="form-control edit-only d-none"
+                                        <input type="date" name="startDate" class="form-control edit-only d-none"
                                                th:value="${#temporals.format(staff.createdAt, 'yyyy-MM-dd')}" />
                                     </div>
 
@@ -331,8 +323,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

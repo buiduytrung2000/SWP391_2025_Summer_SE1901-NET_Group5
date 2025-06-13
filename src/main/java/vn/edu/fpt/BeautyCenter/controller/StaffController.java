@@ -12,6 +12,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.StaffCreationRequest;
+import vn.edu.fpt.BeautyCenter.dto.request.StaffUpdateRequest;
 import vn.edu.fpt.BeautyCenter.entity.Staff;
 import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
@@ -54,17 +55,7 @@ public class StaffController {
         // Xử lý lỗi validate từ annotation
         if (result.hasErrors()) {
             result.getAllErrors().forEach(e -> System.out.println("❌ " + e.getDefaultMessage()));
-            Page<Staff> staffPage = staffService.getStaffPage(PageRequest.of(page, size));
 
-            model.addAttribute("staffList", staffPage.getContent());
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", staffPage.getTotalPages());
-            model.addAttribute("pageSize", size);
-            model.addAttribute("newStaff", request);
-            model.addAttribute("formHasError", true);
-            model.addAttribute("showAddModal", true);
-
-            return "admin.staffs/list";
         }
 
         try {
@@ -96,21 +87,25 @@ public class StaffController {
     }
 
     @PostMapping("/edit")
-    public String updateStaff(@ModelAttribute Staff staff,
-                              @RequestParam("createdAt") String createdAtStr,
+    public String updateStaff(@Valid @ModelAttribute StaffUpdateRequest request,
+                              BindingResult result,
                               RedirectAttributes redirectAttributes) {
-        LocalDate localDate = LocalDate.parse(createdAtStr);
-        staff.setCreatedAt(localDate.atStartOfDay());
+        if (result.hasErrors()) {
 
-        Staff existing = staffService.getByUserId(staff.getUserId());
-        if (existing != null) {
-            staff.setRole(existing.getRole());
+            redirectAttributes.addFlashAttribute("errorMessage", "Validation failed. Please check your input.");
+            return "redirect:/admin/staff/";
         }
 
-        staffService.updateStaffFromModal(staff);
-        redirectAttributes.addFlashAttribute("successMessage", "Staff updated successfully!");
+        try {
+            staffService.updateStaffFromDto(request);
+            redirectAttributes.addFlashAttribute("successMessage", "Staff updated successfully!");
+        } catch (AppException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+
         return "redirect:/admin/staff/";
     }
+
 
     @GetMapping("/toggle-status/{id}")
     public String toggleStatus(@PathVariable String id, RedirectAttributes redirectAttributes) {
