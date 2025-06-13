@@ -83,13 +83,18 @@ public class Staff {
     }
 
 
+    /**
+     * Automatically set creation and update timestamp before saving a new record.
+     */
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = createdAt;
     }
-
+    /**
+     * Automatically update the timestamp when modifying an existing record.
+     */
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
