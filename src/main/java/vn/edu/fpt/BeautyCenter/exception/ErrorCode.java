@@ -44,11 +44,10 @@ public enum ErrorCode {
 
     /** Requested service could not be found. */
     SERVICE_NOT_FOUND(3001, "Service not found"),
+    STAFF_NOT_FOUND(2001, "Staff not found"),
 
-    STAFF_EMAIL_INVALID(2000, "Invalid email format"),
-    STAFF_PHONE_INVALID(2001, "Invalid phone number format"),
-    STAFF_EMAIL_EXISTED(2002, "Email already exists"),
-    STAFF_GENDER_REQUIRED(2003, "Please select a gender");
+    STAFF_EMAIL_EXISTED(2002, "Email already exists");
+
 
     /**
      * Constructs an error code definition.
