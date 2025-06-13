@@ -9,7 +9,11 @@ import java.time.LocalDate;
 
 @Data
 public class StaffCreationRequest {
-    // Only allow letters (uppercase/lowercase) and spaces, disallow numbers/special characters
+
+    /**
+     * Full name of the staff.
+     * Must only contain letters (including Vietnamese accented letters) and spaces.
+     */
     @NotBlank(message = "Full name is required")
     @Size(max = 100, message = "Full name must not exceed 100 characters")
     @Pattern(
@@ -18,6 +22,10 @@ public class StaffCreationRequest {
     )
     private String fullName;
 
+    /**
+     * Email address used for login and contact.
+     * Must follow valid email format and end with .com.
+     */
     @NotBlank(message = "Email is required")
     @Size(max = 100, message = "Email must not exceed 100 characters")
     @Pattern(
@@ -26,29 +34,59 @@ public class StaffCreationRequest {
     )
     private String email;
 
+    /**
+     * Phone number of the staff.
+     * Must start with 0 and have exactly 10 digits.
+     */
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^0\\d{9}$", message = "Phone number must start with 0 and contain 10 digits")
+    @Pattern(
+            regexp = "^0\\d{9}$",
+            message = "Phone number must start with 0 and contain 10 digits"
+    )
     private String phone;
 
+    /**
+     * Gender must be one of: Male, Female, or Other.
+     */
     @NotBlank(message = "Gender is required")
-    @Pattern(regexp = "Male|Female|Other", message = "Gender must be Male, Female or Other")
+    @Pattern(
+            regexp = "Male|Female|Other",
+            message = "Gender must be Male, Female or Other"
+    )
     private String gender;
 
+    /**
+     * Optional role of the user (e.g., Staff, Admin).
+     */
     @Size(max = 50, message = "Role must not exceed 50 characters")
     private String role;
 
+    /**
+     * Job title or position of the staff.
+     */
     @NotBlank(message = "Position is required")
     @Size(max = 100, message = "Position must not exceed 100 characters")
     private String position;
 
+    /**
+     * Password (optional, usually auto-generated or fixed for creation).
+     */
     private String password;
 
+    /**
+     * Username for system login (usually equals email).
+     */
     private String username;
 
-
-//    @PastOrPresent(message = "Start date cannot be in the future")
+    /**
+     * Start date of employment or profile creation.
+     * Expected in yyyy-MM-dd format from form input.
+     */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
+    /**
+     * Avatar image uploaded by user (optional).
+     */
     private MultipartFile avatar;
 }

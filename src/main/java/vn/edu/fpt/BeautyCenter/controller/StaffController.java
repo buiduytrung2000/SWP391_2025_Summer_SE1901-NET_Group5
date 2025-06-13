@@ -109,13 +109,19 @@ public class StaffController {
      * Update existing staff information
      */
     @PostMapping("/edit")
-    public String updateStaff(@Valid @ModelAttribute StaffUpdateRequest request,
+    public String updateStaff(@Valid @ModelAttribute("updateStaff") StaffUpdateRequest request,
                               BindingResult result,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes,
+                              Model model,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size) {
 
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Validation failed. Please check your input.");
-            return "redirect:/admin/staff/";
+            Page<Staff> staffPage = staffService.getStaffPage(PageRequest.of(page, size));
+            model.addAttribute("staffList", staffPage.getContent());
+            model.addAttribute("updateStaff", request);
+            model.addAttribute("showUpdateModal", request.getUserId());
+            return "admin.staffs/list";
         }
 
         try {
