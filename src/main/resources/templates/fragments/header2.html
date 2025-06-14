@@ -279,7 +279,7 @@
                                         style="color: black; margin-left:15px"></i>
 
                             </a>
-                            <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle"
+                            <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle" data-bs-toggle="dropdown"
                             >
                                 <img id="avatar"
                                      class="wt-cart cart-btn dropdown-toggle"
@@ -298,10 +298,10 @@
                                 <div class="nav-cart-content">
                                     <div class="nav-cart-items p-a15">
                                         <div class="nav-cart-item clearfix">
-                                            <a href="@{/logout}">Logout</a>
+                                            <a th:href="@{/logout}">Logout</a>
                                         </div>
                                         <div class="nav-cart-item clearfix">
-                                            <a href="@{/edit_profile}">Profile</a>
+                                            <a th:href="@{/edit_profile}">Profile</a>
 
                                         </div>
                                     </div>

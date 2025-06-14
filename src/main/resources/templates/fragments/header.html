@@ -361,7 +361,7 @@
                    class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i>
 
               </a>
-              <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle">
+              <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle" data-bs-toggle="dropdown">
               <img id="avatar"
 
 
@@ -373,19 +373,20 @@
                  th:if="${session.user != null && session.userAvatar == null}"
 
                  class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i></a>
-              <div class="dropdown-menu cart-dropdown-item-wraper">
+              <div th:if="${session.user != null}" class="dropdown-menu cart-dropdown-item-wraper">
                 <div class="nav-cart-content">
                   <div class="nav-cart-items p-a15">
                     <div class="nav-cart-item clearfix">
-                      <a href="@{/logout}">Logout</a>
+                      <a th:href="@{/logout}">Logout</a>
                     </div>
                     <div class="nav-cart-item clearfix">
-                      <a href="@{/edit_profile}">Profile</a>
+                      <a th:href="@{/edit_profile}">Profile</a>
 
                     </div>
                   </div>
                 </div>
               </div>
+
           </div>
           <!-- SITE Search -->
           <div id="search">
