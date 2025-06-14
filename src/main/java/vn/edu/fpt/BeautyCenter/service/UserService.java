@@ -22,4 +22,8 @@ public interface UserService {
 
 
     Map<String, String> getAllAuthorsMap();
+
+    void updateUser(User sessionUser);
+
+    User getUserById(String userId);
 }
