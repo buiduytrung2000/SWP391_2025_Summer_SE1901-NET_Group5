@@ -350,96 +350,21 @@
                     </span>
               </a>
 
-              <div class="dropdown-menu cart-dropdown-item-wraper">
-                <div class="nav-cart-content">
-                  <div class="nav-cart-items p-a15">
-                    <div class="nav-cart-item clearfix">
-                      <div class="nav-cart-item-image">
-                        <a th:href="@{/#}"
-                        ><img th:src="@{/images/cart/pic-1.jpg}" alt="p-1"
-                        /></a>
-                      </div>
-                      <div class="nav-cart-item-desc">
-                        <a th:href="@{/#}">Safety helmet</a>
-                        <span class="nav-cart-item-price"
-                        ><strong>2</strong> x $19.99</span
-                        >
-                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                      </div>
-                    </div>
-                    <div class="nav-cart-item clearfix">
-                      <div class="nav-cart-item-image">
-                        <a th:href="@{/#}"
-                        ><img th:src="@{/images/cart/pic-2.jpg}" alt="p-2"
-                        /></a>
-                      </div>
-                      <div class="nav-cart-item-desc">
-                        <a th:href="@{/#}">Hammer drill machine</a>
-                        <span class="nav-cart-item-price"
-                        ><strong>1</strong> x $24.99</span
-                        >
-                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                      </div>
-                    </div>
-                    <div class="nav-cart-item clearfix">
-                      <div class="nav-cart-item-image">
-                        <a th:href="@{/#}"
-                        ><img th:src="@{/images/cart/pic-3.jpg}" alt="p-1"
-                        /></a>
-                      </div>
-                      <div class="nav-cart-item-desc">
-                        <a th:href="@{/#}">Safety helmet</a>
-                        <span class="nav-cart-item-price"
-                        ><strong>2</strong> x $19.99</span
-                        >
-                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                      </div>
-                    </div>
-                    <div class="nav-cart-item clearfix">
-                      <div class="nav-cart-item-image">
-                        <a th:href="@{/#}"
-                        ><img th:src="@{/images/cart/pic-4.jpg}" alt="p-2"
-                        /></a>
-                      </div>
-                      <div class="nav-cart-item-desc">
-                        <a th:href="@{/#}">Hammer drill machine</a>
-                        <span class="nav-cart-item-price"
-                        ><strong>1</strong> x $24.99</span
-                        >
-                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="nav-cart-title p-tb10 p-lr15 clearfix">
-                    <h4 class="pull-left m-a0">Subtotal:</h4>
-                    <h5 class="pull-right m-a0">$114.95</h5>
-                  </div>
-                  <div class="nav-cart-action p-a15 clearfix">
-                    <button
-                            class="site-button btn-block m-b15"
-                            type="button"
-                    >
-                      View Cart
-                    </button>
-                    <button class="site-button btn-block" type="button">
-                      Checkout
-                    </button>
-                  </div>
-                </div>
-              </div>
+
             </div>
 
             <div class="extra-cell" style="width: 40.3px">
               <a th:href="@{/login}"
                  th:if="${session.user == null}"
-                 class="wt-cart cart-btn dropdown-toggle"
                  >
                 <i
                    class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i>
 
               </a>
-              <a href="javascript:;">
+              <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle">
               <img id="avatar"
+
+
                    th:if="${session.user != null && session.userAvatar != null}"
                    th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}"
                    style="width: 121px !important; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; margin-left:15px"
@@ -449,7 +374,17 @@
 
                  class="fa-duotone fa-solid fa-circle-user fa-2xl" style="color: white; margin-left:15px"></i></a>
               <div class="dropdown-menu cart-dropdown-item-wraper">
-                Logout
+                <div class="nav-cart-content">
+                  <div class="nav-cart-items p-a15">
+                    <div class="nav-cart-item clearfix">
+                      <a href="@{/logout}">Logout</a>
+                    </div>
+                    <div class="nav-cart-item clearfix">
+                      <a href="@{/edit_profile}">Profile</a>
+
+                    </div>
+                  </div>
+                </div>
               </div>
           </div>
           <!-- SITE Search -->

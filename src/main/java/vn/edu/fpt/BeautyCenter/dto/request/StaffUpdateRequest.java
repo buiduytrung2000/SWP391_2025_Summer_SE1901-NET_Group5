@@ -8,7 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 
 @Data
-public class StaffCreationRequest {
+public class StaffUpdateRequest {
+
+    @NotBlank(message = "User ID is required")
+    private String userId;
 
     @NotBlank(message = "Full name is required")
     @Size(max = 100, message = "Full name must not exceed 100 characters")
@@ -30,21 +33,12 @@ public class StaffCreationRequest {
     @Pattern(regexp = "Male|Female|Other", message = "Gender must be Male, Female or Other")
     private String gender;
 
-    @Size(max = 50, message = "Role must not exceed 50 characters")
-    private String role;
-
     @NotBlank(message = "Position is required")
     @Size(max = 100, message = "Position must not exceed 100 characters")
     private String position;
 
-    private String password;
-
-    private String username;
-
-
-//    @PastOrPresent(message = "Start date cannot be in the future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    private MultipartFile avatar;
+//    private MultipartFile avatar;
 }
