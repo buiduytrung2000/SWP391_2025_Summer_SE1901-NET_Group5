@@ -62,6 +62,7 @@ public class EditUserController {
         User updatedUser = userService.getUserById(sessionUser.getUserId());
         session.setAttribute("user", updatedUser);
 
-        return "customer/editCustomer";
+        return "redirect:/edit_profile";
+
     }
 }
