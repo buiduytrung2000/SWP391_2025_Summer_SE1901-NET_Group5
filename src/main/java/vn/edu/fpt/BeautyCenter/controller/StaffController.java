@@ -118,20 +118,24 @@ public class StaffController {
 
         if (result.hasErrors()) {
             Page<Staff> staffPage = staffService.getStaffPage(PageRequest.of(page, size));
+
             model.addAttribute("staffList", staffPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", staffPage.getTotalPages());
+            model.addAttribute("pageSize", size);
+
+            // 👇 Gửi lại data cần thiết để mở đúng modal
             model.addAttribute("updateStaff", request);
-            model.addAttribute("showUpdateModal", request.getUserId());
+            model.addAttribute("editingStaffId", request.getUserId());
+            model.addAttribute("formHasError", true);
+            model.addAttribute("newStaff", new StaffCreationRequest());
+
             return "admin.staffs/list";
         }
 
-        try {
-            staffService.updateStaffFromDto(request);
-            redirectAttributes.addFlashAttribute("successMessage", "Staff updated successfully!");
-        } catch (AppException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-        }
-
-        return "redirect:/admin/staff/";
+        staffService.updateStaffFromDto(request);
+        redirectAttributes.addFlashAttribute("successMessage", "Staff updated successfully!");
+        return "redirect:/admin/staff?page=" + page + "&size=" + size;
     }
 
     /**
