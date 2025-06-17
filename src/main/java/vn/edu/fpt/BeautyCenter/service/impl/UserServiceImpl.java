@@ -190,6 +190,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void updateUser(User sessionUser) {
+        userRepository.save(sessionUser);
+    }
+
+    @Override
+    public User getUserById(String userId) {
+        User user= userRepository.findById(userId).orElse(null);
+        return user;
+    }
+
     /**
      * Builds a user-friendly display name from user entity information.
      * <p>
