@@ -17,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 /**
  * Join table entity for managing the many-to-many relationship between services and tags.
  * <p>
- * Uses a composite primary key ({@link SerivceTagMapId}) to map service-tag associations.
+ * Uses a composite primary key ({@link ServiceTagMapId}) to map service-tag associations.
  * </p>
  */
 @Entity
@@ -32,7 +32,7 @@ public class SerivceTagMap {
 
     /** Composite primary key containing service_id and tag_id references. */
     @EmbeddedId
-    private SerivceTagMapId id;
+    private ServiceTagMapId id;
 
     /**
      * Service entity associated with this mapping.

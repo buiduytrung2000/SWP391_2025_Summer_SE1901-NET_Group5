@@ -11,6 +11,7 @@ package vn.edu.fpt.BeautyCenter.repository;
  */
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import vn.edu.fpt.BeautyCenter.entity.ServiceTag;
 
@@ -41,4 +42,19 @@ public interface ServiceTagRepository extends JpaRepository<ServiceTag, Integer>
      * @return list of matching ServiceTag entities
      */
     List<ServiceTag> findByTagNameIn(List<String> tagNames);
+
+    /**
+     * Retrieves all distinct tag names from the service tag system.
+     * <p>
+     * This query method fetches unique tag names across all service tags,
+     * providing the foundation for filter dropdown population and tag
+     * management interfaces. Results are automatically sorted alphabetically
+     * for consistent user experience.
+     * </p>
+     *
+     * @return list of unique tag names sorted alphabetically
+     */
+    @Query("SELECT DISTINCT st.tagName FROM ServiceTag st ORDER BY st.tagName ASC")
+    List<String> findAllDistinctTagNames();
+
 }

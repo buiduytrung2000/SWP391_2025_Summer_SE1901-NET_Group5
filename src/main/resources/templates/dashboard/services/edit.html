@@ -25,7 +25,7 @@
                 </div>
               </div>
               <div class="nk-block">
-                <form th:action="@{/admin/services/add}" th:object="${serviceUpdateRequest}"
+                <form th:action="@{/admin/services/edit/{id}(id=${service.serviceId})}" th:object="${serviceUpdateRequest}"
                       enctype="multipart/form-data" method="POST">
                   <!-- General notifications (success/error from redirect) -->
                   <div th:replace="~{fragments/notifications :: notification}"></div>

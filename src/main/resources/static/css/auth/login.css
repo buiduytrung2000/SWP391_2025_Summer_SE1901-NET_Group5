@@ -1,0 +1,22 @@
+body {
+        background-color: #f8f9fa;
+    }
+    .login-container {
+        width: 400px;
+        padding: 30px;
+        background-color: white;
+        border-radius: 10px;
+        /*margin: 0 auto;*/
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .login-title {
+        color: #9b4e9b;
+        font-weight: bold;
+    }
+    .btn-purple {
+        background-color: #9b4e9b;
+        color: white;
+    }
+    .btn-purple:hover {
+        background-color: #803a80;
+    }

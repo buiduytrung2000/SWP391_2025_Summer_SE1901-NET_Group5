@@ -1,282 +1,370 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header2::common-head}">
-    <title th:text="${pageTitle}">Default Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<head th:replace="~{/dashboard/fragments/head :: admin-head}">
+    <title>Staff List</title>
 </head>
-<body id="bg">
-<div class="page-wraper">
+<body class="nk-body npc-default has-apps-sidebar has-sidebar">
+<div class="nk-app-root">
+    <div class="nk-main">
+        <div class="nk-wrap">
+            <div class="nk-header nk-header-fixed" th:replace="~{/dashboard/fragments/header :: admin-header}"></div>
+            <div class="nk-sidebar" data-content="sidebarMenu" th:replace="~{/dashboard/fragments/sidebar :: admin-sidebar}"></div>
 
-    <!-- HEADER -->
-    <header th:replace="~{fragments/header2::header}"></header>
+            <div class="nk-content">
+                <div class="container-fluid">
+                    <div class="nk-content-inner">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">All Staff Members</h3>
+                                    </div>
+                                    <div class="nk-block-head-content">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">Add New Staff</button>
+                                    </div>
+                                </div>
+                            </div>
 
-    <div class="page-content">
-        <!-- BREADCRUMB -->
-        <div class="bg-gray-light p-tb20">
-            <div class="container">
-                <ul class="wt-breadcrumb breadcrumb-style-1">
-                    <li><a href="javascript:void(0);">Home</a></li>
-                    <li>Staff</li>
-                </ul>
+                            <div class="nk-block">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead class="bg-light">
+                                                <tr>
+                                                    <th>Photo</th>
+                                                    <th>Full Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Gender</th>
+                                                    <th>Role</th>
+                                                    <th>Position</th>
+                                                    <th>Start Date</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="staff : ${staffList}">
+                                                    <td>
+                                                        <img th:src="@{'/uploads/' + ${staff.avatarUrl}}" alt="Photo" width="60" height="60" style="object-fit: cover;">
+                                                    </td>
+                                                    <td th:text="${staff.fullName}">Full Name</td>
+                                                    <td th:text="${staff.email}">email@example.com</td>
+                                                    <td th:text="${staff.phone}">123456789</td>
+                                                    <td th:text="${staff.gender}">Male</td>
+                                                    <td th:text="${staff.role}">Admin</td>
+                                                    <td th:text="${staff.position}">sale</td>
+                                                    <td th:text="${#temporals.format(staff.createdAt, 'dd/MM/yyyy')}"></td>
+                                                    <td>
+                                                        <span th:text="${staff.status}"
+                                                              th:classappend="${staff.status?.name() == 'active'} ? 'text-success fw-bold' : 'text-danger fw-bold'">
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-info btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                th:attr="data-bs-target='#staffDetailModal__' + ${staff.userId}">
+                                                            Detail
+                                                        </button>
+                                                        <a th:href="@{/admin/staff/toggle-status/{id}(id=${staff.userId})}"
+                                                           class="btn btn-sm"
+                                                           th:classappend="${staff.status?.name() == 'active'} ? 'btn-warning' : 'btn-success'"
+                                                           th:text="${staff.status?.name() == 'active'} ? 'Deactivate' : 'Activate'">
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Pagination -->
+                                        <nav th:if="${totalPages > 1}" aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center mt-4">
+                                                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                                    <a class="page-link" th:href="@{/admin/staff/(page=${currentPage - 1}, size=${pageSize})}">Previous</a>
+                                                </li>
+                                                <li class="page-item"
+                                                    th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                                    th:classappend="${i == currentPage} ? 'active'">
+                                                    <a class="page-link" th:href="@{/admin/staff/(page=${i}, size=${pageSize})}" th:text="${i + 1}">1</a>
+                                                </li>
+                                                <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                                    <a class="page-link" th:href="@{/admin/staff/(page=${currentPage + 1}, size=${pageSize})}">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div th:replace="~{/dashboard/fragments/footer :: admin-scripts}"></div>
             </div>
         </div>
-
-        <!-- MAIN TABLE SECTION -->
-        <div class="section-full p-t80 p-b50">
-            <div class="container">
-                <div class="section-head">
-                    <h3 class="text-uppercase">All Staff Members</h3>
-                </div>
-
-                <!-- Button mở modal -->
-                <div class="text-right m-t20">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">Add New Staff</button>
-                </div>
-
-                <!-- Bảng danh sách -->
-                <div class="table-responsive m-t20">
-                    <table class="table table-bordered table-striped">
-                        <thead class="bg-light">
-                        <tr>
-                            <th>Photo</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Gender</th>
-                            <th>Role</th>
-                            <th>Position</th>
-                            <th>Start Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="staff : ${staffList}">
-                            <td>
-                                <img th:src="@{'/uploads/' + ${staff.avatarUrl}}" alt="Photo" width="60" height="60" style="border-radius: 0; object-fit: cover;">
-                            </td>
-                            <td th:text="${staff.fullName}">Full Name</td>
-                            <td th:text="${staff.email}">email@example.com</td>
-                            <td th:text="${staff.phone}">123456789</td>
-                            <td th:text="${staff.gender}">Male</td>
-                            <td th:text="${staff.role}">Admin</td>
-                            <td th:text="${staff.position}">sale</td>
-                            <td th:text="${#temporals.format(staff.createdAt, 'dd/MM/yyyy')}"></td>
-                            <td>
-                                <span th:text="${staff.status}"
-                                      th:classappend="${staff.status?.name() == 'active'} ? 'text-success fw-bold' : 'text-danger fw-bold'">
-                                </span>
-                            </td>
-                            <td>
-                                <button class="btn btn-info btn-sm"
-                                        data-bs-toggle="modal"
-                                        th:attr="data-bs-target='#staffDetailModal__' + ${staff.userId}">
-                                    Detail
-                                </button>
-                                <a th:href="@{/admin/staff/toggle-status/{id}(id=${staff.userId})}"
-                                   class="btn btn-sm"
-                                   th:classappend="${staff.status?.name() == 'active'} ? 'btn-warning' : 'btn-success'"
-                                   th:text="${staff.status?.name() == 'active'} ? 'Deactivate' : 'Activate'">
-                                </a>
-
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <nav th:if="${totalPages > 1}" aria-label="Page navigation">
-                    <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                            <a class="page-link" th:href="@{/admin/staff/(page=${currentPage - 1}, size=${pageSize})}">Previous</a>
-                        </li>
-
-                        <li class="page-item"
-                            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                            th:classappend="${i == currentPage} ? 'active'">
-                            <a class="page-link" th:href="@{/admin/staff/(page=${i}, size=${pageSize})}" th:text="${i + 1}">1</a>
-                        </li>
-
-                        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-                            <a class="page-link" th:href="@{/admin/staff/(page=${currentPage + 1}, size=${pageSize})}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-
-            </div>
-        </div>
-
-        <!-- FOOTER -->
-        <footer th:replace="~{fragments/footer :: footer}"></footer>
-        <button class="scroll"><span class="icon moon-house relative" id="btn-vibrate"></span>Top</button>
     </div>
 </div>
+
+
 
 <!-- Modal Add Staff -->
 <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content p-6" style="background-color: #ffeef1; border-radius: 20px;">
+        <div class="modal-content card card-bordered">
             <form th:action="@{/admin/staff/add}" th:object="${newStaff}" method="post" enctype="multipart/form-data">
-                <div class="modal-header border-0">
-                    <h3 class="modal-title w-100 text-center" style="background-color: #e88f96; color: white; border-radius: 15px; padding: 10px;">
-                        Add New Staff Member
-                    </h3>
-                </div>
-                <div class="modal-body row px-4">
-                    <div class="col-md-6">
-                        <h5 class="mb-3" style="color: #e88f96;"><strong>Personal Information</strong></h5>
-                        <div class="mb-3">
-                            <label>Full Name</label>
-                            <input type="text" th:field="*{fullName}" class="form-control" required />
-                        </div>
-                        <div class="mb-3">
-                            <label>Email Address</label>
-                            <input type="email" th:field="*{email}" class="form-control" required />
-                            <div th:if="${emailError}" class="text-danger mt-1" th:text="${emailError}"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label>Phone Number</label>
-                            <input type="text" th:field="*{phone}" class="form-control" required />
-                            <div th:if="${phoneError}" class="text-danger mt-1" th:text="${phoneError}"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label><strong>Gender</strong></label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:field="*{gender}" value="Male" id="genderMale">
-                                <label class="form-check-label" for="genderMale">Male</label>
-
-                                <input class="form-check-input" type="radio" th:field="*{gender}" value="Female" id="genderFemale">
-                                <label class="form-check-label" for="genderFemale">Female</label>
-
-                                <input class="form-check-input" type="radio" th:field="*{gender}" value="Other" id="genderOther">
-                                <label class="form-check-label" for="genderOther">Other</label>
-                            </div>
-                            <div th:if="${genderError}" class="text-danger mt-1" th:text="${genderError}"></div>
-                        </div>
+                <div class="card-inner">
+                    <div class="modal-header border-bottom pb-2">
+                        <h4 class="modal-title w-100 text-center text-danger fw-bold">Add New Staff Member</h4>
                     </div>
 
-                    <div class="col-md-6">
-                        <h5 class="mb-3" style="color: #e88f96;"><strong>Professional Details</strong></h5>
-                        <div class="mb-3">
-                            <label>Position</label>
-                            <select th:field="*{position}" class="form-select" required>
-                                <option value="it">IT</option>
-                                <option value="sale">Sale</option>
-                                <option value="Manager">Manager</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label>Start Date</label>
-                            <input type="date" th:field="*{startDate}" class="form-control" required />
-                        </div>
-                        <div class="mb-3">
-                            <label>Upload Photo</label>
-                            <div class="border border-danger-subtle border-2 text-center py-3" style="border-style: dashed; color: #e88f96; border-radius: 10px;">
-                                <label for="uploadInput" style="cursor: pointer; color: #e88f96;">Click to upload</label>
-                                <input type="file" id="uploadInput" th:field="*{avatar}" class="d-none" accept="image/*" onchange="previewImage(event)" />
-                                <div class="mt-1" style="font-size: 12px;">JPEG/PNG, max 10MB</div>
+                    <div class="modal-body">
+                        <div class="row g-4">
+                            <!-- Personal Information -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary fw-semibold border-bottom pb-1 mb-3">Personal Information</h6>
 
-                                <!-- Preview -->
-                                <div class="mt-3">
-                                    <img id="avatarPreview" src="#" alt="Image Preview" style="max-width: 120px; display: none; border-radius: 8px; margin: auto;"  />
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" th:field="*{fullName}" class="form-control" required />
+                                    <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="text-danger"></div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" th:field="*{email}" class="form-control" required />
+                                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
+                                    <div th:if="${emailError}" class="text-danger" th:text="${emailError}"></div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" th:field="*{phone}" class="form-control" required />
+                                    <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label d-block">Gender</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" value="Male" id="genderMale">
+                                        <label class="form-check-label" for="genderMale">Male</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" value="Female" id="genderFemale">
+                                        <label class="form-check-label" for="genderFemale">Female</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" value="Other" id="genderOther">
+                                        <label class="form-check-label" for="genderOther">Other</label>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="text-danger"></div>
+
+                                </div>
+                            </div>
+
+                            <!-- Professional Information -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary fw-semibold border-bottom pb-1 mb-3">Professional Details</h6>
+
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Position</label>
+                                    <select th:field="*{position}" class="form-select" required>
+                                        <option value="">-- Select Position --</option>
+                                        <option value="it">IT</option>
+                                        <option value="sale">Sale</option>
+                                        <option value="Manager">Manager</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" th:field="*{startDate}" class="form-control" required />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Upload Photo</label>
+                                    <div class="border border-dashed rounded text-center p-3"
+                                         style="color: #e88f96;">
+                                        <label for="uploadInput" style="cursor: pointer;">Click to upload</label>
+                                        <input type="file" id="uploadInput" th:field="*{avatar}"
+                                               class="d-none" accept="image/*" onchange="previewImage(event)" />
+                                        <div class="mt-1" style="font-size: 12px;">JPEG/PNG, max 10MB</div>
+                                        <div class="mt-3">
+                                            <img id="avatarPreview" src="#" alt="Image Preview"
+                                                 style="max-width: 120px; display: none; border-radius: 8px;" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="modal-footer justify-content-center border-0 mt-3">
-                    <button type="button"
-                            class="btn btn-outline-danger px-4"
-                            data-bs-dismiss="modal"
-                            onclick="resetAddStaffForm()"
-                            style="border-radius: 30px;">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn btn-danger px-5" style="border-radius: 30px;">Save</button>
+                    <div class="modal-footer justify-content-center border-top pt-3">
+                        <button type="button"
+                                class="btn btn-light"
+                                data-bs-dismiss="modal"
+                                onclick="resetAddStaffForm()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4">Save</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+
 <!-- Modal Detail cho từng staff -->
 <div th:each="staff : ${staffList}">
     <div class="modal fade" th:id="'staffDetailModal__' + ${staff.userId}" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content p-4" style="background-color: #fff5f6; border-radius: 16px;">
-                <form th:action="@{/admin/staff/edit}" method="post">
+            <div class="modal-content card card-bordered">
+                <form th:action="@{/admin/staff/edit}" th:object="${updateStaff}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="userId" th:value="${staff.userId}" />
 
-                    <div class="modal-header border-0 d-block text-center">
-                        <h3 class="modal-title w-100 text-center mb-3" style="color: #d96b77;">Staff Profile Details</h3>
+                    <div class="card-inner">
+                        <div class="modal-header border-0 d-block text-center">
+                            <h4 class="modal-title text-danger fw-bold mb-2">Staff Profile Details</h4>
 
-                        <!-- Avatar riêng, căn giữa -->
-                        <div class="text-center mb-3">
-                            <img th:src="@{'/uploads/' + ${staff.avatarUrl}}" alt="Avatar"
-                                 class="rounded-circle" width="120" height="120" style="object-fit: cover;">
-                        </div>
-                    </div>
-
-                    <div class="modal-body row">
-                        <!-- Personal Info -->
-                        <div class="col-md-6 border-end">
-                            <h5 class="text-center text-danger mb-3">Personal Information</h5>
-
-                            <p><strong>Full Name:</strong> <span class="view-only" th:text="${staff.fullName}"></span>
-                                <input name="fullName" class="form-control edit-only d-none" th:value="${staff.fullName}" />
-                            </p>
-                            <p><strong>Email:</strong> <span class="view-only" th:text="${staff.email}"></span>
-                                <input name="email" class="form-control edit-only d-none" th:value="${staff.email}" />
-                            </p>
-                            <p><strong>Phone:</strong> <span class="view-only" th:text="${staff.phone}"></span>
-                                <input name="phone" class="form-control edit-only d-none" th:value="${staff.phone}" />
-                            </p>
-                            <p><strong>Gender:</strong> <span class="view-only" th:text="${staff.gender}"></span>
-                                <select name="gender" class="form-select edit-only d-none">
-                                    <option value="Male" th:selected="${staff.gender == 'Male'}">Male</option>
-                                    <option value="Female" th:selected="${staff.gender == 'Female'}">Female</option>
-                                    <option value="Other" th:selected="${staff.gender == 'Other'}">Other</option>
-                                </select>
-                            </p>
+                            <div class="text-center mb-3">
+                                <img th:src="@{'/uploads/' + ${staff.avatarUrl}}" alt="Avatar"
+                                     class="rounded-circle border border-light" width="100" height="100"
+                                     style="object-fit: cover;">
+                            </div>
                         </div>
 
-                        <!-- Professional Info -->
-                        <div class="col-md-6">
-                            <h5 class="text-center text-danger mb-3">Professional Details</h5>
+                        <div class="modal-body">
+                            <div class="row g-4">
+                                <!-- Personal Info -->
+                                <div class="col-md-6">
+                                    <h6 class="text-primary fw-semibold border-bottom pb-1 mb-3">Personal Information</h6>
 
-                            <p><strong>Role:</strong> <span th:text="${staff.role}"></span>
-                                <input type="hidden" name="role" th:value="${staff.role}" />
-                            </p>
-                            <p><strong>Position:</strong> <span class="view-only" th:text="${staff.position}"></span>
-                                <select name="position" class="form-select edit-only d-none">
-                                    <option value="it" th:selected="${staff.position == 'it'}">IT</option>
-                                    <option value="sale" th:selected="${staff.position == 'sale'}">Sale</option>
-                                    <option value="Manager" th:selected="${staff.position == 'Manager'}">Manager</option>
-                                </select>
-                            </p>
-                            <p><strong>Start Date:</strong> <span class="view-only" th:text="${#temporals.format(staff.createdAt, 'dd/MM/yyyy')}"></span>
-                                <input type="date" name="createdAt" class="form-control edit-only d-none"
-                                       th:value="${#temporals.format(staff.createdAt, 'yyyy-MM-dd')}" />
-                            </p>
-                            <p><strong>Status:</strong>
-                                <span th:text="${staff.status}"
-                                      th:classappend="${staff.status == 'active'} ? 'text-success fw-bold' : 'text-secondary fw-bold'">
-                                </span>
-                            </p>
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Full Name</label>
+                                        <span class="form-control-plaintext view-only" th:text="${staff.fullName}"></span>
+                                        <input type="text" name="fullName" class="form-control edit-only d-none"
+                                               th:value="${editingStaffId == staff.userId} ? *{fullName} : ${staff.fullName}" />
+
+                                        <div th:if="${editingStaffId == staff.userId}">
+                                            <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="text-danger"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Email</label>
+                                        <span class="form-control-plaintext view-only" th:text="${staff.email}"></span>
+                                        <input type="email" name="email" class="form-control edit-only d-none"
+                                               th:value="${editingStaffId == staff.userId} ? *{email} : ${staff.email}" />
+
+                                        <div th:if="${editingStaffId == staff.userId}">
+                                            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Phone</label>
+                                        <span class="form-control-plaintext view-only" th:text="${staff.phone}"></span>
+                                        <input type="text" name="phone" class="form-control edit-only d-none"
+                                               th:value="${editingStaffId == staff.userId} ? *{phone} : ${staff.phone}" />
+
+                                        <div th:if="${editingStaffId == staff.userId}">
+                                            <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Gender</label>
+                                        <span class="form-control-plaintext view-only" th:text="${staff.gender}"></span>
+                                        <select name="gender" class="form-select edit-only d-none">
+                                            <option value="Male"
+                                                    th:selected="${editingStaffId == staff.userId} ? (*{gender} == 'Male') : (staff.gender == 'Male')">Male</option>
+                                            <option value="Female"
+                                                    th:selected="${editingStaffId == staff.userId} ? (*{gender} == 'Female') : (staff.gender == 'Female')">Female</option>
+                                            <option value="Other"
+                                                    th:selected="${editingStaffId == staff.userId} ? (*{gender} == 'Other') : (staff.gender == 'Other')">Other</option>
+                                        </select>
+
+                                        <div th:if="${editingStaffId == staff.userId}">
+                                            <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="text-danger"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Professional Info -->
+                                <div class="col-md-6">
+                                    <h6 class="text-primary fw-semibold border-bottom pb-1 mb-3">Professional Details</h6>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Role</label>
+                                        <span class="form-control-plaintext" th:text="${staff.role}"></span>
+                                        <input type="hidden" name="role" th:value="${staff.role}" />
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Position</label>
+                                        <span class="form-control-plaintext view-only" th:text="${staff.position}"></span>
+                                        <select name="position" class="form-select edit-only d-none">
+                                            <option value="it" th:selected="${staff.position == 'it'}">IT</option>
+                                            <option value="sale" th:selected="${staff.position == 'sale'}">Sale</option>
+                                            <option value="Manager" th:selected="${staff.position == 'Manager'}">Manager</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Start Date</label>
+                                        <span class="form-control-plaintext view-only" th:text="${#temporals.format(staff.createdAt, 'dd/MM/yyyy')}"></span>
+                                        <input type="date" name="startDate" class="form-control edit-only d-none"
+                                               th:value="${#temporals.format(staff.createdAt, 'yyyy-MM-dd')}" />
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Status</label>
+                                        <span class="fw-bold"
+                                              th:text="${staff.status}"
+                                              th:classappend="${staff.status == 'active'} ? 'text-success' : 'text-muted'"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Back</button>
-                        <button type="button" class="btn btn-danger btn-edit" th:attr="data-modal-id='staffDetailModal__' + ${staff.userId}">Edit</button>
-                        <button type="submit" class="btn btn-success d-none btn-save">Save</button>
+                        <div class="modal-footer justify-content-between border-top pt-3">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button"
+                                    class="btn btn-warning btn-edit"
+                                    th:attr="data-modal-id='staffDetailModal__' + ${staff.userId}">
+                                Edit
+                            </button>
+                            <button type="submit" class="btn btn-success d-none btn-save">Save Changes</button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const editingStaffId = /*[[${editingStaffId}]]*/ null;
+    const formHasError = /*[[${formHasError}]]*/ false;
 
+    if (editingStaffId && formHasError) {
+        const modalId = 'staffDetailModal__' + editingStaffId;
+        const modalEl = document.getElementById(modalId);
+        if (modalEl) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+
+            modalEl.querySelectorAll('.view-only').forEach(el => el.classList.add('d-none'));
+            modalEl.querySelectorAll('.edit-only').forEach(el => el.classList.remove('d-none'));
+            modalEl.querySelector('.btn-edit')?.classList.add('d-none');
+            modalEl.querySelector('.btn-save')?.classList.remove('d-none');
+        }
+    }
+    /*]]>*/
+</script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -316,7 +404,6 @@
             modalEl.addEventListener('shown.bs.modal', resetAddStaffForm, { once: true });
         }
     } else {
-        // Nếu modal mở thủ công bằng nút "Add New Staff"
         document.querySelector('[data-bs-target="#addStaffModal"]').addEventListener('click', () => {
             modal.show();
             resetAddStaffForm();
@@ -359,20 +446,6 @@
         document.querySelectorAll('#addStaffModal .text-danger').forEach(e => e.innerText = '');
     }
 
-
-    // function previewImage(event) {
-    //     const input = event.target;
-    //     const preview = document.getElementById('avatarPreview');
-    //
-    //     if (input.files && input.files[0]) {
-    //         const reader = new FileReader();
-    //         reader.onload = function (e) {
-    //             preview.src = e.target.result;
-    //             preview.style.display = 'block';
-    //         };
-    //         reader.readAsDataURL(input.files[0]);
-    //     }
-    // }
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -408,7 +481,5 @@
         });
     });
 </script>
-
-
 </body>
 </html>
