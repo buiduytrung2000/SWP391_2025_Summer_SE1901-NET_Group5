@@ -27,6 +27,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import vn.edu.fpt.BeautyCenter.entity.User;
+import vn.edu.fpt.BeautyCenter.entity.enums.Role;
 
 @Controller
 @RequiredArgsConstructor
@@ -68,8 +70,12 @@ public class HomePageController {
      * @param model   the model to pass attributes to the view
      * @return the name of the view template for the admin dashboard
      */
-    @GetMapping("/admin")
-    public String admin(HttpServletRequest request, Model model) {
+    @GetMapping({"/admin","/admin/"})
+    public String admin(HttpServletRequest request, Model model, HttpSession session) {
+        // Check if user is not permitted (not logged in or not admin)
+        if (isNotPermit(session)) {
+           return "redirect:/";
+        }
         // Set the page title attribute for the admin page view
         model.addAttribute("pageTitle", "Admin Page");
 
@@ -78,5 +84,20 @@ public class HomePageController {
 
         // Return the view template located at templates/dashboard/home.html
         return "dashboard/home";
+    }
+
+    /**
+     * Checks if current user has permission to access admin functions [1].
+     * <p>
+     * Validates session and user role for security [2].
+     * Used across all controller methods for access control [3].
+     * </p>
+     *
+     * @param session current HTTP session
+     * @return true if user lacks permission, false if authorized
+     */
+    private boolean isNotPermit(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        return user == null || user.getRole() != Role.admin;
     }
 }
