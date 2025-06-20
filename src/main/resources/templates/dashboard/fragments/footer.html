@@ -15,6 +15,46 @@
         <script th:src="@{/dashboard/assets/js/scripts.js}"></script>
         <script th:src="@{dashboard/assets/js/demo-settings.js}"></script>
         <script th:src="@{/dashboard/assets/js/charts/chart-cms.js}"></script>
+        <script>
+            $(document).ready(function() {
+                // Auto-dismiss alerts after 5 seconds
+                setTimeout(function() {
+                    $('.alert').fadeOut('slow');
+                }, 3000);
+
+                // Handle manual close
+                $('.btn-close').click(function() {
+                    $(this).parent().fadeOut('fast');
+                });
+            });
+
+        </script>
+        <!-- include summernote css/js -->
+        <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+        <script>
+
+            $(document).ready(function () {
+                $('#summernote').summernote({
+                    toolbar: [
+                        // [groupName, [list of button]]
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['insert', ['link', 'picture', 'video']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['view', ['fullscreen', 'codeview', 'help']],
+                    ],
+                    height: 300,
+                    placeholder: 'Content here',
+                });
+                // Auto-dismiss alerts after 10 seconds
+                setTimeout(function() {
+                    $('.alert').fadeOut('slow');
+                }, 10000);
+            });
+        </script>
     </div>
 </div>
 </html>

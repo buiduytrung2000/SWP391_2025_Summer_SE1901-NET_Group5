@@ -43,7 +43,11 @@ public enum ErrorCode {
     SERVICE_EXISTED(3000, "Service already exists"),
 
     /** Requested service could not be found. */
-    SERVICE_NOT_FOUND(3001, "Service not found");
+    SERVICE_NOT_FOUND(3001, "Service not found"),
+    STAFF_NOT_FOUND(2001, "Staff not found"),
+
+    STAFF_EMAIL_EXISTED(2002, "Email already exists");
+
 
     /**
      * Constructs an error code definition.

@@ -6,7 +6,7 @@
 <div class="page-wraper">
     <header th:replace="~{fragments/header2 :: header}">
     </header>
-    <form class="editCustomerForm" enctype="multipart/form-data" th:action="@{/edit_customer}" th:object="${user}" method="post">
+    <form class="editCustomerForm" enctype="multipart/form-data" th:action="@{/edit_profile}" th:object="${user}" method="post">
         <div class="avatar-upload" id="drop-area">
             <input type="file" name="avatar" id="fileElem" accept="image/*" style="display:none" onchange="handleFiles(this.files)">
             <label for="fileElem" class="avatar-label">
@@ -18,10 +18,11 @@
         <input type="text" th:field="*{username}" id="username"><br><br>
 
         <label class="editLabel">Password</label>
-        <input type="password" th:field="*{password}" id="password"><br><br>
+        <input type="password" th:field="*{password}" id="password">
+        <i class="fa-solid fa-eye" id="togglePassword"></i><br><br>
 
         <label class="editLabel">Email</label>
-        <input type="password" th:field="*{email}" id="email"><br><br>
+        <input type="email" th:field="*{email}" id="email"><br><br>
 
         <label class="editLabel">Full Name</label>
         <input type="text" th:field="*{fullName}" id="fullName"><br><br>
@@ -60,4 +61,5 @@
 <div th:replace="~{fragments/script :: common-scripts}"></div>
 </body>
 <script src="js/editCustomerAvatar.js"></script>
+<script src="js/showPassword.js"></script>
 </html>

@@ -13,7 +13,7 @@ import vn.edu.fpt.BeautyCenter.service.UserService;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/edit_customer")
+@RequestMapping("/edit_profile")
 public class EditUserController {
     @Autowired
     UserService userService;
@@ -62,6 +62,7 @@ public class EditUserController {
         User updatedUser = userService.getUserById(sessionUser.getUserId());
         session.setAttribute("user", updatedUser);
 
-        return "customer/editCustomer";
+        return "redirect:/edit_profile";
+
     }
 }

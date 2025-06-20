@@ -63,17 +63,25 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="wt-box">
-                                <form th:action="@{/admin/services/add}" method="POST">
+                                <form th:action="@{/admin/services/add}" th:object="${serviceCreationRequest}" method="POST">
+                                    <!-- General notifications (success/error from redirect) -->
+                                    <div th:replace="~{fragments/notifications :: notification}"></div>
 
+                                    <!-- Form validation errors (only for current form) -->
+                                    <div th:replace="~{fragments/form-validation :: validation-errors}"></div>
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6">
                                             <!--Nhập tên dịch vụ-->
                                             <div class="form-group">
                                                 <label for="name" class="form-label">Tên dịch vụ</label>
-                                                <input type="text" class="form-control" id="name" name="name"
+                                                <input type="text" class="form-control" id="name"
+                                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                                       th:field="*{name}"
                                                        placeholder="Nhập tên dịch vụ">
+                                            </div>
+                                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                                                <span th:each="err : ${#fields.errors('name')}" th:text="${err}"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
@@ -84,8 +92,12 @@
                                                        step="0.01"
                                                        class="form-control"
                                                        id="price"
-                                                       name="price"
+                                                       th:classappend="${#fields.hasErrors('price')} ? 'is-invalid'"
+                                                       th:field="*{price}"
                                                        placeholder="0.00">
+                                            </div>
+                                            <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}">
+                                                <span th:each="err : ${#fields.errors('price')}" th:text="${err}"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -96,10 +108,14 @@
                                             <input type="text"
                                                    id="tagInput"
                                                    class="form-control"
-                                                   name="tagNames"
+                                                   th:classappend="${#fields.hasErrors('tagNames')} ? 'is-invalid'"
+                                                   th:field="*{tagNames}"
                                                    placeholder="Enter tags separated by commas (e.g., Facial, Relaxing, Premium)"/>
                                             <input type="hidden" id="tagNames"/>
                                             <div id="tagContainer" class="mt-2"></div>
+                                            <div class="invalid-feedback" th:if="${#fields.hasErrors('tagNames')}">
+                                                <span th:each="err : ${#fields.errors('tagNames')}" th:text="${err}"></span>
+                                            </div>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
@@ -107,8 +123,12 @@
                                                 <input type="number"
                                                        class="form-control"
                                                        id="duration"
-                                                       name="duration"
+                                                       th:classappend="${#fields.hasErrors('duration')} ? 'is-invalid'"
+                                                       th:field="*{duration}"
                                                        placeholder="60">
+                                            </div>
+                                            <div class="invalid-feedback" th:if="${#fields.hasErrors('duration')}">
+                                                <span th:each="err : ${#fields.errors('duration')}" th:text="${err}"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -117,9 +137,13 @@
                                     <div class="form-group">
                                         <label for="summernote" class="form-label">Service Description</label>
                                         <textarea id="summernote"
-                                                  name="content"
+                                                  th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'"
+                                                  th:field="*{content}"
                                                   placeholder="Describe your service in detail..."></textarea>
 
+                                    </div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}">
+                                        <span th:each="err : ${#fields.errors('content')}" th:text="${err}"></span>
                                     </div>
                                     <a th:href="@{/admin/services}" class="site-button">Cancel</a>
                                     <button type="submit" class="site-button">Publish Service</button>
@@ -429,6 +453,10 @@
             height: 300,
             placeholder: 'Content here',
         });
+        // Auto-dismiss alerts after 10 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 10000);
     });
 
 
