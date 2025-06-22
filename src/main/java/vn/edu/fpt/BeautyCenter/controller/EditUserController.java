@@ -13,7 +13,6 @@ import vn.edu.fpt.BeautyCenter.service.UserService;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/edit_profile")
 public class EditUserController {
     @Autowired
     UserService userService;
@@ -21,18 +20,7 @@ public class EditUserController {
     @Autowired
     private S3Service s3Service;
 
-    @GetMapping
-    public String gotoEditCustomer(HttpSession session, Model model) {
-        Object user = session.getAttribute("user");
-        if(user != null) {
-            model.addAttribute("user", user);
-
-            return "customer/editCustomer";
-        }
-        return "redirect:/login";
-    }
-
-    @PostMapping
+    @PostMapping("edit_profile")
     public String editCustomer(@ModelAttribute User user, HttpSession session, @RequestParam("avatar") MultipartFile file) {
         // Lấy user thật sự từ session (chắc chắn đúng user đang đăng nhập)
         User sessionUser = (User) session.getAttribute("user");
@@ -62,7 +50,7 @@ public class EditUserController {
         User updatedUser = userService.getUserById(sessionUser.getUserId());
         session.setAttribute("user", updatedUser);
 
-        return "redirect:/edit_profile";
+        return "redirect:/view_profile";
 
     }
 }
