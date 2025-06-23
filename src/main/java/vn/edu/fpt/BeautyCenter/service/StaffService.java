@@ -37,7 +37,9 @@ public class StaffService {
     public Staff getByUserId(String userId) {
         return staffRepository.findByUserId(userId).orElse(null);
     }
-
+    public void deleteById(String id) {
+        staffRepository.deleteById(id);
+    }
     /**
      * Save or update a staff record
      */

@@ -155,4 +155,15 @@ public class StaffController {
         redirectAttributes.addFlashAttribute("successMessage", "Status updated successfully!");
         return "redirect:/admin/staff/";
     }
+    @GetMapping("/delete/{id}")
+    public String deleteStaff(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        try {
+            staffService.deleteById(id); // Tùy vào service của bạn
+            redirectAttributes.addFlashAttribute("successMessage", "Staff deleted successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Cannot delete staff: " + e.getMessage());
+        }
+        return "redirect:/admin/staff";
+    }
+
 }
