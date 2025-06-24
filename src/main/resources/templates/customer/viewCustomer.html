@@ -5,85 +5,85 @@
 
 </head>
 <body>
-    <!-- Profile Header -->
-    <header th:replace="~{fragments/header2 :: header}">
-    </header>
+<!-- Profile Header -->
+<header th:replace="~{fragments/header2 :: header}">
+</header>
 
-    <!-- Main Content -->
-    <div class="profile-main" id="profilemain">
-        <!-- Account Card -->
-        <div class="account-card">
-            <div class="account-settings-row">
-                <h2>My account</h2>
-                <button class="edit-btn" onclick="editProfile()">Edit</button>
-            </div>
-            <form class="account-form" th:object="${user}">
-                <div class="form-group">
-                    <label for="username">User name</label>
-                    <input type="text" th:field="*{username}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" th:field="*{email}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="firstname">First name</label>
-                    <input type="text" th:value="${firstname}" id="firstname"  disabled>
-                </div>
-                <div class="form-group">
-                    <label for="lastname">Last name</label>
-                    <input type="text" th:value="${lastname}" id="lastname"  disabled>
-                </div>
-            </form>
-        </div>
-
-        <!-- Profile Card -->
-        <div class="profile-card">
-            <img th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}" alt="Profile Avatar" class="avatar">
-            <div class="name" th:text="*{fullName}"></div>
-            <div class="role" th:text="*{role}"></div>
-            <div class="logo-wrapper">
-                <img src="images/logo.png" alt="" srcset="">
-            </div>
-
-        </div>
+<!-- Main Content -->
+<div class="profile-main" id="profilemain">
+  <!-- Account Card -->
+  <div class="account-card">
+    <div class="account-settings-row">
+      <h2>My account</h2>
+      <button class="edit-btn" onclick="editProfile()">Edit</button>
     </div>
-    <div id="overlay" class="overlay-bg"></div>
-    <div id="editcustomer" class="overlay-content"></div>
-    <form id="editForm" class="editCustomerForm" enctype="multipart/form-data" th:action="@{/edit_profile}" th:object="${user}" method="post">
-        <div class="avatar-upload" id="drop-area">
-            <input type="file" name="avatar" id="fileElem" accept="image/*" style="display:none" onchange="handleFiles(this.files)">
-            <label for="fileElem" class="avatar-label">
-                <img id="avatarPreview" th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}"
-                     alt="Avatar" />
-            </label>
-        </div>
-        <label class="editLabel">Username</label>
-        <input type="text" th:field="*{username}" id="username"><br><br>
-
-        <label class="editLabel">Password</label>
-        <input type="password" th:field="*{password}" id="password">
-        <i class="fa-solid fa-eye" id="togglePassword"></i><br><br>
-
-        <label class="editLabel">Email</label>
-        <input type="email" th:field="*{email}" id="email"><br><br>
-
-        <label class="editLabel">Full Name</label>
-        <input type="text" th:field="*{fullName}" id="fullName"><br><br>
-
-        <label class="editLabel">Phone</label>
-        <input type="tel" th:field="*{phone}" id="phone"><br><br>
-
-
-
-        <button type="submit">Edit</button>
-        <button type="reset" onclick="closeEditProfile()">Cancel</button>
-
+    <form class="account-form" th:object="${user}">
+      <div class="form-group">
+        <label for="username">User name</label>
+        <input type="text" th:field="*{username}" disabled>
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" th:field="*{email}" disabled>
+      </div>
+      <div class="form-group">
+        <label for="firstname">First name</label>
+        <input type="text" th:value="${firstname}" id="firstname"  disabled>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last name</label>
+        <input type="text" th:value="${lastname}" id="lastname"  disabled>
+      </div>
     </form>
-    <footer th:replace="~{fragments/footer :: footer}">
+  </div>
 
-    </footer>
-    <div th:replace="~{fragments/script :: common-scripts}"></div>
+  <!-- Profile Card -->
+  <div class="profile-card">
+    <img th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}" alt="Profile Avatar" class="avatar">
+    <div class="name" th:text="*{fullName}"></div>
+    <div class="role" th:text="*{role}"></div>
+    <div class="logo-wrapper">
+      <img src="images/logo.png" alt="" srcset="">
+    </div>
+
+  </div>
+</div>
+<div id="overlay" class="overlay-bg"></div>
+<div id="editcustomer" class="overlay-content"></div>
+<form id="editForm" class="editCustomerForm" enctype="multipart/form-data" th:action="@{/edit_profile}" th:object="${user}" method="post">
+  <div class="avatar-upload" id="drop-area">
+    <input type="file" name="avatar" id="fileElem" accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+    <label for="fileElem" class="avatar-label">
+      <img id="avatarPreview" th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}"
+           alt="Avatar" />
+    </label>
+  </div>
+  <label class="editLabel">Username</label>
+  <input type="text" th:field="*{username}" id="username"><br><br>
+
+  <label class="editLabel">Password</label>
+  <input type="password" th:field="*{password}" id="password">
+  <i class="fa-solid fa-eye" id="togglePassword"></i><br><br>
+
+  <label class="editLabel">Email</label>
+  <input type="email" th:field="*{email}" id="email"><br><br>
+
+  <label class="editLabel">Full Name</label>
+  <input type="text" th:field="*{fullName}" id="fullName"><br><br>
+
+  <label class="editLabel">Phone</label>
+  <input type="tel" th:field="*{phone}" id="phone"><br><br>
+
+
+
+  <button type="submit">Edit</button>
+  <button type="reset" onclick="closeEditProfile()">Cancel</button>
+
+</form>
+<footer th:replace="~{fragments/footer :: footer}">
+
+</footer>
+<div th:replace="~{fragments/script :: common-scripts}"></div>
 
 </body>
 <script src="js/viewProfile.js"></script>
