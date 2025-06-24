@@ -20,6 +20,10 @@ public class EditUserController {
     @Autowired
     private S3Service s3Service;
 
+    @GetMapping("edit_profile")
+    public String editCustomer() {
+        return "redirect:/view_profile";
+    }
     @PostMapping("edit_profile")
     public String editCustomer(@ModelAttribute User user, HttpSession session, @RequestParam("avatar") MultipartFile file) {
         // Lấy user thật sự từ session (chắc chắn đúng user đang đăng nhập)
