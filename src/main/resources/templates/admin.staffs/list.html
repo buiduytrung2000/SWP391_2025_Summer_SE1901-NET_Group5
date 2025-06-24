@@ -18,6 +18,16 @@
                                 <div class="nk-block-between">
                                     <div class="nk-block-head-content">
                                         <h3 class="nk-block-title page-title">All Staff Members</h3>
+                                        <form class="mb-3" method="get" th:action="@{/admin/staff}">
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="keyword"
+                                                       placeholder="Search by name, email, phone..."
+                                                       th:value="${param.keyword}" />
+                                                <button class="btn btn-primary" type="submit">Search</button>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="nk-block-head-content">
                                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">Add New Staff</button>
