@@ -38,6 +38,13 @@ public class StaffService {
         return staffRepository.findByUserId(userId).orElse(null);
     }
 
+    public Page<Staff> searchStaff(String keyword, Pageable pageable) {
+        return staffRepository.searchByKeyword(keyword.toLowerCase(), pageable);
+    }
+
+    public void deleteById(String id) {
+        staffRepository.deleteById(id);
+    }
     /**
      * Save or update a staff record
      */
