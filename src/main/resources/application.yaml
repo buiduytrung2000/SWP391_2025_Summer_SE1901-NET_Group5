@@ -17,9 +17,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: false
+    show-sql: true
     properties:
-      hibernate.hibernate.dialect: MySQL8Dialect
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
 
   servlet:
     multipart:
@@ -37,4 +37,5 @@ spring:
           auth: true
           starttls:
             enable: true
+
 

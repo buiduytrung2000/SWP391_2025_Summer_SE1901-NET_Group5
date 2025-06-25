@@ -89,4 +89,5 @@ public class StaffCreationRequest {
      * Avatar image uploaded by user (optional).
      */
     private MultipartFile avatar;
+
 }

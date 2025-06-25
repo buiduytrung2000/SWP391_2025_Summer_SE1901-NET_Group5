@@ -34,17 +34,26 @@ public class StaffController {
     @GetMapping({"", "/"})
     public String showStaffList(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
+                                @RequestParam(required = false) String keyword,
                                 Model model) {
-        Page<Staff> staffPage = staffService.getStaffPage(PageRequest.of(page, size));
+        Page<Staff> staffPage;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            staffPage = staffService.searchStaff(keyword.trim(), PageRequest.of(page, size));
+            model.addAttribute("keyword", keyword); // giữ lại giá trị trong input search
+        } else {
+            staffPage = staffService.getStaffPage(PageRequest.of(page, size));
+        }
 
         model.addAttribute("staffList", staffPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", staffPage.getTotalPages());
         model.addAttribute("pageSize", size);
-
         model.addAttribute("newStaff", new StaffCreationRequest());
+
         return "admin.staffs/list";
     }
+
 
     /**
      * Handle staff creation
@@ -155,4 +164,16 @@ public class StaffController {
         redirectAttributes.addFlashAttribute("successMessage", "Status updated successfully!");
         return "redirect:/admin/staff/";
     }
+
+    @GetMapping("/delete/{id}")
+    public String deleteStaff(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        try {
+            staffService.deleteById(id); // Tùy vào service của bạn
+            redirectAttributes.addFlashAttribute("successMessage", "Staff deleted successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Cannot delete staff: " + e.getMessage());
+        }
+        return "redirect:/admin/staff";
+    }
+
 }
