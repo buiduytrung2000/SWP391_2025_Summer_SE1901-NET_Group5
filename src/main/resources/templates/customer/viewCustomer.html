@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header2 :: common-head('Customer Profile')}">
+<head>
+  <!-- Nhúng fragment dùng chung -->
+  <th:block th:replace="~{fragments/header2 :: common-head('User Profile')}"></th:block>
 
-
+  <!-- Thêm các css, script RIÊNG cho trang này ở dưới -->
+  <link rel="stylesheet" th:href="@{/css/crudUser/viewCustomer.css}">
+  <link rel="stylesheet" th:href="@{css/crudUser/editCustomer.css}">
 </head>
 <body>
 <!-- Profile Header -->
