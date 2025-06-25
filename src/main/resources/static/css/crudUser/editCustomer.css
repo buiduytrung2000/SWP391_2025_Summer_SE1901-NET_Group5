@@ -39,7 +39,6 @@
 }
 
 .editCustomerForm {
-    margin: 50px;
     margin-left: 50%;
     transform: translateX(-50%);
     background-color: white;
@@ -47,6 +46,13 @@
     width:fit-content;
     padding: 20px;
     box-shadow: 0 2px 10px black;
+}
+
+#editForm {
+    display: none;
+    position: fixed;
+        top: 15%;
+        z-index: 1000;
 }
 
 form input{

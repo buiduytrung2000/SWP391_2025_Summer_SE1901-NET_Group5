@@ -116,7 +116,7 @@ public class ServiceController {
         // Check if user is not permitted (not logged in or not admin)
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Please login as administrator.");
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         try {
@@ -255,7 +255,7 @@ public class ServiceController {
     public String showAddForm(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         try {
@@ -298,7 +298,7 @@ public class ServiceController {
                               RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         // Handle validation errors
@@ -315,7 +315,7 @@ public class ServiceController {
             User user = (User) session.getAttribute("user");
             if (user == null) {
                 notificationService.addErrorMessage(redirectAttributes, "Session expired. Please login again.");
-                return "redirect:/login";
+                return "redirect:/";
             }
 
             // Attempt to create the service
@@ -363,7 +363,7 @@ public class ServiceController {
                                RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         try {
@@ -445,7 +445,7 @@ public class ServiceController {
                                 RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         // Handle validation errors
@@ -503,7 +503,7 @@ public class ServiceController {
                               RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Please login to view service details.");
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         try {
@@ -560,7 +560,7 @@ public class ServiceController {
         // Redirect to login page if user is not authenticated or lacks admin role
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Admin privileges required.");
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         try {
