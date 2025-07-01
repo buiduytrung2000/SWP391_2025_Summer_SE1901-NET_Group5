@@ -20,6 +20,9 @@ import vn.edu.fpt.BeautyCenter.service.StaffService;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 @Controller
 @RequestMapping("/admin/staff")
 @RequiredArgsConstructor
@@ -174,6 +177,13 @@ public class StaffController {
             redirectAttributes.addFlashAttribute("errorMessage", "Cannot delete staff: " + e.getMessage());
         }
         return "redirect:/admin/staff";
+    }
+
+    @GetMapping("/schedule")
+    public String staffSchedulePage(Model model) {
+        List<Integer> slots = IntStream.rangeClosed(0, 12).boxed().toList(); // Tạo 13 slot (0–12)
+        model.addAttribute("slots", slots);
+        return "admin.staffs/schedule";
     }
 
 }
