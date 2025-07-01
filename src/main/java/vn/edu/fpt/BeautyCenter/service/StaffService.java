@@ -24,6 +24,9 @@ public class StaffService {
 
     private final StaffRepository staffRepository;
 
+    public List<Staff> findAll() {
+        return staffRepository.findAll();
+    }
     /**
      * Get paginated list of staff
      */
