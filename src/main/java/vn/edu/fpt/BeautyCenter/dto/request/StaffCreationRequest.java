@@ -82,6 +82,7 @@ public class StaffCreationRequest {
      * Start date of employment or profile creation.
      * Expected in yyyy-MM-dd format from form input.
      */
+    @PastOrPresent(message = "Start date cannot be in the future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
@@ -89,4 +90,5 @@ public class StaffCreationRequest {
      * Avatar image uploaded by user (optional).
      */
     private MultipartFile avatar;
+
 }
