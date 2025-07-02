@@ -13,6 +13,665 @@
             </div>
             <div class="nk-content ">
                 <!-- Fill Content here -->
+                <div class="container-fluid">
+                    <div class="nk-content-inner">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">View Products </h3>
+                                        <!--                                        <div class="nk-block-des text-soft">-->
+                                        <!--                                            <p th:text="|You have total ${services.getSize()} services.|">You have total-->
+                                        <!--                                                0 services.</p>-->
+                                        <!--                                        </div>-->
+                                    </div>
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu">
+                                                <em class="icon ni ni-menu-alt-r"></em>
+                                            </a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+
+                                                    <!-- Price Range Filter Dropdown -->
+                                                    <li>
+                                                        <div class="dropdown">
+                                                            <a href="#"
+                                                               class="dropdown-toggle btn btn-white btn-dim btn-outline-light"
+                                                               data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <em class="d-none d-sm-inline icon ni ni-coin"></em>
+                                                                <span>
+                                <span class="d-none d-md-inline">Price</span>
+                                <span class="d-md-none">Price</span>
+                            </span>
+                                                                <em class="dd-indc icon ni ni-chevron-right"></em>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                 style="min-width: 280px;">
+                                                                <div class="dropdown-inner">
+                                                                    <div class="p-3">
+                                                                        <form method="get"
+                                                                              th:action="@{/admin/services}"
+                                                                              class="filter-form">
+                                                                            <div class="row g-2">
+                                                                                <div class="col-6">
+                                                                                    <label class="form-label-sm">Min
+                                                                                        Price ($)</label>
+                                                                                    <input type="number" name="minPrice"
+                                                                                           class="form-control form-control-sm"
+                                                                                           placeholder="0.00"
+                                                                                           step="0.01"
+                                                                                           th:value="${filterParams?.minPrice}">
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <label class="form-label-sm">Max
+                                                                                        Price ($)</label>
+                                                                                    <input type="number" name="maxPrice"
+                                                                                           class="form-control form-control-sm"
+                                                                                           placeholder="999.99"
+                                                                                           step="0.01"
+                                                                                           th:value="${filterParams?.maxPrice}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mt-3 d-flex gap-2">
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary btn-sm">
+                                                                                    Apply
+                                                                                </button>
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary btn-sm"
+                                                                                        onclick="clearPriceFilter()">
+                                                                                    Clear
+                                                                                </button>
+                                                                            </div>
+                                                                            <!-- Hidden fields to preserve other filters -->
+                                                                            <input type="hidden" name="keyword"
+                                                                                   th:value="${keyword}">
+                                                                            <input type="hidden" name="minDuration"
+                                                                                   th:value="${filterParams?.minDuration}">
+                                                                            <input type="hidden" name="maxDuration"
+                                                                                   th:value="${filterParams?.maxDuration}">
+                                                                            <input type="hidden" name="fromDate"
+                                                                                   th:value="${filterParams?.fromDate}">
+                                                                            <input type="hidden" name="toDate"
+                                                                                   th:value="${filterParams?.toDate}">
+                                                                            <input type="hidden" name="createdBy"
+                                                                                   th:value="${filterParams?.createdBy}">
+                                                                            <input type="hidden" name="sortBy"
+                                                                                   th:value="${sortBy}">
+                                                                            <input type="hidden" name="sortDir"
+                                                                                   th:value="${sortDir}">
+                                                                            <th:block
+                                                                                    th:each="tag : ${filterParams?.selectedTags}">
+                                                                                <input type="hidden" name="selectedTags"
+                                                                                       th:value="${tag}">
+                                                                            </th:block>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <!-- Duration Filter Dropdown -->
+                                                    <li>
+                                                        <div class="dropdown">
+                                                            <a href="#"
+                                                               class="dropdown-toggle btn btn-white btn-dim btn-outline-light"
+                                                               data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <em class="d-none d-sm-inline icon ni ni-clock"></em>
+                                                                <span>
+                                <span class="d-none d-md-inline">Duration</span>
+                                <span class="d-md-none">Time</span>
+                            </span>
+                                                                <em class="dd-indc icon ni ni-chevron-right"></em>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                 style="min-width: 280px;">
+                                                                <div class="dropdown-inner">
+                                                                    <div class="p-3">
+                                                                        <form method="get"
+                                                                              th:action="@{/admin/services}"
+                                                                              class="filter-form">
+                                                                            <div class="row g-2">
+                                                                                <div class="col-6">
+                                                                                    <label class="form-label-sm">Min
+                                                                                        Duration (min)</label>
+                                                                                    <input type="number"
+                                                                                           name="minDuration"
+                                                                                           class="form-control form-control-sm"
+                                                                                           placeholder="15"
+                                                                                           th:value="${filterParams?.minDuration}">
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <label class="form-label-sm">Max
+                                                                                        Duration (min)</label>
+                                                                                    <input type="number"
+                                                                                           name="maxDuration"
+                                                                                           class="form-control form-control-sm"
+                                                                                           placeholder="480"
+                                                                                           th:value="${filterParams?.maxDuration}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mt-3">
+                                                                                <label class="form-label-sm">Quick
+                                                                                    Select</label>
+                                                                                <div class="btn-group-sm d-flex gap-1">
+                                                                                    <button type="button"
+                                                                                            class="btn btn-outline-light btn-sm"
+                                                                                            onclick="setDuration(15, 30)">
+                                                                                        15-30min
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                            class="btn btn-outline-light btn-sm"
+                                                                                            onclick="setDuration(30, 60)">
+                                                                                        30-60min
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                            class="btn btn-outline-light btn-sm"
+                                                                                            onclick="setDuration(60, 120)">
+                                                                                        1-2hrs
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mt-3 d-flex gap-2">
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary btn-sm">
+                                                                                    Apply
+                                                                                </button>
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary btn-sm"
+                                                                                        onclick="clearDurationFilter()">
+                                                                                    Clear
+                                                                                </button>
+                                                                            </div>
+                                                                            <!-- Hidden fields -->
+                                                                            <input type="hidden" name="keyword"
+                                                                                   th:value="${keyword}">
+                                                                            <input type="hidden" name="minPrice"
+                                                                                   th:value="${filterParams?.minPrice}">
+                                                                            <input type="hidden" name="maxPrice"
+                                                                                   th:value="${filterParams?.maxPrice}">
+                                                                            <input type="hidden" name="fromDate"
+                                                                                   th:value="${filterParams?.fromDate}">
+                                                                            <input type="hidden" name="toDate"
+                                                                                   th:value="${filterParams?.toDate}">
+                                                                            <input type="hidden" name="createdBy"
+                                                                                   th:value="${filterParams?.createdBy}">
+                                                                            <input type="hidden" name="sortBy"
+                                                                                   th:value="${sortBy}">
+                                                                            <input type="hidden" name="sortDir"
+                                                                                   th:value="${sortDir}">
+                                                                            <th:block
+                                                                                    th:each="tag : ${filterParams?.selectedTags}">
+                                                                                <input type="hidden" name="selectedTags"
+                                                                                       th:value="${tag}">
+                                                                            </th:block>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <!-- Date Range Filter Dropdown -->
+                                                    <li>
+                                                        <div class="dropdown">
+                                                            <a href="#"
+                                                               class="dropdown-toggle btn btn-white btn-dim btn-outline-light"
+                                                               data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <em class="d-none d-sm-inline icon ni ni-calendar"></em>
+                                                                <span>
+                                <span class="d-none d-md-inline">Date Range</span>
+                                <span class="d-md-none">Date</span>
+                            </span>
+                                                                <em class="dd-indc icon ni ni-chevron-right"></em>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                 style="min-width: 320px;">
+                                                                <div class="dropdown-inner">
+                                                                    <div class="p-3">
+                                                                        <!-- Quick Date Options -->
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label-sm">Quick
+                                                                                Select</label>
+                                                                            <ul class="link-list-opt no-bdr">
+                                                                                <li><a href="#"
+                                                                                       onclick="setDateRange('last7days')"><span>Last 7 Days</span></a>
+                                                                                </li>
+                                                                                <li><a href="#"
+                                                                                       onclick="setDateRange('last30days')"><span>Last 30 Days</span></a>
+                                                                                </li>
+                                                                                <li><a href="#"
+                                                                                       onclick="setDateRange('last6months')"><span>Last 6 Months</span></a>
+                                                                                </li>
+                                                                                <li><a href="#"
+                                                                                       onclick="setDateRange('thisyear')"><span>This Year</span></a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+
+                                                                        <!-- Custom Date Range -->
+                                                                        <form method="get"
+                                                                              th:action="@{/admin/services}"
+                                                                              class="filter-form">
+                                                                            <div class="row g-2">
+                                                                                <div class="col-6">
+                                                                                    <label class="form-label-sm">From
+                                                                                        Date</label>
+                                                                                    <input type="date" name="fromDate"
+                                                                                           class="form-control form-control-sm"
+                                                                                           th:value="${filterParams?.fromDate}">
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <label class="form-label-sm">To
+                                                                                        Date</label>
+                                                                                    <input type="date" name="toDate"
+                                                                                           class="form-control form-control-sm"
+                                                                                           th:value="${filterParams?.toDate}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mt-3 d-flex gap-2">
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary btn-sm">
+                                                                                    Apply
+                                                                                </button>
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary btn-sm"
+                                                                                        onclick="clearDateFilter()">
+                                                                                    Clear
+                                                                                </button>
+                                                                            </div>
+                                                                            <!-- Hidden fields -->
+                                                                            <input type="hidden" name="keyword"
+                                                                                   th:value="${keyword}">
+                                                                            <input type="hidden" name="minPrice"
+                                                                                   th:value="${filterParams?.minPrice}">
+                                                                            <input type="hidden" name="maxPrice"
+                                                                                   th:value="${filterParams?.maxPrice}">
+                                                                            <input type="hidden" name="minDuration"
+                                                                                   th:value="${filterParams?.minDuration}">
+                                                                            <input type="hidden" name="maxDuration"
+                                                                                   th:value="${filterParams?.maxDuration}">
+                                                                            <input type="hidden" name="createdBy"
+                                                                                   th:value="${filterParams?.createdBy}">
+                                                                            <input type="hidden" name="sortBy"
+                                                                                   th:value="${sortBy}">
+                                                                            <input type="hidden" name="sortDir"
+                                                                                   th:value="${sortDir}">
+                                                                            <th:block
+                                                                                    th:each="tag : ${filterParams?.selectedTags}">
+                                                                                <input type="hidden" name="selectedTags"
+                                                                                       th:value="${tag}">
+                                                                            </th:block>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <!-- Tags Filter Dropdown -->
+                                                    <li>
+                                                        <div class="dropdown">
+                                                            <a href="#"
+                                                               class="dropdown-toggle btn btn-white btn-dim btn-outline-light"
+                                                               data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <em class="d-none d-sm-inline icon ni ni-tags"></em>
+                                                                <span>
+                                <span class="d-none d-md-inline">Tags</span>
+                                <span class="d-md-none">Tags</span>
+                            </span>
+                                                                <em class="dd-indc icon ni ni-chevron-right"></em>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                 style="min-width: 300px;">
+                                                                <div class="dropdown-inner">
+                                                                    <div class="p-3">
+                                                                        <form method="get"
+                                                                              th:action="@{/admin/services}"
+                                                                              class="filter-form">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label-sm">Select
+                                                                                    Tags</label>
+                                                                                <div class="tags-checkbox-list"
+                                                                                     style="max-height: 200px; overflow-y: auto;">
+                                                                                    <div th:each="tag : ${availableTags}"
+                                                                                         class="form-check form-check-sm mb-1">
+                                                                                        <input class="form-check-input"
+                                                                                               type="checkbox"
+                                                                                               name="selectedTags"
+                                                                                               th:value="${tag}"
+                                                                                               th:id="'tag_' + ${tag}"
+                                                                                               th:checked="${filterParams?.selectedTags != null and #lists.contains(filterParams.selectedTags, tag)}">
+                                                                                        <label class="form-check-label"
+                                                                                               th:for="'tag_' + ${tag}"
+                                                                                               th:text="${tag}"></label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="d-flex gap-2">
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary btn-sm">
+                                                                                    Apply
+                                                                                </button>
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary btn-sm"
+                                                                                        onclick="clearTagsFilter()">
+                                                                                    Clear
+                                                                                </button>
+                                                                            </div>
+                                                                            <!-- Hidden fields -->
+                                                                            <input type="hidden" name="keyword"
+                                                                                   th:value="${keyword}">
+                                                                            <input type="hidden" name="minPrice"
+                                                                                   th:value="${filterParams?.minPrice}">
+                                                                            <input type="hidden" name="maxPrice"
+                                                                                   th:value="${filterParams?.maxPrice}">
+                                                                            <input type="hidden" name="minDuration"
+                                                                                   th:value="${filterParams?.minDuration}">
+                                                                            <input type="hidden" name="maxDuration"
+                                                                                   th:value="${filterParams?.maxDuration}">
+                                                                            <input type="hidden" name="fromDate"
+                                                                                   th:value="${filterParams?.fromDate}">
+                                                                            <input type="hidden" name="toDate"
+                                                                                   th:value="${filterParams?.toDate}">
+                                                                            <input type="hidden" name="createdBy"
+                                                                                   th:value="${filterParams?.createdBy}">
+                                                                            <input type="hidden" name="sortBy"
+                                                                                   th:value="${sortBy}">
+                                                                            <input type="hidden" name="sortDir"
+                                                                                   th:value="${sortDir}">
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <!-- Author Filter Dropdown -->
+                                                    <li>
+                                                        <div class="dropdown">
+                                                            <a href="#"
+                                                               class="dropdown-toggle btn btn-white btn-dim btn-outline-light"
+                                                               data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <em class="d-none d-sm-inline icon ni ni-user"></em>
+                                                                <span>
+                                <span class="d-none d-md-inline">Author</span>
+                                <span class="d-md-none">Author</span>
+                            </span>
+                                                                <em class="dd-indc icon ni ni-chevron-right"></em>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                 style="min-width: 250px;">
+                                                                <div class="dropdown-inner">
+                                                                    <div class="p-3">
+                                                                        <form method="get"
+                                                                              th:action="@{/admin/services}"
+                                                                              class="filter-form">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label-sm">Select
+                                                                                    Author</label>
+                                                                                <select name="createdBy"
+                                                                                        class="form-select form-select-sm">
+                                                                                    <option value="">All Authors
+                                                                                    </option>
+                                                                                    <option th:each="author : ${availableAuthors}"
+                                                                                            th:value="${author.key}"
+                                                                                            th:text="${author.value}"
+                                                                                            th:selected="${filterParams?.createdBy == author.key}">
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="d-flex gap-2">
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary btn-sm">
+                                                                                    Apply
+                                                                                </button>
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary btn-sm"
+                                                                                        onclick="clearAuthorFilter()">
+                                                                                    Clear
+                                                                                </button>
+                                                                            </div>
+                                                                            <!-- Hidden fields -->
+                                                                            <input type="hidden" name="keyword"
+                                                                                   th:value="${keyword}">
+                                                                            <input type="hidden" name="minPrice"
+                                                                                   th:value="${filterParams?.minPrice}">
+                                                                            <input type="hidden" name="maxPrice"
+                                                                                   th:value="${filterParams?.maxPrice}">
+                                                                            <input type="hidden" name="minDuration"
+                                                                                   th:value="${filterParams?.minDuration}">
+                                                                            <input type="hidden" name="maxDuration"
+                                                                                   th:value="${filterParams?.maxDuration}">
+                                                                            <input type="hidden" name="fromDate"
+                                                                                   th:value="${filterParams?.fromDate}">
+                                                                            <input type="hidden" name="toDate"
+                                                                                   th:value="${filterParams?.toDate}">
+                                                                            <input type="hidden" name="sortBy"
+                                                                                   th:value="${sortBy}">
+                                                                            <input type="hidden" name="sortDir"
+                                                                                   th:value="${sortDir}">
+                                                                            <th:block
+                                                                                    th:each="tag : ${filterParams?.selectedTags}">
+                                                                                <input type="hidden" name="selectedTags"
+                                                                                       th:value="${tag}">
+                                                                            </th:block>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <!-- Clear All Filters -->
+                                                    <li th:if="${hasActiveFilters}">
+                                                        <a href="#" class="btn btn-outline-danger btn-dim"
+                                                           onclick="clearAllFilters()">
+                                                            <em class="icon ni ni-cross"></em>
+                                                            <span class="d-none d-md-inline">Clear All</span>
+                                                        </a>
+                                                    </li>
+
+                                                    <!-- Add New Service Button -->
+                                                    <li class="nk-block-tools-opt">
+                                                        <a th:href="@{/admin/services/add}" class="btn btn-primary">
+                                                            <em class="icon ni ni-plus"></em>
+                                                            <span>Add Service</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Active Filters Display -->
+
+
+                                </div>
+                            </div>
+                            <div class="nk-block">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+
+                                        <div class="card-inner p-0">
+                                            <div class="nk-tb-list nk-tb-ulist">
+                                                <div class="nk-tb-item nk-tb-head">
+                                                    <div class="nk-tb-col nk-tb-col-check">
+                                                        <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   onClick="toggle(this)" id="uid"><label
+                                                                class="custom-control-label" for="uid"></label></div>
+                                                    </div>
+                                                    <div class="nk-tb-col"><span class="sub-text">Title</span></div>
+                                                    <div class="nk-tb-col tb-col-mb"><span
+                                                            class="sub-text">Author</span></div>
+                                                    <div class="nk-tb-col tb-col-md"><span class="sub-text">Tags</span>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-md"><span
+                                                            class="sub-text">Time</span></div>
+                                                    <div class="nk-tb-col tb-col-md"><span class="sub-text"><a
+                                                            href=""></a></span></div>
+                                                    <div class="nk-tb-col tb-col-md"><span class="sub-text">View</span>
+                                                    </div>
+                                                </div>
+                                                <div class="nk-tb-item" th:each="s : ${services}">
+                                                    <div class="nk-tb-col nk-tb-col-check">
+                                                        <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   name="uid" id="uid${loop.count}"><label
+                                                                class="custom-control-label"
+                                                                for="uid${loop.count}"></label></div>
+                                                    </div>
+                                                    <div class="nk-tb-col"><span th:text="${s.name}"></span></div>
+                                                    <div class="nk-tb-col tb-col-mb">
+                                                        <a href="#">
+                                                            <div class="user-card">
+                                                                <div class="user-info"><span class="tb-lead"
+                                                                                             th:text="${s.createdBy}"></span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="nk-tb-col tb-col-md"><span
+                                                            th:text="${formattedTags.get(s.serviceId)}"></span>
+                                                    </div>
+
+                                                    <div class="nk-tb-col tb-col-md">
+                                                        <div>
+                                                            <span th:text="'Duration: ' + ${s.duration} "></span>
+                                                        </div>
+                                                        <div><span
+                                                                th:text="'Created At: '+ ${#temporals.format(s.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-md">
+                                                    </div>
+                                                    <div class="nk-tb-col nk-tb-col-tools">
+                                                        <ul class="nk-tb-actions gx-1">
+                                                            <li class="nk-tb-action-hidden"><a
+                                                                    class="btn btn-trigger btn-icon"
+                                                                    data-bs-toggle="tooltip"
+                                                                    th:href="@{/admin/services/edit/{id}(id=${s.getServiceId()})}"
+                                                                    data-bs-placement="top" title="Quick Edit"><em
+                                                                    class="icon ni ni-edit-fill"></em></a></li>
+                                                            <li class="nk-tb-action-hidden"><a
+                                                                    th:href="@{/admin/services/{id}(id=${s.getServiceId()})}"
+                                                                    class="btn btn-trigger btn-icon"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    aria-label="View" data-bs-original-title="View"><em
+                                                                    class="icon ni ni-eye-fill"></em></a></li>
+                                                            <li class="nk-tb-action-hidden"><a
+                                                                    th:href="@{/admin/services/delete/{id}(id=${s.getServiceId()})}"
+                                                                    class="btn btn-trigger btn-icon"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="Delete"><em
+                                                                    class="icon ni ni-trash-fill"></em></a></li>
+                                                            <li>
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-inner">
+                                            <div class="nk-block-between-md g-3">
+                                                <div class="g">
+                                                    <ul class="pagination justify-content-center justify-content-md-start">
+                                                        <li class="page-item" th:if="${services.hasPrevious()}">
+                                                            <a class="page-link"
+                                                               th:href="@{/admin/services(page=${services.number - 1},
+                                    size=${services.size},
+                                    keyword=${keyword},
+                                    minPrice=${filterParams.minPrice},
+                                    maxPrice=${filterParams.maxPrice},
+                                    minDuration=${filterParams.minDuration},
+                                    maxDuration=${filterParams.maxDuration},
+                                    fromDate=${filterParams.fromDate},
+                                    toDate=${filterParams.toDate},
+                                    selectedTags=${filterParams.selectedTags},
+                                    createdBy=${filterParams.createdBy},
+                                    sortBy=${sortBy},
+                                    sortDir=${sortDir})}">Prev</a>
+                                                        </li>
+
+                                                        <li class="page-item" th:each="pageNum : ${pageNumbers}"
+                                                            th:classappend="${pageNum == (services.number + 1)} ? 'active' : ''">
+                                                            <a class="page-link"
+                                                               th:href="@{/admin/services(page=${pageNum - 1},
+                                    size=${services.size},
+                                    keyword=${keyword},
+                                    minPrice=${filterParams.minPrice},
+                                    maxPrice=${filterParams.maxPrice},
+                                    minDuration=${filterParams.minDuration},
+                                    maxDuration=${filterParams.maxDuration},
+                                    fromDate=${filterParams.fromDate},
+                                    toDate=${filterParams.toDate},
+                                    selectedTags=${filterParams.selectedTags},
+                                    createdBy=${filterParams.createdBy},
+                                    sortBy=${sortBy},
+                                    sortDir=${sortDir})}"
+                                                               th:text="${pageNum}">1</a>
+                                                        </li>
+
+                                                        <li class="page-item" th:if="${services.hasNext()}">
+                                                            <a class="page-link"
+                                                               th:href="@{/admin/services(page=${services.number + 1},
+                                    size=${services.size},
+                                    keyword=${keyword},
+                                    minPrice=${filterParams.minPrice},
+                                    maxPrice=${filterParams.maxPrice},
+                                    minDuration=${filterParams.minDuration},
+                                    maxDuration=${filterParams.maxDuration},
+                                    fromDate=${filterParams.fromDate},
+                                    toDate=${filterParams.toDate},
+                                    selectedTags=${filterParams.selectedTags},
+                                    createdBy=${filterParams.createdBy},
+                                    sortBy=${sortBy},
+                                    sortDir=${sortDir})}">Next</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="g">
+                                                    <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+                                                        <div>Page</div>
+                                                        <div>
+                                                            <form method="get" th:action="@{/admin/services}">
+                                                                <label>
+                                                                    <select class="form-select js-select2"
+                                                                            name="page"
+                                                                            data-search="on"
+                                                                            data-dropdown="xs center"
+                                                                            onchange="this.form.submit()">
+                                                                        <option th:each="i : ${#numbers.sequence(1, services.getTotalPages())}"
+                                                                                th:value="${i - 1}"
+                                                                                th:text="${i}"
+                                                                                th:selected="${i - 1 == services.number}">
+                                                                        </option>
+                                                                    </select>
+                                                                </label>
+                                                                <!-- Giữ nguyên size nếu có -->
+                                                                <input type="hidden" name="size"
+                                                                       th:value="${services.size}"/>
+                                                            </form>
+                                                        </div>
+                                                        <div>OF <span th:text="${services.getTotalPages()}"></span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
