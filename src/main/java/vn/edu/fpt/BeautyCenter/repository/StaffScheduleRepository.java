@@ -11,4 +11,6 @@ import java.util.List;
 public interface StaffScheduleRepository extends JpaRepository<StaffSchedule, String> {
     List<StaffSchedule> findByStaffId(String staffId);
     List<StaffSchedule> findByStartTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
+    List<StaffSchedule> findByStaffIdAndStartTimeBetween(String staffId, LocalDateTime start, LocalDateTime end);
+
 }
