@@ -75,21 +75,23 @@ public class StaffScheduleViewController {
         // DB schedules
         List<StaffSchedule> allSchedules = scheduleService.findByDateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6));
 
-        Map<String, List<String>> morningShifts = new HashMap<>();
-        Map<String, List<String>> afternoonShifts = new HashMap<>();
+
+        Map<String, List<Map<String, String>>> morningShifts = new HashMap<>();
+        Map<String, List<Map<String, String>>> afternoonShifts = new HashMap<>();
 
         for (LocalDate day : days) {
-            List<String> morning = new ArrayList<>();
-            List<String> afternoon = new ArrayList<>();
+            List<Map<String, String>> morning = new ArrayList<>();
+            List<Map<String, String>> afternoon = new ArrayList<>();
             for (StaffSchedule sc : allSchedules) {
                 if (sc.getStartTime().toLocalDate().equals(day)) {
-                    String info = sc.getStaff().getFullName()
-                            + " (" + sc.getStaff().getPosition() + ") - "
-                            + sc.getStatus().name();
+                    Map<String, String> infoMap = new HashMap<>();
+                    infoMap.put("name", sc.getStaff().getFullName());
+                    infoMap.put("position", sc.getStaff().getPosition());
+                    infoMap.put("status", sc.getStatus().name());
                     if (sc.getStartTime().getHour() < 14) {
-                        morning.add(info);
+                        morning.add(infoMap);
                     } else {
-                        afternoon.add(info);
+                        afternoon.add(infoMap);
                     }
                 }
             }

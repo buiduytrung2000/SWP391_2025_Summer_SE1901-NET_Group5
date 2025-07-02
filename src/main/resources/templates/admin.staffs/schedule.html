@@ -72,7 +72,10 @@
                                                 <td class="fw-bold text-start">Morning Shifts(8h-14h)</td>
                                                 <td th:each="day : ${days}">
                                                     <div th:each="info : ${morningShifts[day.toString()]}">
-                                                        - <span th:text="${info}"></span>
+                                                        - <span th:text="${info.name} + ' (' + ${info.position} + ')'"></span>
+                                                        <span th:if="${info.status == 'ATTENDANCE'}" class="badge bg-success">Attendance</span>
+                                                        <span th:if="${info.status == 'ABSENT'}" class="badge bg-danger">Absent</span>
+                                                        <span th:if="${info.status == 'UPCOMING'}" class="badge bg-secondary">Upcoming</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -80,7 +83,10 @@
                                                 <td class="fw-bold text-start">Afternoon Shifts(14h-20h)</td>
                                                 <td th:each="day : ${days}">
                                                     <div th:each="info : ${afternoonShifts[day.toString()]}">
-                                                        - <span th:text="${info}"></span>
+                                                        - <span th:text="${info.name} + ' (' + ${info.position} + ')'"></span>
+                                                        <span th:if="${info.status == 'ATTENDANCE'}" class="badge bg-success">Attendance</span>
+                                                        <span th:if="${info.status == 'ABSENT'}" class="badge bg-danger">Absent</span>
+                                                        <span th:if="${info.status == 'UPCOMING'}" class="badge bg-secondary">Upcoming</span>
                                                     </div>
                                                 </td>
                                             </tr>
