@@ -1,0 +1,76 @@
+body {
+            background-image: url("/sbs/images/background/coconut-underwater-still-life.jpg") ;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+            color: #2d3e50;
+            margin-top: 32px;
+            letter-spacing: 1px;
+        }
+        .detail-container {
+            background: #fff;
+            box-shadow: 0 4px 18px rgba(80, 99, 136, 0.08), 0 1.5px 6px rgba(80,99,136,0.06);
+            border-radius: 14px;
+            padding: 32px 40px;
+            max-width: 500px;
+            margin: 32px auto 32px auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px 6px;
+            border-bottom: 1px solid #eee;
+            color: #2d3e50;
+        }
+        td:first-child {
+            font-weight: 600;
+            color: #345678;
+            width: 130px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .btn-row {
+            margin-top: 32px;
+            text-align: right;
+        }
+        .btn-row a, .btn-row button {
+            display: inline-block;
+            font-size: 15px;
+            padding: 8px 28px;
+            margin-left: 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.18s, color 0.18s;
+        }
+        .edit-btn {
+            background: #ff9800;
+            color: #fff;
+        }
+        .edit-btn:hover {
+            background: #ffb74d;
+            color: #333;
+        }
+        .back-btn {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .back-btn:hover {
+            background: #bdbdbd;
+        }
+        @media (max-width: 650px) {
+            .detail-container {
+                padding: 20px 10px;
+                max-width: 98vw;
+            }
+            table td:first-child {
+                width: 100px;
+            }
+        }
