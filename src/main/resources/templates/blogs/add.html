@@ -119,105 +119,137 @@
                                             <i class="fa fa-upload"></i> Publish Blog
                                         </button>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="thumbnail">Featured Image</label>
-                                        <input type="file"
-                                               id="thumbnail"
+                                    <!-- SIDEBAR WITH BLOG SETTINGS -->
+                                    <div class="col-md-4 m-b30">
+                                        <div class="section-head">
+                                            <h4 class="text-uppercase">Blog Settings</h4>
+                                            <div class="wt-separator-outer">
+                                                <div class="wt-separator style-icon">
+                                                    <i class="fa fa-cog text-black"></i>
+                                                    <span class="separator-left site-bg-primary"></span>
+                                                    <span class="separator-right site-bg-primary"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Category Selection -->
+                                        <div class="wt-box m-b30">
+                                            <h5>Category</h5>
+                                            <div class="form-group">
+                                                <select class="form-control" th:field="*{categoryId}">
+                                                    <option value="">-- Select Category --</option>
+                                                    <option th:each="category : ${availableCategories}"
+                                                            th:value="${category.categoryId}"
+                                                            th:text="${category.categoryName}">Category Name
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tags Management -->
+                                        <div class="wt-box m-b30">
+                                            <h5>Tags</h5>
+                                            <div class="form-group">
+                                                <input type="text"
+                                                       id="tagInput"
+                                                       class="form-control"
+                                                       placeholder="Enter tags separated by commas"
+                                                       th:value="${#strings.listJoin(blogRequest.tagNames, ', ')}">
+                                                <input type="hidden" th:field="*{tagNames}" id="hiddenTags">
+                                                <small class="form-text text-muted">Press Enter or use commas to add tags</small>
+                                            </div>
+                                            <div id="tagContainer" class="mt-2"></div>
+
+                                            <!-- Popular Tags -->
+                                            <div class="popular-tags" th:if="${availableTags}">
+                                                <h6>Popular Tags:</h6>
+                                                <div class="tag-suggestions">
+                                        <span th:each="tag : ${availableTags}"
+                                              class="badge badge-light tag-suggestion"
+                                              th:text="${tag.tagName}"
+                                              style="cursor: pointer; margin: 2px;">Tag</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Featured Blog -->
+                                        <div class="wt-box m-b30">
+                                            <h5>Featured Post</h5>
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="featured"
+                                                           th:field="*{featured}">
+                                                    <label class="custom-control-label" for="featured">
+                                                        Mark as featured post
+                                                    </label>
+                                                </div>
+                                                <small class="form-text text-muted">Featured posts will be highlighted on the blog
+                                                    homepage</small>
+                                            </div>
+                                        </div>
+
+
+
+                                        <!-- Publishing Info -->
+                                        <div class="wt-box">
+                                            <h5>Publishing Info</h5>
+                                            <div class="blog-info">
+                                                <p><strong>Author:</strong> <span th:text="${session.user.getUsername()}">Current User</span>
+                                                </p>
+                                                <span th:if="${blog != null and blog.publishedAt != null}"
+                                                      th:text="'Published: ' + ${#temporals.format(blog.publishedAt, 'dd/MM/yyyy')}">
+</span>
+                                                <span th:if="${blog != null and blog.publishedAt == null}"
+                                                      th:text="'Created: ' + ${#temporals.format(blog.createdAt, 'dd/MM/yyyy')}">
+</span>
+                                                <p><strong>Status:</strong> <span class="badge badge-warning-black">Draft</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- BLOG THUMBNAIL -->
+                                    <div class="wt-box m-b30">
+                                        <h5>Featured Image</h5>
+
+                                        <!-- Drop zone -->
+                                        <div id="thumb-drop-area"
+                                             class="upload-area"
+                                             style="border:2px dashed #EA9999;
+                    padding:30px;
+                    text-align:center;
+                    cursor:pointer;">
+                                            <i class="fa fa-cloud-upload"
+                                               style="font-size:48px;color:#EA9999;"></i>
+                                            <p class="text-muted m-b5">Drop or click to upload thumbnail</p>
+                                            <small>Recommended size 800 × 400 px • Max 10 MB</small>
+                                        </div>
+
+                                        <!-- Hidden file input -->
+                                        <input id="thumbInput"
+                                               type="file"
                                                name="thumbnail"
                                                accept="image/*"
-                                               class="form-control"/>
+                                               style="display:none;">
+
+                                        <!-- Preview container -->
+                                        <div id="thumbPreviewBox" style="display:none;">
+                                            <img id="thumbPreview"
+                                                 style="width:100%;max-height:200px;
+                        object-fit:cover;border-radius:8px;">
+                                            <button type="button"
+                                                    class="btn btn-sm btn-danger mt-2"
+                                                    id="thumbRemoveBtn">
+                                                Remove image
+                                            </button>
+                                        </div>
+
+                                        <!-- Hidden field lưu URL sau khi upload -->
+                                        <input type="hidden" th:field="*{thumbnailUrl}" id="thumbnailUrl">
                                     </div>
                                 </form>
                             </div>
                         </div>
 
-                        <!-- SIDEBAR WITH BLOG SETTINGS -->
-                        <div class="col-md-4 m-b30">
-                            <div class="section-head">
-                                <h4 class="text-uppercase">Blog Settings</h4>
-                                <div class="wt-separator-outer">
-                                    <div class="wt-separator style-icon">
-                                        <i class="fa fa-cog text-black"></i>
-                                        <span class="separator-left site-bg-primary"></span>
-                                        <span class="separator-right site-bg-primary"></span>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Category Selection -->
-                            <div class="wt-box m-b30">
-                                <h5>Category</h5>
-                                <div class="form-group">
-                                    <select class="form-control" th:field="*{blogRequest.categoryId}">
-                                        <option value="">-- Select Category --</option>
-                                        <option th:each="category : ${availableCategories}"
-                                                th:value="${category.categoryId}"
-                                                th:text="${category.categoryName}">Category Name
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Tags Management -->
-                            <div class="wt-box m-b30">
-                                <h5>Tags</h5>
-                                <div class="form-group">
-                                    <input type="text"
-                                           id="tagInput"
-                                           class="form-control"
-                                           placeholder="Enter tags separated by commas"
-                                           th:value="${#strings.listJoin(blogRequest.tagNames, ', ')}">
-                                    <input type="hidden" th:field="*{blogRequest.tagNames}" id="hiddenTags">
-                                    <small class="form-text text-muted">Press Enter or use commas to add tags</small>
-                                </div>
-                                <div id="tagContainer" class="mt-2"></div>
-
-                                <!-- Popular Tags -->
-                                <div class="popular-tags" th:if="${availableTags}">
-                                    <h6>Popular Tags:</h6>
-                                    <div class="tag-suggestions">
-                                        <span th:each="tag : ${availableTags}"
-                                              class="badge badge-light tag-suggestion"
-                                              th:text="${tag.tagName}"
-                                              style="cursor: pointer; margin: 2px;">Tag</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Featured Blog -->
-                            <div class="wt-box m-b30">
-                                <h5>Featured Post</h5>
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="featured"
-                                               th:field="*{blogRequest.featured}">
-                                        <label class="custom-control-label" for="featured">
-                                            Mark as featured post
-                                        </label>
-                                    </div>
-                                    <small class="form-text text-muted">Featured posts will be highlighted on the blog
-                                        homepage</small>
-                                </div>
-                            </div>
-
-
-
-                            <!-- Publishing Info -->
-                            <div class="wt-box">
-                                <h5>Publishing Info</h5>
-                                <div class="blog-info">
-                                    <p><strong>Author:</strong> <span th:text="${session.user.getUsername()}">Current User</span>
-                                    </p>
-                                    <span th:if="${blog != null and blog.publishedAt != null}"
-                                          th:text="'Published: ' + ${#temporals.format(blog.publishedAt, 'dd/MM/yyyy')}">
-</span>
-                                    <span th:if="${blog != null and blog.publishedAt == null}"
-                                          th:text="'Created: ' + ${#temporals.format(blog.createdAt, 'dd/MM/yyyy')}">
-</span>
-                                    <p><strong>Status:</strong> <span class="badge badge-warning-black">Draft</span></p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <!-- SECTION CONTENT END -->

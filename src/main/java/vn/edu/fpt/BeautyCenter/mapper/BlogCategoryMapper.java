@@ -33,6 +33,7 @@ public interface BlogCategoryMapper {
     BlogCategory toEntity(BlogCategoryRequest request);
 
     @Mapping(target = "blogCount", ignore = true)
+    @Mapping(target = "categoryId", source = "id")
     BlogCategoryResponse toResponse(BlogCategory entity);
 
     @Mapping(target = "id", ignore = true)

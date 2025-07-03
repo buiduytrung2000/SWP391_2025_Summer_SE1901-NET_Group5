@@ -171,7 +171,7 @@
             <div class="wt-post-media wt-img-effect zoom-slow">
               <!-- Blog Thumbnail -->
               <div th:if="${blog.thumbnailUrl}">
-                <img th:src="${blog.thumbnailUrl}" alt="Blog Thumbnail" class="img-responsive">
+                <img th:src="${blog.thumbnailUrl}" style="width: 320px;height: 180px;object-fit: cover" alt="Blog Thumbnail" class="img-responsive">
               </div>
               <div th:unless="${blog.thumbnailUrl}" class="default-thumbnail">
                 <div class="default-blog-image">

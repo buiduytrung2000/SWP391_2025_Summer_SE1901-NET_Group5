@@ -234,7 +234,7 @@ public class UserServiceImpl implements UserService {
 
         } else {
             // Ultimate fallback for incomplete user records
-            displayName.append("User ID: ").append(user.getUserId().substring(0, 8)).append("...");
+            displayName.append("User ID: ").append(user.getUserId(), 0, 8).append("...");
         }
 
         // Return the constructed display name
@@ -274,5 +274,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @Override
+    public String getAuthorNameById(String userId) {
+        if (userId == null || userId.isBlank()) {
+            return "Unknown User1";
+        }
+        return userRepository.findFullNameById(userId)
+                .filter(name -> !name.isBlank())
+                .orElse("Unknown User2");
+    }
 }

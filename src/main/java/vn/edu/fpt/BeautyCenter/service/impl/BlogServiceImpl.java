@@ -64,6 +64,7 @@ public class BlogServiceImpl implements BlogService {
                 .thumbnailUrl(request.getThumbnailUrl())
                 .status(request.getStatus())
                 .featured(request.getFeatured())
+                .viewCount(0)
                 // Không set thời gian ở đây - để @PrePersist xử lý
                 .build();
 
@@ -191,12 +192,14 @@ public class BlogServiceImpl implements BlogService {
     @Override
     @Transactional(readOnly = true)
     public Page<BlogResponse> searchBlogs(String keyword, Pageable pageable) {
+        System.out.println("go here");
         return searchBlogsByStatus(keyword, BlogStatus.PUBLISHED, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<BlogResponse> searchBlogsByStatus(String keyword, BlogStatus status, Pageable pageable) {
+        System.out.println("goes here");
         return blogRepository.searchByKeywordAndStatus(keyword, String.valueOf(status), pageable)
                 .map(blogMapper::toResponse);
     }
@@ -299,8 +302,6 @@ public class BlogServiceImpl implements BlogService {
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.or(
                             criteriaBuilder.like(criteriaBuilder.lower(root.get("title")),
-                                    "%" + filterParams.getKeyword().toLowerCase() + "%"),
-                            criteriaBuilder.like(criteriaBuilder.lower(root.get("content")),
                                     "%" + filterParams.getKeyword().toLowerCase() + "%")
                     ));
         }
@@ -312,7 +313,7 @@ public class BlogServiceImpl implements BlogService {
 
         if (filterParams.getCategoryId() != null) {
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("category").get("categoryId"), filterParams.getCategoryId()));
+                    criteriaBuilder.equal(root.get("category").get("id"), filterParams.getCategoryId()));
         }
 
         if (filterParams.getFromDate() != null) {

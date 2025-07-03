@@ -22,7 +22,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,9 +40,6 @@ import vn.edu.fpt.BeautyCenter.service.*;
 import jakarta.validation.Valid;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -131,7 +127,7 @@ public class BlogController {
             // Validate and sanitize input parameters
             page = Math.max(0, page);
             size = Math.min(Math.max(1, size), 50);
-
+            System.out.println("keyword: "+keyword);
             // Build comprehensive filter parameters object
             BlogFilterParams filterParams = BlogFilterParams.builder()
                     .keyword(sanitizeKeyword(keyword))
@@ -166,10 +162,10 @@ public class BlogController {
             // Enhance blog data with user names for display
             for (BlogResponse blog : blogs) {
                 try {
-                    String userName = userService.getUserName(blog.getAuthorId());
-                    blog.setAuthorName(userName != null ? userName : "Unknown User");
+                    String userName = userService.getAuthorNameById(blog.getAuthorId());
+                    blog.setAuthorName(Objects.requireNonNullElse(userName, "Unknown User"));
                 } catch (Exception e) {
-                    blog.setAuthorName("Unknown User");
+                    blog.setAuthorName("Unknown User3");
                 }
             }
 
@@ -276,8 +272,7 @@ public class BlogController {
                            BindingResult bindingResult,
                            HttpSession session,
                            RedirectAttributes redirectAttributes,
-                           @RequestParam("thumbnail") MultipartFile thumbnailFile,
-                           RedirectAttributes ra) {
+                           @RequestParam(value = "thumbnail") MultipartFile file) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
             return "redirect:/";
@@ -302,15 +297,15 @@ public class BlogController {
 
 
             // Attempt to create the blog
-            // 1. Save the file physically
-            if (!thumbnailFile.isEmpty()) {
-                String fileName = StringUtils.cleanPath(Objects.requireNonNull(thumbnailFile.getOriginalFilename()));
-                Path uploadDir = Paths.get("src/main/resources/static/images/service");
-                Files.createDirectories(uploadDir);
-                thumbnailFile.transferTo(uploadDir.resolve(fileName).toFile());
-                // 2. Store URL in DTO
-                request.setThumbnailUrl("/images/service/" + fileName);
+            if (file != null && !file.isEmpty()) {
+                try {
+                    String url = s3Service.uploadFile(file);
+                    request.setThumbnailUrl(url);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            System.out.println("catId: "+request.getCategoryId());
             BlogResponse createdBlog = blogService.createBlog(request, user.getUserId());
 
             // Success notification with blog title
@@ -476,10 +471,10 @@ public class BlogController {
                            Model model,
                            HttpSession session,
                            RedirectAttributes redirectAttributes) {
-        if (isNotPermit(session)) {
-            notificationService.addErrorMessage(redirectAttributes, "Access denied. Please login to view blog details.");
-            return "redirect:/";
-        }
+//        if (isNotPermit(session)) {
+//            notificationService.addErrorMessage(redirectAttributes, "Access denied. Please login to view blog details.");
+//            return "redirect:/";
+//        }
 
         try {
             // Retrieve blog details
@@ -490,9 +485,15 @@ public class BlogController {
             }
 
             BlogResponse blog = blogOpt.get();
-
-            // Increment view count
-            blogService.incrementViewCount(blogId);
+            Set<String> viewedBlogs = (Set<String>) session.getAttribute("viewedBlogs");
+            if (viewedBlogs == null) {
+                viewedBlogs = new HashSet<>();
+            }
+            if (!viewedBlogs.contains(blogId)) {
+                blogService.incrementViewCount(blogId);
+                viewedBlogs.add(blogId);
+                session.setAttribute("viewedBlogs", viewedBlogs);
+            }
 
             // Format author name for display
             String authorName = userService.getUserName(blog.getAuthorId());
@@ -503,24 +504,31 @@ public class BlogController {
 
             // Get category name if available
             String categoryName = "Uncategorized";
+            String categoryId = "";
             if (blog.getCategoryId() != null) {
                 try {
                     Optional<BlogCategoryResponse> categoryOpt = blogCategoryService.getCategoryById(blog.getCategoryId());
                     if (categoryOpt.isPresent()) {
                         categoryName = categoryOpt.get().getCategoryName();
+                        categoryId = categoryOpt.get().getCategoryId().toString();
                     }
                 } catch (Exception e) {
                     // Keep default category name
                 }
             }
 
+            //Get recent blog
+            List<BlogResponse> recentBlogs = blogService.getRecentBlogs(3);
+
             // Add attributes for view
             model.addAttribute("blog", blog);
             model.addAttribute("formattedTags", formattedTags);
             model.addAttribute("categoryName", categoryName);
+            model.addAttribute("categoryId", categoryId);
+            model.addAttribute("recentBlogs", recentBlogs);
             model.addAttribute("pageTitle", "Blog Details: " + blog.getTitle());
 
-            return "dashboard/blogs/view";
+            return "blogs/view";
 
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes,
@@ -858,7 +866,6 @@ public class BlogController {
             // Add available categories for form
             List<BlogCategoryResponse> availableCategories = blogCategoryService.getAllCategories();
             model.addAttribute("availableCategories", availableCategories);
-
             // Add available tags for form
             List<BlogTagResponse> availableTags = blogTagService.getAllTags();
             model.addAttribute("availableTags", availableTags);
