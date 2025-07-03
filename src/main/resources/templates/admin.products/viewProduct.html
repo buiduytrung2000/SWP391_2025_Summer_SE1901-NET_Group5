@@ -61,6 +61,16 @@
                                                                 data-quantity=${product.quantity}">
                                                             <i class="fa-solid fa-pen-to-square"></i>
                                                         </a>
+                                                        <a href="#" class="btn-detail-product"
+                                                           th:attr="data-id=${product.product_id},
+                                                                data-name=${product.name},
+                                                                data-description=${product.description},
+                                                                data-price=${product.price},
+                                                                data-sku=${product.sku},
+                                                                data-quantity=${product.quantity}"
+                                                        style="margin-left: 4px">
+                                                            <i class="fa-regular fa-rectangle-list fa-lg"></i>
+                                                        </a>
                                                         <a href="#" class="btn-delete-product" th:attr="data-id=${product.product_id}" style="margin-left: 4px;">
                                                             <i class="fa-solid fa-trash"></i>
                                                         </a>
@@ -201,6 +211,27 @@
     </div>
 </div>
 
+<!-- View Detail Modal -->
+<div class="modal fade" id="detailProductModal" tabindex="-1" aria-labelledby="detailProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailProductModalLabel">Product Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Name:</strong> <span id="detailProductName"></span></p>
+                <p><strong>Description:</strong> <span id="detailProductDescription"></span></p>
+                <p><strong>Price:</strong> <span id="detailProductPrice"></span></p>
+                <p><strong>SKU:</strong> <span id="detailProductSKU"></span></p>
+                <p><strong>Quantity:</strong> <span id="detailProductQuantity"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     //Delete
@@ -279,6 +310,25 @@
             const id = btn.getAttribute('data-id');
             document.getElementById('editProductForm').action = `/sbs/admin/product/edit/${id}`;
             var modal = new bootstrap.Modal(document.getElementById('editProductModal'));
+            modal.show();
+        });
+    });
+});
+
+    //Detail
+    document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.btn-detail-product').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Lấy data từ attribute
+            document.getElementById('detailProductName').textContent = btn.getAttribute('data-name');
+            document.getElementById('detailProductDescription').textContent = btn.getAttribute('data-description');
+            document.getElementById('detailProductPrice').textContent = btn.getAttribute('data-price');
+            document.getElementById('detailProductSKU').textContent = btn.getAttribute('data-sku');
+            document.getElementById('detailProductQuantity').textContent = btn.getAttribute('data-quantity');
+
+            // Show modal
+            var modal = new bootstrap.Modal(document.getElementById('detailProductModal'));
             modal.show();
         });
     });
