@@ -62,4 +62,7 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+    public String getId() {
+        return this.userId;
+    }
 }

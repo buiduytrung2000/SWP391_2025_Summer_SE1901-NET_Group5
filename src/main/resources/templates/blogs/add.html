@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header::common-head}">
+    <!-- PAGE TITLE HERE -->
+    <title th:text="${pageTitle}">Add New Blog - Smart Beauty</title>
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+
+    <!-- HEADER START -->
+    <header th:replace="~{fragments/header::header}">
+    </header>
+    <!-- HEADER END -->
+
+    <!-- CONTENT START -->
+    <div class="page-content">
+
+        <!-- INNER PAGE BANNER -->
+        <div class="wt-bnr-inr overlay-wraper" th:style="|background-image: url('@{/images/background/bg-6.jpg}')|">
+            <div class="overlay-main bg-black opacity-05"></div>
+            <div class="container">
+                <div class="wt-bnr-inr-entry">
+                    <h1 class="text-white">Add New Blog Post</h1>
+                </div>
+            </div>
+        </div>
+        <!-- INNER PAGE BANNER END -->
+
+        <!-- BREADCRUMB ROW -->
+        <div class="bg-gray-light p-tb20">
+            <div class="container">
+                <ul class="wt-breadcrumb breadcrumb-style-1">
+                    <li><a href="javascript:void(0);">Home</a></li>
+                    <li><a th:href="@{/admin/blogs}">Blog Management</a></li>
+                    <li>Add New Blog</li>
+                </ul>
+            </div>
+        </div>
+        <!-- BREADCRUMB ROW END -->
+
+        <!-- SECTION CONTENT START -->
+        <div class="section-full p-t80 p-b50">
+
+            <!-- BLOG FORM -->
+            <div class="container woo-entry">
+
+                <!-- SECTION CONTENT START -->
+                <div class="section-content">
+                    <div class="row">
+                        <!-- BLOG FORM -->
+                        <div class="col-md-8 m-b30">
+                            <div class="section-head">
+                                <h3 class="text-uppercase">Create New Blog Post</h3>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator style-icon">
+                                        <i class="fa fa-pencil text-black"></i>
+                                        <span class="separator-left site-bg-primary"></span>
+                                        <span class="separator-right site-bg-primary"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wt-box">
+                                <form th:action="@{/admin/blogs/add}" th:object="${blogRequest}" method="POST" enctype="multipart/form-data">
+                                    <!-- General notifications (success/error from redirect) -->
+                                    <div th:replace="~{fragments/notifications :: notification}"></div>
+
+                                    <!-- Form validation errors (only for current form) -->
+                                    <div th:replace="~{fragments/form-validation :: validation-errors}"></div>
+
+                                    <!-- Blog Title -->
+                                    <div class="form-group">
+                                        <label for="title" class="form-label">Blog Title *</label>
+                                        <input type="text" class="form-control" id="title"
+                                               th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
+                                               th:field="*{title}"
+                                               placeholder="Enter an engaging blog title">
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}">
+                                            <span th:each="err : ${#fields.errors('title')}" th:text="${err}"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Blog Excerpt -->
+                                    <div class="form-group">
+                                        <label for="excerpt" class="form-label">Blog Excerpt</label>
+                                        <textarea class="form-control" id="excerpt" rows="3"
+                                                  th:classappend="${#fields.hasErrors('excerpt')} ? 'is-invalid'"
+                                                  th:field="*{excerpt}"
+                                                  placeholder="Write a brief summary of your blog post (optional)"></textarea>
+                                        <small class="form-text text-muted">A short description that will appear in blog
+                                            previews and search results.</small>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('excerpt')}">
+                                            <span th:each="err : ${#fields.errors('excerpt')}" th:text="${err}"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Blog Content -->
+                                    <div class="form-group">
+                                        <label for="summernote" class="form-label">Blog Content *</label>
+                                        <textarea id="summernote"
+                                                  th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'"
+                                                  th:field="*{content}"
+                                                  placeholder="Write your blog content here..."></textarea>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}">
+                                            <span th:each="err : ${#fields.errors('content')}" th:text="${err}"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="text-right">
+                                        <a th:href="@{/admin/blogs}" class="site-button-secondry m-r15">Cancel</a>
+                                        <button type="submit" name="status" value="DRAFT"
+                                                class="site-button-secondry m-r15">
+                                            <i class="fa fa-save"></i> Save as Draft
+                                        </button>
+                                        <button type="submit" name="status" value="PUBLISHED" class="site-button">
+                                            <i class="fa fa-upload"></i> Publish Blog
+                                        </button>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="thumbnail">Featured Image</label>
+                                        <input type="file"
+                                               id="thumbnail"
+                                               name="thumbnail"
+                                               accept="image/*"
+                                               class="form-control"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- SIDEBAR WITH BLOG SETTINGS -->
+                        <div class="col-md-4 m-b30">
+                            <div class="section-head">
+                                <h4 class="text-uppercase">Blog Settings</h4>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator style-icon">
+                                        <i class="fa fa-cog text-black"></i>
+                                        <span class="separator-left site-bg-primary"></span>
+                                        <span class="separator-right site-bg-primary"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Category Selection -->
+                            <div class="wt-box m-b30">
+                                <h5>Category</h5>
+                                <div class="form-group">
+                                    <select class="form-control" th:field="*{blogRequest.categoryId}">
+                                        <option value="">-- Select Category --</option>
+                                        <option th:each="category : ${availableCategories}"
+                                                th:value="${category.categoryId}"
+                                                th:text="${category.categoryName}">Category Name
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Tags Management -->
+                            <div class="wt-box m-b30">
+                                <h5>Tags</h5>
+                                <div class="form-group">
+                                    <input type="text"
+                                           id="tagInput"
+                                           class="form-control"
+                                           placeholder="Enter tags separated by commas"
+                                           th:value="${#strings.listJoin(blogRequest.tagNames, ', ')}">
+                                    <input type="hidden" th:field="*{blogRequest.tagNames}" id="hiddenTags">
+                                    <small class="form-text text-muted">Press Enter or use commas to add tags</small>
+                                </div>
+                                <div id="tagContainer" class="mt-2"></div>
+
+                                <!-- Popular Tags -->
+                                <div class="popular-tags" th:if="${availableTags}">
+                                    <h6>Popular Tags:</h6>
+                                    <div class="tag-suggestions">
+                                        <span th:each="tag : ${availableTags}"
+                                              class="badge badge-light tag-suggestion"
+                                              th:text="${tag.tagName}"
+                                              style="cursor: pointer; margin: 2px;">Tag</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Featured Blog -->
+                            <div class="wt-box m-b30">
+                                <h5>Featured Post</h5>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="featured"
+                                               th:field="*{blogRequest.featured}">
+                                        <label class="custom-control-label" for="featured">
+                                            Mark as featured post
+                                        </label>
+                                    </div>
+                                    <small class="form-text text-muted">Featured posts will be highlighted on the blog
+                                        homepage</small>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Publishing Info -->
+                            <div class="wt-box">
+                                <h5>Publishing Info</h5>
+                                <div class="blog-info">
+                                    <p><strong>Author:</strong> <span th:text="${session.user.getUsername()}">Current User</span>
+                                    </p>
+                                    <span th:if="${blog != null and blog.publishedAt != null}"
+                                          th:text="'Published: ' + ${#temporals.format(blog.publishedAt, 'dd/MM/yyyy')}">
+</span>
+                                    <span th:if="${blog != null and blog.publishedAt == null}"
+                                          th:text="'Created: ' + ${#temporals.format(blog.createdAt, 'dd/MM/yyyy')}">
+</span>
+                                    <p><strong>Status:</strong> <span class="badge badge-warning-black">Draft</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- SECTION CONTENT END -->
+
+            </div>
+            <!-- BLOG FORM END -->
+
+        </div>
+        <!-- SECTION CONTENT END -->
+    </div>
+    <!-- CONTENT END -->
+
+    <!-- FOOTER START -->
+    <footer th:replace="~{fragments/footer :: footer}">
+    </footer>
+    <!-- FOOTER END -->
+
+    <!-- BUTTON TOP START -->
+    <button class="scroltop"><span class=" iconmoon-house relative" id="btn-vibrate"></span>Top</button>
+
+</div>
+
+<!-- LOADING AREA START ===== -->
+<div class="loading-area">
+    <div class="loading-box"></div>
+    <div class="loading-pic">
+        <div class="cssload-container">
+            <div class="cssload-progress cssload-float cssload-shadow">
+                <div class="cssload-progress-item"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOADING AREA END ====== -->
+
+<!-- STYLE SWITCHER START -->
+<div class="styleswitcher">
+    <div class="switcher-btn-bx">
+        <a class="switch-btn">
+            <span class="fa fa-cog fa-spin"></span>
+        </a>
+    </div>
+    <!-- Switcher content remains the same as in the original template -->
+</div>
+<!-- STYLE SWITCHER END -->
+
+<!-- JAVASCRIPT FILES ========================================= -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
+
+<!-- Include Summernote CSS/JS -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize Summernote
+        $('#summernote').summernote({
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+            height: 400,
+            placeholder: 'Write your engaging blog content here...',
+            callbacks: {
+                onImageUpload: function (files) {
+                    uploadImage(files[0]);
+                }
+            }
+        });
+
+        // Tag Management
+        let tags = [];
+
+        function updateTagsDisplay() {
+            const container = $('#tagContainer');
+            container.empty();
+
+            tags.forEach(function (tag, index) {
+                const tagElement = $(`
+                <span class="badge badge-primary mr-2 mb-2" style="font-size: 14px;">
+                    ${tag}
+                    <button type="button" class="btn-close btn-close-white ms-1" style="background: none; border: none; color: white; font-size: 18px; padding: 0 0 0 5px;" data-index="${index}">×</button>
+                </span>
+            `);
+                container.append(tagElement);
+            });
+
+            // Update hidden field
+            $('#hiddenTags').val(tags.join(','));
+        }
+
+        function addTag(tagName) {
+            tagName = tagName.trim();
+            if (tagName && !tags.includes(tagName)) {
+                tags.push(tagName);
+                updateTagsDisplay();
+            }
+        }
+
+        // Handle tag input
+        $('#tagInput').on('keypress', function (e) {
+            if (e.which === 13 || e.which === 188) { // Enter or comma
+                e.preventDefault();
+                const tagName = $(this).val().replace(',', '').trim();
+                if (tagName) {
+                    addTag(tagName);
+                    $(this).val('');
+                }
+            }
+        });
+
+        // Handle tag deletion
+        $(document).on('click', '.btn-close', function () {
+            const index = $(this).data('index');
+            tags.splice(index, 1);
+            updateTagsDisplay();
+        });
+
+        // Handle suggested tags
+        $('.tag-suggestion').click(function () {
+            const tagName = $(this).text();
+            addTag(tagName);
+        });
+
+        // Initialize tags from server if editing
+        const existingTags = $('#tagInput').val();
+        if (existingTags) {
+            tags = existingTags.split(',').map(tag => tag.trim()).filter(tag => tag);
+            updateTagsDisplay();
+            $('#tagInput').val('');
+        }
+
+        // Set current date
+        $('#currentDate').text(new Date().toLocaleDateString());
+
+        // Auto-dismiss alerts after 10 seconds
+        setTimeout(function () {
+            $('.alert').fadeOut('slow');
+        }, 10000);
+
+        // Form submission handling
+        $('form').submit(function () {
+            // Ensure tags are properly set
+            $('#hiddenTags').val(tags.join(','));
+
+            // Show loading
+            $('.loading-area').show();
+        });
+    });
+</script>
+<script th:src="@{/js/blogThumbnailUpload.js}"></script>
+
+
+<style>
+    .upload-area {
+        transition: all 0.3s ease;
+    }
+
+    .upload-area:hover {
+        background-color: #f8f9fa;
+        border-color: #EA9999 !important;
+    }
+
+    .tag-suggestion:hover {
+        background-color: #EA9999 !important;
+        color: white !important;
+    }
+
+    .badge-primary {
+        background-color: #EA9999;
+    }
+
+    .site-bg-primary {
+        background-color: #EA9999 !important;
+    }
+
+    .custom-control-input:checked ~ .custom-control-label::before {
+        background-color: #EA9999;
+        border-color: #EA9999;
+    }
+
+    .blog-info p {
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .popular-tags {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+
+    .popular-tags h6 {
+        margin-bottom: 10px;
+        color: #666;
+    }
+
+    #thumbnailPreview img {
+        border: 2px solid #EA9999;
+    }
+</style>
+
+</body>
+</html>
