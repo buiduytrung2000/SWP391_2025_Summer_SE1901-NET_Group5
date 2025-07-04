@@ -18,8 +18,9 @@ public interface UserService {
 
     void resetPassword(String email, String password);
 
-    String getUserName(String serviceId);
+    String getUserName(String userId);
 
+    String getAuthorNameById(String userId);
 
     Map<String, String> getAllAuthorsMap();
 

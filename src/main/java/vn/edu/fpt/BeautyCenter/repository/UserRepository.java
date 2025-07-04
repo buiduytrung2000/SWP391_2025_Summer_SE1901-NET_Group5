@@ -2,6 +2,7 @@ package vn.edu.fpt.BeautyCenter.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.edu.fpt.BeautyCenter.entity.User;
 
@@ -15,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     boolean existsByPhone(String phone);
     Optional<User> findByEmail(String email);
     Optional<User> findByUsernameAndPassword(String username, String password);
+    @Query("select u.fullName from User u where u.userId = :id")
+    Optional<String> findFullNameById(@Param("id") String id);
     /**
      * Finds all distinct user IDs who have created at least one service.
      * <p>
