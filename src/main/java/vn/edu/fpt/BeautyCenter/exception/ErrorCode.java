@@ -28,24 +28,29 @@ public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized exception"),
 
     /** Attempted to create a user that already exists. */
-    USER_EXISTED(1001, "User already exists"),
+    USER_EXISTED(1009, "User already exists"),
 
     /** Invalid authentication or encryption key provided. */
     INVALID_KEY(1002, "Invalid message key"),
 
     /** Username does not meet minimum length requirement. */
-    USERNAME_INVALID(1003, "Username must be at least 3 characters"),
+    USERNAME_INVALID(1002, "Username must be at least 3 characters"),
 
     /** Password does not meet complexity requirements. */
-    PASSWORD_INVALID(1004, "Password must be at least 8 characters"),
+    PASSWORD_INVALID(1002, "Password must be at least 8 characters"),
 
     /** Attempted to create a duplicate service. */
-    SERVICE_EXISTED(3000, "Service already exists"),
+    SERVICE_EXISTED(3009, "Service already exists"),
 
     /** Requested service could not be found. */
-    SERVICE_NOT_FOUND(3001, "Service not found"),
+    SERVICE_NOT_FOUND(3004, "Service not found"),
+    // Thêm vào file ErrorCode.java hiện có
+    BLOG_NOT_FOUND(1404, "Blog not found"),
+    BLOG_TITLE_EXISTED(1409, "Blog title already exists"),
+    CATEGORY_NOT_FOUND(1404, "Category not found"),
+    CATEGORY_EXISTED(1409, "Category already exists"),
+    TAG_NOT_FOUND(1404, "Tag not found"),
     STAFF_NOT_FOUND(2001, "Staff not found"),
-
     STAFF_EMAIL_EXISTED(2002, "Email already exists");
 
 

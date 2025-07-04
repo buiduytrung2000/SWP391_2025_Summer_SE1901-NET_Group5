@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceCreationRequest;
@@ -992,5 +994,11 @@ public class ServiceController {
     private boolean isNotPermit(HttpSession session) {
         User user = (User) session.getAttribute("user");
         return user == null || user.getRole() != Role.admin;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        StringTrimmerEditor stringTrimmer = new StringTrimmerEditor(true);
+        binder.registerCustomEditor(String.class, stringTrimmer);
     }
 }
