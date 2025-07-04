@@ -245,21 +245,21 @@
                 <div class="wt-post-readmore pull-left">
                   <a th:href="@{/admin/blogs/{id}(id=${blog.blogId})}"
                      title="READ MORE" rel="bookmark"
-                     class="site-button-link">
+                     class="site-button radius-sm">
                     <i class="fa fa-eye"></i> View Details
                   </a>
                 </div>
                 <div class="wt-post-readmore pull-left" style="padding-left: 10px">
                   <a th:href="@{/admin/blogs/edit/{id}(id=${blog.blogId})}"
                      title="EDIT BLOG" rel="bookmark"
-                     class="site-button-link text-warning">
+                     class="site-button radius-sm">
                     <i class="fa fa-edit"></i> Edit
                   </a>
                 </div>
                 <div class="wt-post-readmore pull-left" style="padding-left: 10px">
                   <a th:href="@{/admin/blogs/delete/{id}(id=${blog.blogId})}"
                      title="DELETE BLOG" rel="bookmark"
-                     class="site-button-link text-danger"
+                     class="site-button radius-sm "
                      onclick="return confirm('Are you sure you want to delete this blog?')">
                     <i class="fa fa-trash"></i> Delete
                   </a>
@@ -270,7 +270,7 @@
                   <form th:if="${blog.status.name() == 'DRAFT'}"
                         th:action="@{/admin/blogs/{id}/publish(id=${blog.blogId})}"
                         method="post" style="display: inline;">
-                    <button type="submit" class="site-button-link text-success"
+                    <button type="submit" class="site-button-secondry radius-sm"
                             title="PUBLISH BLOG">
                       <i class="fa fa-upload"></i> Publish
                     </button>
@@ -278,7 +278,7 @@
                   <form th:if="${blog.status.name() == 'PUBLISHED'}"
                         th:action="@{/admin/blogs/{id}/unpublish(id=${blog.blogId})}"
                         method="post" style="display: inline;">
-                    <button type="submit" class="site-button-link text-muted"
+                    <button type="submit" class="site-button-secondry radius-sm"
                             title="UNPUBLISH BLOG">
                       <i class="fa fa-download"></i> Unpublish
                     </button>
@@ -390,6 +390,19 @@
       if (!confirm('Are you sure you want to delete this blog? This action cannot be undone.')) {
         e.preventDefault();
       }
+    });
+  });
+  $(document).ready(function() {
+    // Trim input khi user blur khỏi field
+    $('input[type="text"], textarea').on('blur', function() {
+      $(this).val($(this).val().trim());
+    });
+
+    // Trim tất cả fields trước khi submit
+    $('form').on('submit', function() {
+      $(this).find('input[type="text"], textarea').each(function() {
+        $(this).val($(this).val().trim());
+      });
     });
   });
 </script>

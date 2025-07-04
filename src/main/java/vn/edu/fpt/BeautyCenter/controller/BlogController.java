@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -127,7 +129,6 @@ public class BlogController {
             // Validate and sanitize input parameters
             page = Math.max(0, page);
             size = Math.min(Math.max(1, size), 50);
-            System.out.println("keyword: "+keyword);
             // Build comprehensive filter parameters object
             BlogFilterParams filterParams = BlogFilterParams.builder()
                     .keyword(sanitizeKeyword(keyword))
@@ -149,10 +150,15 @@ public class BlogController {
                     filterParams.setToDate(null);
                 }
             }
-
+            Sort.Direction direction;
             // Create sort direction and validate sort field for security
-            Sort.Direction direction = "asc".equalsIgnoreCase(sortDir) ?
+            if(sortBy.equals("title") || sortBy.equals("viewCount")){
+                direction = "desc".equalsIgnoreCase(sortDir) ?
+                        Sort.Direction.ASC : Sort.Direction.DESC;
+            }else{
+            direction = "asc".equalsIgnoreCase(sortDir) ?
                     Sort.Direction.ASC : Sort.Direction.DESC;
+            }
             String validatedSortBy = validateSortField(sortBy);
             Pageable pageable = PageRequest.of(page, size, Sort.by(direction, validatedSortBy));
 
@@ -294,7 +300,7 @@ public class BlogController {
                 notificationService.addErrorMessage(redirectAttributes, "Session expired. Please login again.");
                 return "redirect:/";
             }
-
+            System.out.println("Tags: "+request);
 
             // Attempt to create the blog
             if (file != null && !file.isEmpty()) {
@@ -305,7 +311,6 @@ public class BlogController {
                     throw new RuntimeException(e);
                 }
             }
-            System.out.println("catId: "+request.getCategoryId());
             BlogResponse createdBlog = blogService.createBlog(request, user.getUserId());
 
             // Success notification with blog title
@@ -384,7 +389,7 @@ public class BlogController {
             model.addAttribute("blog", blog);
             model.addAttribute("pageTitle", "Edit Blog: " + blog.getTitle());
 
-            return "dashboard/blogs/edit";
+            return "blogs/edit";
 
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes,
@@ -412,6 +417,7 @@ public class BlogController {
                              @ModelAttribute("blogRequest") @Valid BlogRequest request,
                              BindingResult bindingResult,
                              HttpSession session,
+                             @RequestParam(value = "thumbnail") MultipartFile file,
                              RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
@@ -429,6 +435,15 @@ public class BlogController {
 
         try {
             // Perform the update operation
+            if (file != null && !file.isEmpty()) {
+                try {
+                    String url = s3Service.uploadFile(file);
+                    request.setThumbnailUrl(url);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            System.out.println(request);
             BlogResponse updatedBlog = blogService.updateBlog(blogId, request);
 
             // Success notification with blog title
@@ -932,6 +947,12 @@ public class BlogController {
         // reuse the same S3Service used for avatar
         String url = s3Service.uploadFile(file);      // returns public URL
         return ResponseEntity.ok(url);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        StringTrimmerEditor stringTrimmer = new StringTrimmerEditor(true);
+        binder.registerCustomEditor(String.class, stringTrimmer);
     }
 }
 

@@ -26,6 +26,7 @@ public class BlogRequest {
 
     @NotBlank(message = "Title is required")
     @Size(max = 255, message = "Title must not exceed 255 characters")
+
     private String title;
 
     @NotBlank(message = "Content is required")
@@ -44,4 +45,16 @@ public class BlogRequest {
     private Boolean featured = false;
 
     private List<String> tagNames;
+
+    public void setContent(String content) {
+        if (content != null) {
+            // Trim và loại bỏ HTML tags thừa
+            this.content = content.trim()
+                    .replaceAll("<p>\\s*</p>", "") // Xóa p tags rỗng
+                    .replaceAll("^\\s+|\\s+$", ""); // Trim whitespace
+        } else {
+            this.content = null;
+        }
+    }
+
 }

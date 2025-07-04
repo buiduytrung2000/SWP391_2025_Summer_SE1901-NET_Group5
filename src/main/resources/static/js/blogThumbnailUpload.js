@@ -1,11 +1,11 @@
 /* blogThumbnailUpload.js – clone of editCustomerAvatar.js */
 window.onload = function () {
 
-    const dropArea       = document.getElementById('thumb-drop-area');
-    const fileElem       = document.getElementById('thumbInput');
-    const previewImg     = document.getElementById('thumbPreview');
-    const previewBox     = document.getElementById('thumbPreviewBox');
-    const removeBtn      = document.getElementById('thumbRemoveBtn');
+    const dropArea = document.getElementById('thumb-drop-area');
+    const fileElem = document.getElementById('thumbInput');
+    const previewImg = document.getElementById('thumbPreview');
+    const previewBox = document.getElementById('thumbPreviewBox');
+    const removeBtn = document.getElementById('thumbRemoveBtn');
     const hiddenUrlInput = document.getElementById('thumbnailUrl');
 
     const maxSize = 10 * 1024 * 1024; // 10 MB
@@ -13,10 +13,14 @@ window.onload = function () {
     /* ------- helpers ------- */
     function resetPreview() {
         previewBox.style.display = 'none';
-        dropArea.style.display   = 'block';
-        previewImg.src           = '';
-        hiddenUrlInput.value     = '';
-        fileElem.value           = '';
+        dropArea.style.display = 'block';
+        dropArea.style.border = '2px dashed #EA9999';
+        dropArea.style.padding = '30px';
+        dropArea.style.textAlign = 'center';
+        dropArea.style.cursor = 'pointer';
+        previewImg.src = '';
+        hiddenUrlInput.value = '';
+        fileElem.value = '';
     }
 
 
@@ -34,9 +38,9 @@ window.onload = function () {
         // local preview
         const reader = new FileReader();
         reader.onload = e => {
-            previewImg.src         = e.target.result;
+            previewImg.src = e.target.result;
             previewBox.style.display = 'block';
-            dropArea.style.display   = 'none';
+            dropArea.style.display = 'none';
         };
         reader.readAsDataURL(file);
     }

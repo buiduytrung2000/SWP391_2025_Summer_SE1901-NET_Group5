@@ -55,6 +55,10 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public BlogResponse createBlog(BlogRequest request, String authorId) {
         log.info("Creating new blog with title: {}", request.getTitle());
+        // Check title uniqueness (excluding current blog)
+        if (blogRepository.existsByTitle(request.getTitle())) {
+            throw new AppException(ErrorCode.BLOG_TITLE_EXISTED);
+        }
 
         // Tạo blog entity
         Blog blog = Blog.builder()
