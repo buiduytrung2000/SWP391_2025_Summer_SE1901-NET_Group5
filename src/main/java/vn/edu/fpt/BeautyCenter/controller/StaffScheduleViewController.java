@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.entity.StaffSchedule;
+import vn.edu.fpt.BeautyCenter.service.RoomService;
+import vn.edu.fpt.BeautyCenter.service.ServiceService;
 import vn.edu.fpt.BeautyCenter.service.StaffScheduleService;
 import vn.edu.fpt.BeautyCenter.service.StaffService;
-
+import vn.edu.fpt.BeautyCenter.dto.response.StaffScheduleDto;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +22,8 @@ import java.util.*;
 @Controller
 @RequiredArgsConstructor
 public class StaffScheduleViewController {
-
+    private final RoomService roomService;
+    private final ServiceService serviceService;
     private final StaffScheduleService scheduleService;
     private final StaffService staffService;
 
@@ -76,22 +76,31 @@ public class StaffScheduleViewController {
         List<StaffSchedule> allSchedules = scheduleService.findByDateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6));
 
 
-        Map<String, List<Map<String, String>>> morningShifts = new HashMap<>();
-        Map<String, List<Map<String, String>>> afternoonShifts = new HashMap<>();
+        Map<String, List<StaffScheduleDto>> morningShifts = new HashMap<>();
+        Map<String, List<StaffScheduleDto>> afternoonShifts = new HashMap<>();
 
         for (LocalDate day : days) {
-            List<Map<String, String>> morning = new ArrayList<>();
-            List<Map<String, String>> afternoon = new ArrayList<>();
+            List<StaffScheduleDto> morning = new ArrayList<>();
+            List<StaffScheduleDto> afternoon = new ArrayList<>();
             for (StaffSchedule sc : allSchedules) {
                 if (sc.getStartTime().toLocalDate().equals(day)) {
-                    Map<String, String> infoMap = new HashMap<>();
-                    infoMap.put("name", sc.getStaff().getFullName());
-                    infoMap.put("position", sc.getStaff().getPosition());
-                    infoMap.put("status", sc.getStatus().name());
+                    StaffScheduleDto dto = new StaffScheduleDto();
+                    dto.setScheduleId(sc.getScheduleId());
+                    dto.setStaffName(sc.getStaff().getFullName() );
+                    dto.setStartTime(sc.getStartTime());
+                    dto.setStatus(sc.getStatus().name());
+
+                    if (sc.getRoom() != null) {
+                        dto.setRoom(sc.getRoom().getName());
+                    }
+                    if (sc.getService() != null) {
+                        dto.setService(sc.getService().getName());
+                    }
+
                     if (sc.getStartTime().getHour() < 14) {
-                        morning.add(infoMap);
+                        morning.add(dto);
                     } else {
-                        afternoon.add(infoMap);
+                        afternoon.add(dto);
                     }
                 }
             }
@@ -115,7 +124,8 @@ public class StaffScheduleViewController {
         // cho modal attendance
         model.addAttribute("selectedDate", selectedDate);
         model.addAttribute("todaySchedules", todaySchedules);
-
+        model.addAttribute("roomList", roomService.findAll());
+        model.addAttribute("serviceList", serviceService.findAll());
         return "admin.staffs/schedule";
     }
 
@@ -123,7 +133,13 @@ public class StaffScheduleViewController {
     public String addSchedule(RedirectAttributes redirectAttributes,
                               @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                               @RequestParam("staffIds") List<String> staffIds,
-                              @RequestParam("shift") String shift) {
+                              @RequestParam("shift") String shift,
+                              @RequestParam("roomId") String roomId,
+                              @RequestParam("serviceId") String serviceId) {
+        if (staffIds == null || staffIds.isEmpty() || shift == null || roomId == null || serviceId == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Please fill in all required fields.");
+            return "redirect:/admin/staffs/schedule";
+        }
         LocalTime start = shift.equals("MORNING") ? LocalTime.of(8, 0) : LocalTime.of(14, 0);
         LocalTime end = shift.equals("MORNING") ? LocalTime.of(14, 0) : LocalTime.of(20, 0);
 
@@ -135,14 +151,18 @@ public class StaffScheduleViewController {
             }
             StaffSchedule schedule = new StaffSchedule();
             schedule.setStaffId(staffId);
+            schedule.setRoomId(roomId);
+            schedule.setServiceId(serviceId);
             schedule.setStartTime(LocalDateTime.of(date, start));
             schedule.setEndTime(LocalDateTime.of(date, end));
             schedule.setStatus(StaffSchedule.Status.UPCOMING);
             scheduleService.create(schedule);
         }
+
         redirectAttributes.addFlashAttribute("successMessageAddStaff", "Added schedule successfully!");
         return "redirect:/admin/staffs/schedule";
     }
+
 
     @PostMapping("/admin/staffs/schedule/update-attendance")
     public String updateAttendance(@RequestParam Map<String, String> params, RedirectAttributes redirectAttributes) {
@@ -168,4 +188,26 @@ public class StaffScheduleViewController {
         redirectAttributes.addFlashAttribute("successMessageAttendance", "Deleted schedule successfully!");
         return "redirect:/admin/staffs/schedule";
     }
+
+    @GetMapping("/admin/staffs/schedule/api/day")
+    @ResponseBody
+    public List<StaffScheduleDto> getSchedulesByDay(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        List<StaffSchedule> schedules = scheduleService.findByDate(date);
+        List<StaffScheduleDto> dtos = new ArrayList<>();
+        for (StaffSchedule sc : schedules) {
+            StaffScheduleDto dto = new StaffScheduleDto();
+            dto.setScheduleId(sc.getScheduleId());
+            dto.setStaffName(sc.getStaff().getFullName());
+            dto.setStartTime(sc.getStartTime());
+            dto.setStatus(sc.getStatus().name());
+            if (sc.getRoom() != null) dto.setRoom(sc.getRoom().getName());
+            if (sc.getService() != null) dto.setService(sc.getService().getName());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+
 }

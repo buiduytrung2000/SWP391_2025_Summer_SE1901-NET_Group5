@@ -22,12 +22,6 @@
 
                             <div class="nk-block-head d-flex justify-content-between align-items-center mb-3">
                                 <h3 class="nk-block-title">Staff Weekly Schedule</h3>
-                                <div>
-                                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addScheduleModal">
-                                        Add Schedule
-                                    </button>
-                                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#attendanceModal">Attendance</button>
-                                </div>
                             </div>
 
                             <!-- Year & Week selector -->
@@ -56,39 +50,70 @@
                             <div class="card card-bordered">
                                 <div class="card-inner">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered text-center align-middle">
+                                        <table class="table table-bordered align-middle">
                                             <thead class="table-light">
                                             <tr>
                                                 <th>Shift / Day</th>
                                                 <th th:each="day : ${days}">
-                                                    <span th:text="${#temporals.format(day, 'E').toUpperCase()}"></span>
-                                                    <br>
-                                                    <small th:text="${#temporals.format(day, 'dd/MM')}"></small>
+                                                    <div>
+                                                        <span th:text="${#temporals.format(day, 'E').toUpperCase()}"></span><br>
+                                                        <small th:text="${#temporals.format(day, 'dd/MM')}"></small>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        <button class="btn btn-info btn-sm"
+                                                                th:attr="data-day=${#temporals.format(day, 'yyyy-MM-dd')}"
+                                                                th:disabled="${day.isBefore(#temporals.createToday().minusDays(1))}"
+                                                                onclick="loadAttendanceSchedules(this)">
+                                                            Attendance
+                                                        </button>
+                                                    </div>
                                                 </th>
                                             </tr>
                                             </thead>
+
+
+
                                             <tbody>
                                             <tr>
                                                 <td class="fw-bold text-start">Morning Shifts(8h-14h)</td>
-                                                <td th:each="day : ${days}">
+                                                <td th:each="day : ${days}"
+                                                    th:attr="data-day=${#temporals.format(day, 'yyyy-MM-dd')}, data-shift='MORNING'"
+                                                    onclick="handleAddScheduleClick(this)"
+                                                    style="cursor: pointer;"
+                                                    title="Click to add schedule">
+
                                                     <div th:each="info : ${morningShifts[day.toString()]}">
-                                                        - <span th:text="${info.name} + ' (' + ${info.position} + ')'"></span>
+                                                        <span th:text="${info.staffName} + '-' + ${info.room} + '' + ' -' + ${info.service} + ''"></span>
                                                         <span th:if="${info.status == 'ATTENDANCE'}" class="badge bg-success">Attendance</span>
                                                         <span th:if="${info.status == 'ABSENT'}" class="badge bg-danger">Absent</span>
                                                         <span th:if="${info.status == 'UPCOMING'}" class="badge bg-secondary">Upcoming</span>
                                                     </div>
+
+                                                    <th:block th:if="${#lists.isEmpty(morningShifts[day.toString()])}">
+                                                        <small class="text-muted fst-italic">Click to add schedule</small>
+                                                    </th:block>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="fw-bold text-start">Afternoon Shifts(14h-20h)</td>
-                                                <td th:each="day : ${days}">
+                                                <td th:each="day : ${days}"
+                                                    th:attr="data-day=${#temporals.format(day, 'yyyy-MM-dd')}, data-shift='AFTERNOON'"
+                                                    onclick="handleAddScheduleClick(this)"
+                                                    style="cursor: pointer;"
+                                                    title="Click to add schedule">
+
                                                     <div th:each="info : ${afternoonShifts[day.toString()]}">
-                                                        - <span th:text="${info.name} + ' (' + ${info.position} + ')'"></span>
+                                                        <span th:text="${info.staffName} + '-' + ${info.room} + '' + ' -' + ${info.service} + ''"></span>
                                                         <span th:if="${info.status == 'ATTENDANCE'}" class="badge bg-success">Attendance</span>
                                                         <span th:if="${info.status == 'ABSENT'}" class="badge bg-danger">Absent</span>
                                                         <span th:if="${info.status == 'UPCOMING'}" class="badge bg-secondary">Upcoming</span>
                                                     </div>
+
+                                                    <th:block th:if="${#lists.isEmpty(afternoonShifts[day.toString()])}">
+                                                        <small class="text-muted fst-italic">Click to add schedule</small>
+                                                    </th:block>
                                                 </td>
+
                                             </tr>
                                             </tbody>
                                         </table>
@@ -110,19 +135,17 @@
 <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" th:action="@{/admin/staffs/schedule/add}">
+            <form method="post" th:action="@{/admin/staffs/schedule/add}" id="scheduleForm">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addScheduleModalLabel">Add Schedule</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Date</label>
-                        <input type="date" name="date" class="form-control"
-                               th:attr="min=${#temporals.format(#temporals.createNow(), 'yyyy-MM-01')},
-                                        max=${#temporals.format(#temporals.createNow().plusMonths(1).withDayOfMonth(1).minusDays(1), 'yyyy-MM-dd')}">
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label mb-0 me-2">Date:</label>
+                        <span id="selectedDateDisplay"></span>
+                        <input type="hidden" name="date" id="selectedDateInput">
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">Select Staff</label>
                         <select name="staffIds" class="staff-select" multiple="multiple" style="width: 100%">
@@ -130,14 +153,36 @@
                                     th:value="${staff.userId}"
                                     th:text="${staff.fullName}">John Doe</option>
                         </select>
+                        <small class="text-danger d-none" id="staffError">Please select at least one staff</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Room</label>
+                        <select name="roomId" class="form-select select2" style="width: 100%">
+                            <option value="" disabled selected>Select room</option>
+                            <option th:each="room : ${roomList}"
+                                    th:value="${room.roomId}"
+                                    th:text="${room.name}">Room A</option>
+                        </select>
+                        <small class="text-danger d-none" id="roomError">Room is required</small>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Service</label>
+                        <select name="serviceId" class="form-select select2" style="width: 100%">
+                            <option value="" disabled selected>Select service</option>
+                            <option th:each="service : ${serviceList}"
+                                    th:value="${service.serviceId}"
+                                    th:text="${service.name}">Massage</option>
+                        </select>
+                        <small class="text-danger d-none" id="serviceError">Service is required</small>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Shift</label>
                         <select name="shift" class="form-select">
                             <option value="MORNING">Morning (8h-14h)</option>
                             <option value="AFTERNOON">Afternoon (14h-20h)</option>
                         </select>
+                        <small class="text-danger d-none" id="shiftError">Shift is required</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -162,9 +207,10 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Date:</label>
-                        <input type="date" name="selectedDate" class="form-control"
-                               th:value="${#temporals.format(selectedDate, 'yyyy-MM-dd')}"
-                               onchange="this.form.submit()">
+                        <input type="text" name="selectedDate" class="form-control"
+                               th:value="${#temporals.format(selectedDate, 'dd/MM/yyyy')}"
+                               readonly>
+
                     </div>
                 </div>
             </form>
@@ -179,6 +225,8 @@
                             <tr>
                                 <th>Staff Name</th>
                                 <th>Shift</th>
+                                <th>Room</th>
+                                <th>Service</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -306,5 +354,154 @@
     }
     /*]]>*/
 </script>
+<script>
+    function handleAddScheduleClick(td) {
+        const day = td.getAttribute("data-day");
+        const shift = td.getAttribute("data-shift");
+        const selectedDate = new Date(day);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // reset giờ về 00:00
+
+        if (selectedDate < today) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Bạn không thể tạo lịch cho ngày trong quá khứ!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2500
+            });
+            return;
+        }
+
+        // Gán giá trị cho form nếu hợp lệ
+        document.getElementById('selectedDateDisplay').textContent = day;
+        document.getElementById('selectedDateInput').value = day;
+
+        document.querySelector("#addScheduleModal select[name='roomId']").value = null;
+        document.querySelector("#addScheduleModal select[name='serviceId']").value = null;
+        document.querySelector("#addScheduleModal select[name='shift']").value = shift;
+
+        const modal = new bootstrap.Modal(document.getElementById('addScheduleModal'));
+        modal.show();
+    }
+</script>
+
+<script>
+    async function loadAttendanceSchedules(button) {
+        const day = button.getAttribute("data-day");
+        const response = await fetch(`/sbs/admin/staffs/schedule/api/day?date=${day}`);
+        const schedules = await response.json();
+
+        const tbody = document.querySelector("#attendanceModal tbody");
+        tbody.innerHTML = "";
+
+        schedules.forEach(sc => {
+            const isStatusSet = sc.status === 'ATTENDANCE' || sc.status === 'ABSENT';
+
+            const row = document.createElement("tr");
+            console.log("Status for scheduleId", sc.scheduleId, "=", sc.status);
+            row.innerHTML = `
+                <td>${sc.staffName}</td>
+                <td>${sc.startTime.hour < 14 ? 'MORNING SHIFT(8H-14H)' : 'AFTERNOON SHIFT(14H-20H)'}</td>
+                <td>${sc.room || '-'}</td>
+                <td>${sc.service || '-'}</td>
+                <td>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"
+                            name="status-${sc.scheduleId}"
+                            id="att-${sc.scheduleId}"
+                            value="ATTENDANCE" ${sc.status === 'ATTENDANCE' ? 'checked' : ''}>
+                        <label class="form-check-label" for="att-${sc.scheduleId}">Attendance</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"
+                            name="status-${sc.scheduleId}"
+                            id="abs-${sc.scheduleId}"
+                            value="ABSENT" ${sc.status === 'ABSENT' ? 'checked' : ''}>
+                        <label class="form-check-label" for="abs-${sc.scheduleId}">Absent</label>
+                    </div>
+                </td>
+                <td>
+                    <button type="button"
+                        class="btn btn-sm btn-danger"
+                        ${isStatusSet ? 'disabled' : ''}
+                        onclick="confirmDeleteScheduleFromList('${sc.scheduleId}')">
+                        Delete
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+
+        document.querySelector("input[name='selectedDate']").value = day;
+        const modal = new bootstrap.Modal(document.getElementById('attendanceModal'));
+        modal.show();
+    }
+
+</script>
+<script>
+    document.getElementById("scheduleForm").addEventListener("submit", function (e) {
+        let valid = true;
+
+        const staff = document.querySelector("select[name='staffIds']");
+        const room = document.querySelector("select[name='roomId']");
+        const service = document.querySelector("select[name='serviceId']");
+        const shift = document.querySelector("select[name='shift']");
+
+        // Reset error messages
+        document.getElementById("staffError").classList.add("d-none");
+        document.getElementById("roomError").classList.add("d-none");
+        document.getElementById("serviceError").classList.add("d-none");
+        document.getElementById("shiftError").classList.add("d-none");
+
+        if (!staff.value) {
+            document.getElementById("staffError").classList.remove("d-none");
+            valid = false;
+        }
+        if (!room.value) {
+            document.getElementById("roomError").classList.remove("d-none");
+            valid = false;
+        }
+        if (!service.value) {
+            document.getElementById("serviceError").classList.remove("d-none");
+            valid = false;
+        }
+        if (!shift.value) {
+            document.getElementById("shiftError").classList.remove("d-none");
+            valid = false;
+        }
+
+        if (!valid) {
+            e.preventDefault(); // chặn submit nếu có lỗi
+        }
+    });
+</script>
+<script>
+    function confirmDeleteScheduleFromList(scheduleId) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This action will permanently delete the schedule.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#e3342f",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/sbs/admin/staffs/schedule/delete/${scheduleId}`;
+            }
+        });
+    }
+</script>
+<style>
+    td[data-day][data-shift] {
+        transition: background-color 0.2s ease;
+    }
+    td[data-day][data-shift]:hover {
+        background-color: #f0f8ff; /* nhạt xanh */
+    }
+</style>
 </body>
 </html>
