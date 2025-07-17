@@ -77,6 +77,9 @@ public class ServiceService {
 
         return new PageImpl<>(processedServices, pageable, services.getTotalElements());
     }
+    public List<vn.edu.fpt.BeautyCenter.entity.Service> findAll() {
+        return serviceRepository.findAll(Sort.by(Sort.Direction.ASC, "name")); // sắp xếp theo tên
+    }
 
     /**
      * Removes all <img> tags from the given HTML content.
