@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Weekly Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h2>Weekly Service Analytics</h2>
+
+<div>
+    <p><strong>Service được dùng nhiều nhất:</strong> <span th:text="${stats.mostUsedService}"></span></p>
+    <p><strong>Service dùng ít nhất:</strong> <span th:text="${stats.leastUsedService}"></span></p>
+    <p><strong>Người đăng ký mới trong tuần:</strong> <span th:text="${stats.newUsersThisWeek}"></span></p>
+</div>
+
+<canvas id="topServicesChart" height="100"></canvas>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const labels = /*[[${topServiceNames}]]*/ [];
+    const data = /*[[${topServiceCounts}]]*/ [];
+
+    const ctx = document.getElementById('topServicesChart');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Lượt sử dụng dịch vụ trong tuần',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.7)'
+            }]
+        }
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>
