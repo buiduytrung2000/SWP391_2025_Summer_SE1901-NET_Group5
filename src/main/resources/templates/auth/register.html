@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header2 :: common-head('Register Page')}"></head>
+<head>
+  <!-- Nhúng fragment dùng chung -->
+  <th:block th:replace="~{fragments/header2 :: common-head('Register')}"></th:block>
+
+  <!-- Thêm các css, script RIÊNG cho trang này ở dưới -->
+  <link rel="stylesheet" th:href="@{css/auth/register.css}">
+</head>
 
 <body id="bg">
 <div class="page-wraper">

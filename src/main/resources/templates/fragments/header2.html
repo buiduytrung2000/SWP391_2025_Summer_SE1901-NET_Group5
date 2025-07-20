@@ -1,63 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="common-head(title)">
-    <script src="https://kit.fontawesome.com/e0090b6b7e.js" crossorigin="anonymous"></script>
+<head>
+    <!-- Đoạn dùng chung -->
+    <th:block th:fragment="common-head(title)">
+        <script src="https://kit.fontawesome.com/e0090b6b7e.js" crossorigin="anonymous"></script>
+        <!-- ... các link css, meta, ... DÙNG CHUNG ... -->
+        <!-- META -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="keywords" content="">
+        <meta name="author" content="">
+        <meta name="robots" content="">
+        <meta name="description" content="">
 
-    <!--  LOGIN STYLE-->
-    <link rel="stylesheet" href="css/auth/login.css">
+        <!-- FAVICONS ICON -->
+        <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+        <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.png}">
 
-    <!--  REGISTER STYLE-->
-    <link rel="stylesheet" href="css/auth/register.css">
-
-    <!--  EDIT CUSTOMER STYLE -->
-    <link rel="stylesheet" href="css/crudUser/editCustomer.css">
-
-    <!-- VIEW CUSTOMER STYLE -->
-    <link rel="stylesheet" href="css/crudUser/viewCustomer.css">
-
-    <!-- META -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="keywords" content="">
-    <meta name="author" content="">
-    <meta name="robots" content="">
-    <meta name="description" content="">
-
-    <!-- FAVICONS ICON -->
-    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.png}">
-
-    <!-- PAGE TITLE HERE -->
-    <title th:text="${title}">Spa Template</title>
+        <!-- PAGE TITLE HERE -->
+        <title th:text="${title}">Spa Template</title>
 
 
-    <!-- MOBILE SPECIFIC -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- MOBILE SPECIFIC -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"><!-- BOOTSTRAP STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome/css/font-awesome.min.css}">
-    <!-- FONTAWESOME STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/flaticon.min.css}"><!-- FLATICON STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"><!-- ANIMATE STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.min.css}"><!-- OWL CAROUSEL STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}">
-    <!-- BOOTSTRAP SELECT BOX STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/magnific-popup.min.css}"><!-- MAGNIFIC POPUP STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/loader.min.css}"><!-- LOADER STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"><!-- MAIN STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" class="skin" th:href="@{/css/skin/skin-1.css}">
-    <!-- THEME COLOR CHANGE STYLE SHEET -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/switcher.css}"><!-- SIDE SWITCHER STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"><!-- BOOTSTRAP STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome/css/font-awesome.min.css}">
+        <!-- FONTAWESOME STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/flaticon.min.css}"><!-- FLATICON STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"><!-- ANIMATE STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.min.css}"><!-- OWL CAROUSEL STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}">
+        <!-- BOOTSTRAP SELECT BOX STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/magnific-popup.min.css}"><!-- MAGNIFIC POPUP STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/loader.min.css}"><!-- LOADER STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"><!-- MAIN STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" class="skin" th:href="@{/css/skin/skin-1.css}">
+        <!-- THEME COLOR CHANGE STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/switcher.css}"><!-- SIDE SWITCHER STYLE SHEET -->
 
 
-    <!-- GOOGLE FONTS -->
-    <link href="/https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
+        <!-- GOOGLE FONTS -->
+        <link href="/https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+              rel="stylesheet">
 
-
+        <!-- PAGE TITLE HERE -->
+        <title th:text="${title}">Spa Template</title>
+    </th:block>
 </head>
-
 <body id="bg">
 
 <div class="page-wraper">
@@ -217,43 +208,8 @@
                             </li>
 
                             <li class="submenu-direction">
-                                <a href="javascript:;">Services<i class="fa fa-chevron-down"></i></a>
-                                <!--                <ul class="sub-menu">-->
-                                <!--                  <li>-->
-                                <!--                    -->
-                                <!--                  </li>-->
-                                <!--                  <li>-->
-                                <!--                    <a href="javascript:;">list</a>-->
-                                <!--                    <ul class="sub-menu">-->
-                                <!--                      <li><a th:href="@{/blog-half-img.html}">Half image</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-half-img-sidebar.html}">Half image sidebar</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-half-img-left-sidebar.html}">Half image sidebar left</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-large-img.html}">Large image</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-large-img-sidebar.html}">Large image sidebar</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-large-img-left-sidebar.html}">Large image sidebar left</a></li>-->
-                                <!--                    </ul>-->
-                                <!--                  </li>-->
-                                <!--                  <li>-->
-                                <!--                    <a href="javascript:;">Grid</a>-->
-                                <!--                    <ul class="sub-menu">-->
-                                <!--                      <li><a th:href="@{/blog-grid-2.html}">Grid 2</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-grid-2-sidebar.html}">Grid 2 sidebar</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-grid-2-sidebar-left.html}">Grid 2 sidebar left</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-grid-3.html}">Grid 3</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-grid-3-sidebar.html}">Grid 3 sidebar</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-grid-3-sidebar-left.html}">Grid 3 sidebar left</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-grid-4.html}">Grid 4</a></li>-->
-                                <!--                    </ul>-->
-                                <!--                  </li>-->
-                                <!--                  <li>-->
-                                <!--                    <a href="javascript:;">Single</a>-->
-                                <!--                    <ul class="sub-menu">-->
-                                <!--                      <li><a th:href="@{/blog-single.html}">Single full</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-single-left-sidebar.html}">Single sidebar</a></li>-->
-                                <!--                      <li><a th:href="@{/blog-single-sidebar.html}">Single sidebar right</a></li>-->
-                                <!--                    </ul>-->
-                                <!--                  </li>-->
-                                <!--                </ul>-->
+                                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.admin)}" th:href="@{/admin}"
+                                >Dashboard</a>
                             </li>
 
 

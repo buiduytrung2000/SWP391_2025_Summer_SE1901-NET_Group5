@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header::common-head}">
+  <!-- PAGE TITLE HERE -->
+  <title th:text="${pageTitle}">Blog Management - Smart Beauty</title>
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+
+  <!-- HEADER START -->
+  <header th:replace="~{fragments/header2::header}">
+  </header>
+  <!-- HEADER END -->
+
+  <!-- CONTENT START -->
+  <div class="page-content">
+
+    <!-- BREADCRUMB ROW -->
+    <div class="bg-gray-light p-tb20">
+      <div class="container">
+        <ul class="wt-breadcrumb breadcrumb-style-2">
+          <li><a href="javascript:void(0);"><i class="fa fa-home"></i> Home</a></li>
+          <li>Blog Management</li>
+        </ul>
+      </div>
+    </div>
+    <!-- BREADCRUMB ROW END -->
+
+    <div
+            class="section-full overlay-wraper site-bg-primary"
+            th:style="|background-image: url('@{/images/background/bg-7.jpg}')|"
+    >
+      <div class="section-content">
+        <!-- CALL-TO ACTION START -->
+        <div class="wt-subscribe-box">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-8 col-sm-8">
+                <!-- Blog Statistics -->
+                <div class="call-to-action-left p-tb30">
+                  <h4 class="text-white m-b10">Blog Statistics</h4>
+                  <p class="text-white" th:if="${blogStatistics}">
+                    <span th:text="'Total Blogs: ' + ${blogStatistics.totalBlogs}"></span> |
+                    <span th:text="'Current Page: ' + ${blogStatistics.currentPage} + '/' + ${blogStatistics.totalPages}"></span>
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="call-to-action-right p-tb30">
+                  <a
+                          th:href="@{/admin/blogs/add}"
+                          class="site-button-secondry text-uppercase radius-sm font-weight-600"
+                  >
+                    <i class="fa fa-plus"></i> Add New Blog
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER SECTION START -->
+    <div class="section-full bg-white p-t40 p-b20" th:if="${not #lists.isEmpty(availableCategories) or not #arrays.isEmpty(availableStatuses)}">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="filter-wrap p-b20">
+              <h5 class="text-uppercase m-b20"><i class="fa fa-filter"></i> Filter Blogs</h5>
+
+              <form th:action="@{/admin/blogs}" method="get" class="filter-form">
+                <div class="row">
+                  <!-- Search Keyword -->
+                  <div class="col-md-3 m-b15">
+                    <input type="text"
+                           name="keyword"
+                           th:value="${keyword}"
+                           placeholder="Search blogs..."
+                           class="form-control">
+                  </div>
+
+                  <!-- Status Filter -->
+                  <div class="col-md-2 m-b15">
+                    <select name="status" class="form-control">
+                      <option value="">All Status</option>
+                      <option th:each="status : ${availableStatuses}"
+                              th:value="${status}"
+                              th:text="${status.displayName}"
+                              th:selected="${filterParams != null and filterParams.status == status}">
+                      </option>
+                    </select>
+                  </div>
+
+                  <!-- Category Filter -->
+                  <div class="col-md-2 m-b15" th:if="${availableCategories}">
+                    <select name="categoryId" class="form-control">
+                      <option value="">All Categories</option>
+                      <option th:each="category : ${availableCategories}"
+                              th:value="${category.categoryId}"
+                              th:text="${category.categoryName}"
+                              th:selected="${filterParams != null and filterParams.categoryId == category.categoryId}">
+                      </option>
+                    </select>
+                  </div>
+
+                  <!-- Featured Filter -->
+                  <div class="col-md-2 m-b15">
+                    <select name="featured" class="form-control">
+                      <option value="">All Blogs</option>
+                      <option value="true" th:selected="${filterParams != null and filterParams.featured == true}">Featured Only</option>
+                      <option value="false" th:selected="${filterParams != null and filterParams.featured == false}">Non-Featured</option>
+                    </select>
+                  </div>
+
+                  <!-- Sort Options -->
+                  <div class="col-md-2 m-b15">
+                    <select name="sortBy" class="form-control">
+                      <option value="createdAt" th:selected="${sortBy == 'createdAt'}">Date Created</option>
+                      <option value="publishedAt" th:selected="${sortBy == 'publishedAt'}">Published Date</option>
+                      <option value="title" th:selected="${sortBy == 'title'}">Title</option>
+                      <option value="viewCount" th:selected="${sortBy == 'viewCount'}">View Count</option>
+                    </select>
+                  </div>
+
+                  <!-- Filter Actions -->
+                  <div class="col-md-1 m-b15">
+                    <button type="submit" class="site-button btn-block">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Hidden inputs for maintaining state -->
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                <input type="hidden" name="size" th:value="${blogs?.size}">
+              </form>
+
+              <!-- Active Filters Display -->
+              <div class="active-filters" th:if="${hasActiveFilters}">
+                <small class="text-muted">
+                  <i class="fa fa-filter"></i> Active Filters:
+                  <span th:each="filter, iterStat : ${activeFilters}">
+                                        <span th:text="${filter}"></span>
+                                        <span th:if="${!iterStat.last}">, </span>
+                                    </span>
+                  <a th:href="@{/admin/blogs}" class="text-danger ml-2">
+                    <i class="fa fa-times"></i> Clear All
+                  </a>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FILTER SECTION END -->
+
+    <!-- SECTION CONTENT START -->
+    <div class="section-full p-t80 p-b50">
+      <div class="container">
+
+        <!-- BLOG POST START -->
+        <div th:if="${blogs != null and !blogs.isEmpty()}">
+          <!-- BLOG ITEM -->
+          <div class="blog-post blog-md date-style-1 clearfix" th:each="blog : ${blogs}">
+
+            <div class="wt-post-media wt-img-effect zoom-slow">
+              <!-- Blog Thumbnail -->
+              <div th:if="${blog.thumbnailUrl}">
+                <img th:src="${blog.thumbnailUrl}" style="width: 320px;height: 180px;object-fit: cover" alt="Blog Thumbnail" class="img-responsive">
+              </div>
+              <div th:unless="${blog.thumbnailUrl}" class="default-thumbnail">
+                <div class="default-blog-image">
+                  <i class="fa fa-file-text-o" style="font-size: 60px; color: #EA9999;"></i>
+                </div>
+              </div>
+
+              <!-- Status Badge -->
+              <div class="status-badge" th:classappend="${blog.status.name()}">
+                                <span class="badge"
+                                      th:classappend="${blog.status.name() == 'PUBLISHED'} ? 'badge-success' :
+                                                     (${blog.status.name() == 'DRAFT'} ? 'badge-warning' : 'badge-secondary')"
+                                      th:text="${blog.status.displayName}">
+                                </span>
+                <span th:if="${blog.featured}" class="badge badge-primary ml-1">
+                                    <i class="fa fa-star"></i> Featured
+                                </span>
+              </div>
+            </div>
+
+            <div class="wt-post-info">
+              <div class="wt-post-title">
+                <h3 class="post-title">
+                  <a th:href="@{/admin/blogs/{id}(id=${blog.blogId})}"
+                     th:text="${blog.title}">Blog Title</a>
+                </h3>
+              </div>
+
+              <div class="wt-post-meta">
+                <ul>
+                  <li class="post-date">
+                    <i class="fa fa-calendar"></i>
+                    <span th:if="${blog.publishedAt != null}"
+                          th:text="'Published: ' + ${#temporals.format(blog.publishedAt, 'dd/MM/yyyy')}">
+                                        </span>
+                    <span th:unless="${blog.publishedAt != null}"
+                          th:text="'Created: ' + ${#temporals.format(blog.createdAt, 'dd/MM/yyyy')}">
+                                        </span>
+                  </li>
+                  <li class="post-author" th:if="${blog.authorName}">
+                    <i class="fa fa-user"></i>
+                    <span th:text="'By: ' + ${blog.authorName}">Author</span>
+                  </li>
+                  <li class="post-views">
+                    <i class="fa fa-eye"></i>
+                    <span th:text="${blog.viewCount} + ' views'">0 views</span>
+                  </li>
+                  <li class="post-category" th:if="${blog.categoryName}">
+                    <i class="fa fa-folder"></i>
+                    <span th:text="${blog.categoryName}">Category</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Blog Excerpt/Content Preview -->
+              <div class="wt-post-text">
+                <div th:if="${blog.excerpt}" th:text="${blog.excerpt}"></div>
+                <div th:unless="${blog.excerpt}" th:utext="${#strings.substring(blog.content, 0, 200) + '...'}"></div>
+              </div>
+
+              <!-- Tags -->
+              <div class="wt-post-tags" th:if="${blog.tags != null and !blog.tags.isEmpty()}">
+                <i class="fa fa-tags"></i>
+                <span th:each="tag, iterStat : ${blog.tags}" class="tag-item">
+                                    <span class="badge badge-light" th:text="${tag}"></span>
+                                </span>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="clearfix">
+                <div class="wt-post-readmore pull-left">
+                  <a th:href="@{/admin/blogs/{id}(id=${blog.blogId})}"
+                     title="READ MORE" rel="bookmark"
+                     class="site-button radius-sm">
+                    <i class="fa fa-eye"></i> View Details
+                  </a>
+                </div>
+                <div class="wt-post-readmore pull-left" style="padding-left: 10px">
+                  <a th:href="@{/admin/blogs/edit/{id}(id=${blog.blogId})}"
+                     title="EDIT BLOG" rel="bookmark"
+                     class="site-button radius-sm">
+                    <i class="fa fa-edit"></i> Edit
+                  </a>
+                </div>
+                <div class="wt-post-readmore pull-left" style="padding-left: 10px">
+                  <a th:href="@{/admin/blogs/delete/{id}(id=${blog.blogId})}"
+                     title="DELETE BLOG" rel="bookmark"
+                     class="site-button radius-sm "
+                     onclick="return confirm('Are you sure you want to delete this blog?')">
+                    <i class="fa fa-trash"></i> Delete
+                  </a>
+                </div>
+
+                <!-- Publish/Unpublish Actions -->
+                <div class="wt-post-readmore pull-right">
+                  <form th:if="${blog.status.name() == 'DRAFT'}"
+                        th:action="@{/admin/blogs/{id}/publish(id=${blog.blogId})}"
+                        method="post" style="display: inline;">
+                    <button type="submit" class="site-button-secondry radius-sm"
+                            title="PUBLISH BLOG">
+                      <i class="fa fa-upload"></i> Publish
+                    </button>
+                  </form>
+                  <form th:if="${blog.status.name() == 'PUBLISHED'}"
+                        th:action="@{/admin/blogs/{id}/unpublish(id=${blog.blogId})}"
+                        method="post" style="display: inline;">
+                    <button type="submit" class="site-button-secondry radius-sm"
+                            title="UNPUBLISH BLOG">
+                      <i class="fa fa-download"></i> Unpublish
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- BLOG ITEM END -->
+        </div>
+
+        <!-- NO BLOGS MESSAGE -->
+        <div th:if="${blogs == null or blogs.isEmpty()}" class="text-center p-t50 p-b50">
+          <i class="fa fa-file-text-o" style="font-size: 80px; color: #ccc;"></i>
+          <h4 class="text-muted m-t20">No blogs found</h4>
+          <p class="text-muted">
+                        <span th:if="${hasActiveFilters}">
+                            No blogs match your current filters. <a th:href="@{/admin/blogs}">Clear filters</a> to see all blogs.
+                        </span>
+            <span th:unless="${hasActiveFilters}">
+                            Get started by creating your first blog post.
+                        </span>
+          </p>
+          <a th:href="@{/admin/blogs/add}" class="site-button m-t20">
+            <i class="fa fa-plus"></i> Create First Blog
+          </a>
+        </div>
+
+        <!-- PAGINATION START -->
+        <div class="pagination-bx clearfix" th:if="${blogs != null and blogs.totalPages > 1}">
+          <ul class="custom-pagination pagination-1">
+            <!-- Previous Page -->
+            <li th:if="${blogs.hasPrevious()}">
+              <a th:href="@{/admin/blogs(page=${blogs.number - 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}">&laquo;</a>
+            </li>
+
+            <!-- Page Numbers -->
+            <li class="page-item" th:each="pageNum : ${pageNumbers}"
+                th:classappend="${pageNum == (blogs.number + 1)} ? 'active' : ''">
+              <a class="page-link"
+                 th:href="@{/admin/blogs(page=${pageNum - 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}"
+                 th:text="${pageNum}"
+                 th:title="'Page ' + ${pageNum}">1</a>
+            </li>
+
+            <!-- Next Page -->
+            <li th:if="${blogs.hasNext()}">
+              <a th:href="@{/admin/blogs(page=${blogs.number + 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}">&raquo;</a>
+            </li>
+          </ul>
+
+          <!-- Pagination Info -->
+          <div class="pagination-info text-center m-t20">
+            <p class="text-muted">
+              Showing <span th:text="${blogs.number * blogs.size + 1}">1</span> to
+              <span th:text="${blogs.number * blogs.size + blogs.numberOfElements}">10</span> of
+              <span th:text="${blogs.totalElements}">100</span> blogs
+            </p>
+          </div>
+        </div>
+        <!-- PAGINATION END -->
+
+      </div>
+    </div>
+    <!-- SECTION CONTENT END -->
+
+  </div>
+  <!-- CONTENT END -->
+
+  <!-- FOOTER START -->
+  <footer th:replace="~{fragments/footer :: footer}">
+  </footer>
+  <!-- FOOTER END -->
+
+  <!-- BUTTON TOP START -->
+  <button class="scroltop"><span class=" iconmoon-house relative" id="btn-vibrate"></span>Top</button>
+
+</div>
+
+<!-- Loading and Style Switcher sections remain the same -->
+<!-- LOADING AREA START ===== -->
+<div class="loading-area">
+  <div class="loading-box"></div>
+  <div class="loading-pic">
+    <div class="cssload-container">
+      <div class="cssload-progress cssload-float cssload-shadow">
+        <div class="cssload-progress-item"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- LOADING AREA END ====== -->
+
+<!-- STYLE SWITCHER section remains the same as original -->
+
+<!-- JAVASCRIPT FILES ========================================= -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
+
+<!-- Additional JavaScript for Blog Management -->
+<script>
+  // Auto-submit filter form when dropdown changes
+  $(document).ready(function() {
+    $('.filter-form select').change(function() {
+      $(this).closest('form').submit();
+    });
+
+    // Confirm delete action
+    $('.delete-blog').click(function(e) {
+      if (!confirm('Are you sure you want to delete this blog? This action cannot be undone.')) {
+        e.preventDefault();
+      }
+    });
+  });
+  $(document).ready(function() {
+    // Trim input khi user blur khỏi field
+    $('input[type="text"], textarea').on('blur', function() {
+      $(this).val($(this).val().trim());
+    });
+
+    // Trim tất cả fields trước khi submit
+    $('form').on('submit', function() {
+      $(this).find('input[type="text"], textarea').each(function() {
+        $(this).val($(this).val().trim());
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
