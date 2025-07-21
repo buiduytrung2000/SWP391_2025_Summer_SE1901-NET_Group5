@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/header::common-head}">
@@ -104,18 +103,223 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="commentData"
+                                 th:attr="data-blog-id=${blog?.blogId},
+              data-is-logged-in=${isLoggedIn},
+              data-current-user-id=${currentUser?.userId},
+              data-current-user-name=${currentUser?.fullName},
+              data-current-user-avatar=${currentUser?.avatarUrl},
+              data-comment-count=${commentCount}"
+                                 style="display: none;">
+                            </div>
+                            <!-- Comments Section -->
+                            <div class="comments-section mt-5" id="commentsSection">
+                                <!-- Comments Header -->
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 id="commentCount" class="mb-0">
+                                        <i class="fa fa-comments text-primary"></i>
+                                        <span th:text="${commentCount} + ' Comments'" class="comment-count-text">0 Comments</span>
+                                    </h5>
+                                    <button id="toggleCommentBtn"
+                                            class="btn btn-primary btn-sm"
+                                            th:if="${isLoggedIn}"
+                                            onclick="toggleCommentForm()">
+                                        <i class="fa fa-comment"></i> Add Comment
+                                    </button>
+                                </div>
 
-                            <!-- Comments -->
-                            <!--                            <div class="comments-section m-t50">-->
-                            <!--                                <h5 th:text="  ' Comments'">0 Comments</h5>-->
-                            <!--                                <div th:each="cmt : ${blog.comments}">-->
-                            <!--                                    <div class="comment">-->
-                            <!--                                        <p class="comment-author" th:text="${cmt.authorName}">User</p>-->
-                            <!--                                        <p class="comment-date" th:text="${#temporals.format(cmt.createdAt,'dd/MM/yyyy HH:mm')}">Date</p>-->
-                            <!--                                        <div class="comment-body" th:text="${cmt.content}">Comment text</div>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
+                                <!-- Login Prompt for Non-logged Users -->
+                                <div th:unless="${isLoggedIn}" class="alert alert-info">
+                                    <i class="fa fa-info-circle"></i>
+                                    <a href="/admin/login" class="alert-link">Login</a> to post comments and interact
+                                    with other users.
+                                </div>
+
+                                <!-- Comment Form -->
+                                <div class="comment-form-container" id="commentFormContainer"
+                                     th:if="${isLoggedIn}" style="display: none;">
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-start">
+                                                <img th:src="${currentUser?.avatarUrl ?: '/images/default-avatar.png'}"
+                                                     th:alt="${currentUser?.fullName ?: 'User'}"
+                                                     class="rounded-circle mr-3"
+                                                     width="40" height="40">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-3">
+                                                        <i class="fa fa-edit text-primary"></i>
+                                                        Write a Comment
+                                                    </h6>
+                                                    <form id="commentForm" novalidate>
+                                                        <div class="form-group mb-3">
+                                <textarea id="commentContent"
+                                          name="content"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Share your thoughts about this blog post..."
+                                          maxlength="750"
+                                          required></textarea>
+                                                            <div class="d-flex justify-content-between mt-2">
+                                                                <small class="text-muted">
+                                                                    <span id="charCount">0</span>/750 characters
+                                                                </small>
+                                                                <small class="text-muted">
+                                                                    <i class="fa fa-lightbulb"></i> Be respectful and
+                                                                    constructive
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mb-0">
+                                                            <button type="submit" class="btn btn-primary">
+                                                                <i class="fa fa-send"></i> Post Comment
+                                                            </button>
+                                                            <button type="button" class="btn btn-secondary ml-2"
+                                                                    onclick="toggleCommentForm()">
+                                                                <i class="fa fa-times"></i> Cancel
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comments List -->
+                                <div class="comments-container">
+                                    <!-- Popular Comments (if any) -->
+                                    <div th:if="${popularComments != null and #lists.size(popularComments) > 0}"
+                                         class="popular-comments mb-4">
+                                        <h6 class="text-muted mb-3">
+                                            <i class="fa fa-star text-warning"></i> Popular Comments
+                                        </h6>
+                                        <div class="popular-comments-list">
+                                            <div th:each="comment : ${popularComments}"
+                                                 class="popular-comment-item mb-2 p-2 bg-light rounded">
+                                                <small>
+                                                    <strong th:text="${comment.authorName}">User</strong>:
+                                                    <span th:text="${comment.content}">Comment content</span>
+                                                    <span class="text-primary ml-2">
+                            <i class="fa fa-thumbs-up"></i>
+                            <span th:text="${comment.likeCount}">0</span>
+                        </span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- All Comments -->
+                                    <div class="comments-list" id="commentsList">
+                                        <!-- Server-rendered initial comments -->
+                                        <div th:each="comment : ${comments}"
+                                             class="comment-item border-bottom py-3"
+                                             th:attr="data-comment-id=${comment.commentId}">
+                                            <div class="d-flex">
+                                                <!-- Author Avatar -->
+                                                <div class="comment-avatar mr-3">
+                                                    <img th:src="${comment.authorAvatar ?: '/images/default-avatar.png'}"
+                                                         th:alt="${comment.authorName}"
+                                                         class="rounded-circle"
+                                                         width="45" height="45">
+                                                </div>
+
+                                                <!-- Comment Content -->
+                                                <div class="comment-content flex-grow-1">
+                                                    <!-- Comment Header -->
+                                                    <div class="comment-header mb-2">
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <div>
+                                                                <strong class="comment-author"
+                                                                        th:text="${comment.authorName}">
+                                                                    Author Name
+                                                                </strong>
+                                                                <small class="text-muted ml-2"
+                                                                       th:attr="title=${comment.createdAt}"
+                                                                       th:text="${#temporals.format(comment.createdAt, 'MMM dd, yyyy HH:mm')}">
+                                                                    Date
+                                                                </small>
+                                                            </div>
+                                                            <!-- Edit/Delete buttons for comment owner -->
+                                                            <div th:if="${isLoggedIn and currentUser.userId == comment.authorId}"
+                                                                 class="comment-actions-dropdown">
+                                                                <div class="dropdown">
+                                                                    <button class="btn btn-sm btn-link text-muted"
+                                                                            type="button"
+                                                                            data-toggle="dropdown">
+                                                                        <i class="fa fa-ellipsis-h"></i>
+                                                                    </button>
+                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                        <a class="dropdown-item"
+                                                                           href="#"
+                                                                           onclick="editComment(this)"
+                                                                           th:attr="data-comment-id=${comment.commentId}">
+                                                                            <i class="fa fa-edit"></i> Edit
+                                                                        </a>
+                                                                        <a class="dropdown-item text-danger"
+                                                                           href="#"
+                                                                           onclick="deleteComment(this)"
+                                                                           th:attr="data-comment-id=${comment.commentId}">
+                                                                            <i class="fa fa-trash"></i> Delete
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Comment Text -->
+                                                    <div class="comment-text mb-2" th:text="${comment.content}">
+                                                        Comment content goes here
+                                                    </div>
+
+                                                    <!-- Comment Actions -->
+                                                    <div class="comment-actions">
+                                                        <button th:if="${isLoggedIn}"
+                                                                class="btn btn-sm"
+                                                                th:classappend="${comment.isLikedByCurrentUser} ? 'btn-primary' : 'btn-outline-primary'"
+                                                                th:attr="onclick='toggleLike(\'' + ${comment.commentId} + '\')'"
+                                                                title="Like this comment">
+                                                            <i th:class="${comment.isLikedByCurrentUser} ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'"></i>
+                                                            <span class="like-count"
+                                                                  th:text="${comment.likeCount}">0</span>
+                                                        </button>
+
+                                                        <span th:unless="${isLoggedIn}"
+                                                              class="text-muted small">
+                                <i class="fa fa-thumbs-up"></i>
+                                <span th:text="${comment.likeCount}">0</span> likes
+                            </span>
+
+                                                        <small class="text-muted ml-3 comment-time"
+                                                               th:attr="data-time=${comment.createdAt}">
+                                                            <!-- Time will be updated by JavaScript -->
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- No Comments Message -->
+                                        <div th:if="${#lists.isEmpty(comments)}"
+                                             class="no-comments text-center py-5">
+                                            <div class="text-muted">
+                                                <i class="fa fa-comments fa-3x mb-3 text-light"></i>
+                                                <h6>No comments yet</h6>
+                                                <p>Be the first to share your thoughts!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Load More Button -->
+                                    <div class="text-center mt-4" id="loadMoreContainer"
+                                         th:if="${commentCount > 10}" style="display: none;">
+                                        <button class="btn btn-outline-primary" onclick="loadMoreComments()">
+                                            <i class="fa fa-refresh"></i> Load More Comments
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
@@ -241,26 +445,42 @@
 
         <h6 class="switcher-title">Background Image</h6>
         <ul class="background-switcher">
-            <li><img src="images/switcher/switcher-bg/thum/bg1.jpg" rel="images/switcher/switcher-bg/large/bg1.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-bg/thum/bg2.jpg" rel="images/switcher/switcher-bg/large/bg2.jpg"  alt=""></li>
-            <li><img src="images/switcher/switcher-bg/thum/bg3.jpg" rel="images/switcher/switcher-bg/large/bg3.jpg"  alt=""></li>
-            <li><img src="images/switcher/switcher-bg/thum/bg4.jpg" rel="images/switcher/switcher-bg/large/bg4.jpg"  alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg1.jpg" rel="images/switcher/switcher-bg/large/bg1.jpg"
+                     alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg2.jpg" rel="images/switcher/switcher-bg/large/bg2.jpg"
+                     alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg3.jpg" rel="images/switcher/switcher-bg/large/bg3.jpg"
+                     alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg4.jpg" rel="images/switcher/switcher-bg/large/bg4.jpg"
+                     alt=""></li>
         </ul>
 
         <h6 class="switcher-title">Background Pattern</h6>
         <ul class="pattern-switcher">
-            <li><img src="images/switcher/switcher-patterns/thum/bg1.jpg"  rel="images/switcher/switcher-patterns/large/pt1.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg2.jpg"  rel="images/switcher/switcher-patterns/large/pt2.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg3.jpg"  rel="images/switcher/switcher-patterns/large/pt3.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg4.jpg"  rel="images/switcher/switcher-patterns/large/pt4.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg5.jpg"  rel="images/switcher/switcher-patterns/large/pt5.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg6.jpg"  rel="images/switcher/switcher-patterns/large/pt6.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg7.jpg"  rel="images/switcher/switcher-patterns/large/pt7.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg8.jpg"  rel="images/switcher/switcher-patterns/large/pt8.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg9.jpg"  rel="images/switcher/switcher-patterns/large/pt9.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg10.jpg"  rel="images/switcher/switcher-patterns/large/pt10.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg11.jpg"  rel="images/switcher/switcher-patterns/large/pt11.jpg" alt=""></li>
-            <li><img src="images/switcher/switcher-patterns/thum/bg12.jpg"  rel="images/switcher/switcher-patterns/large/pt12.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg1.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt1.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg2.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt2.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg3.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt3.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg4.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt4.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg5.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt5.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg6.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt6.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg7.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt7.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg8.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt8.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg9.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt9.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg10.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt10.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg11.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt11.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg12.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt12.jpg" alt=""></li>
         </ul>
 
 
@@ -270,6 +490,878 @@
 
 <!-- JAVASCRIPT  FILES ========================================= -->
 <div th:replace="~{fragments/script :: common-scripts}"></div>
+<style>
+    /* Comment Section Styles */
+    .comments-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .comment-form-container {
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .comment-item {
+        transition: all 0.2s ease;
+        padding: 15px 0;
+    }
+
+    .comment-item:hover {
+        background-color: rgba(0, 123, 255, 0.02);
+        border-radius: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .comment-avatar img {
+        object-fit: cover;
+        border: 2px solid #e9ecef;
+        transition: border-color 0.2s ease;
+    }
+
+    .comment-item:hover .comment-avatar img {
+        border-color: #007bff;
+    }
+
+    .comment-content {
+        line-height: 1.6;
+    }
+
+    .comment-author {
+        color: #007bff;
+        font-size: 14px;
+    }
+
+    .comment-text {
+        font-size: 14px;
+        color: #333;
+        word-wrap: break-word;
+        white-space: pre-line;
+    }
+
+    .comment-actions {
+        font-size: 12px;
+    }
+
+    .comment-actions .btn {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 15px;
+        transition: all 0.2s ease;
+    }
+
+    .comment-actions .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .comment-time {
+        font-style: italic;
+    }
+
+    .popular-comments {
+        border-left: 3px solid #ffc107;
+        padding-left: 15px;
+    }
+
+    .popular-comment-item {
+        border-left: 2px solid #ffc107;
+    }
+
+    .no-comments i {
+        opacity: 0.3;
+    }
+
+    #charCount {
+        font-weight: 500;
+    }
+
+    #charCount.text-danger {
+        font-weight: bold;
+    }
+
+    .comment-actions-dropdown .dropdown-toggle::after {
+        display: none;
+    }
+
+    /* Notification Toast Styles */
+    .notification-toast {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    /* Loading States */
+    .btn.loading {
+        position: relative;
+        color: transparent;
+    }
+
+    .btn.loading::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        left: 50%;
+        margin-left: -8px;
+        margin-top: -8px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        border-top-color: #ffffff;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .comments-section {
+            padding: 15px;
+            margin-left: -15px;
+            margin-right: -15px;
+            border-radius: 0;
+        }
+
+        .comment-avatar img {
+            width: 35px;
+            height: 35px;
+        }
+
+        .comment-author {
+            font-size: 13px;
+        }
+
+        .comment-text {
+            font-size: 13px;
+        }
+    }
+</style>
+<script>
+    // Global Configuration
+    let COMMENT_CONFIG = {
+        blogId: /*[[${blog?.blogId}]]*/ (() => {
+            console.error("Blog ID not found in template");
+            return 'default-blog-id';
+        })(),
+        pageSize: 10,
+        maxCharacters: 1000,
+        isLoggedIn: /*[[${isLoggedIn}]]*/ false,
+        currentUserId: /*[[${currentUser?.userId}]]*/ null,
+        currentUserName: /*[[${currentUser?.fullName}]]*/ null,
+        currentUserAvatar: /*[[${currentUser?.avatarUrl}]]*/ null,
+        endpoints: {
+            list: '/sbs/admin/comments/blog/',
+            add: '/sbs/admin/comments/add',
+            like: '/sbs/admin/comments/',
+            edit: '/sbs/admin/comments/',
+            delete: '/sbs/admin/comments/'
+        }
+    };
+    const dataElement = document.getElementById('commentData');
+    if (dataElement) {
+        console.log('✅ Using data attributes method');
+        COMMENT_CONFIG.blogId = dataElement.dataset.blogId || config.blogId;
+        COMMENT_CONFIG.isLoggedIn = dataElement.dataset.isLoggedIn === 'true';
+        COMMENT_CONFIG.currentUserId = dataElement.dataset.currentUserId || null;
+        COMMENT_CONFIG.commentCount = parseInt(dataElement.dataset.commentCount) || 0;
+    }
+
+    // Global State
+    let commentState = {
+        currentPage: 0,
+        totalPages: 0,
+        isLoading: false,
+        editingCommentId: null
+    };
+
+    // Document Ready
+    $(document).ready(function () {
+        console.log('Comment system initializing...', COMMENT_CONFIG);
+        initializeCommentSystem();
+    });
+
+    function initializeCommentSystem() {
+        // Initialize event handlers
+        bindCommentFormEvents();
+        updateRelativeTimes();
+        initializeCharacterCounter();
+
+        // Update times every minute
+        setInterval(updateRelativeTimes, 60000);
+
+        // Show load more button if needed
+        const commentCount = parseInt($('.comment-count-text').text()) || 0;
+        if (commentCount > COMMENT_CONFIG.pageSize) {
+            $('#loadMoreContainer').show();
+            commentState.totalPages = Math.ceil(commentCount / COMMENT_CONFIG.pageSize);
+        }
+
+        console.log('Comment system initialized successfully');
+    }
+
+    function bindCommentFormEvents() {
+        // Clear any existing handlers
+        $('#commentForm').off('submit');
+        $('#commentForm button[type="submit"]').off('click');
+
+        // Form submission handler
+        $('#commentForm').on('submit', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleCommentSubmission();
+            return false;
+        });
+
+        // Submit button click handler (backup)
+        $('#commentForm button[type="submit"]').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleCommentSubmission();
+            return false;
+        });
+
+        console.log('Comment form events bound successfully');
+    }
+
+    function initializeCharacterCounter() {
+        $('#commentContent').on('input', function () {
+            const length = $(this).val().length;
+            const counter = $('#charCount');
+
+            counter.text(length);
+
+            if (length > COMMENT_CONFIG.maxCharacters) {
+                counter.addClass('text-danger');
+                $(this).addClass('is-invalid');
+            } else if (length > COMMENT_CONFIG.maxCharacters * 0.9) {
+                counter.removeClass('text-danger').addClass('text-warning');
+                $(this).removeClass('is-invalid');
+            } else {
+                counter.removeClass('text-danger text-warning');
+                $(this).removeClass('is-invalid');
+            }
+        });
+    }
+
+    function toggleCommentForm() {
+        if (!COMMENT_CONFIG.isLoggedIn) {
+            showNotification('Please login to comment', 'warning');
+            return;
+        }
+
+        const container = $('#commentFormContainer');
+        const btn = $('#toggleCommentBtn');
+
+        if (container.is(':visible')) {
+            container.slideUp(300);
+            btn.html('<i class="fa fa-comment"></i> Add Comment');
+            resetCommentForm();
+        } else {
+            container.slideDown(300);
+            btn.html('<i class="fa fa-times"></i> Cancel');
+            $('#commentContent').focus();
+        }
+    }
+
+    function handleCommentSubmission() {
+        if (commentState.isLoading) {
+            console.log('Already submitting comment, ignoring...');
+            return;
+        }
+
+        const content = $('#commentContent').val().trim();
+
+        // Validation
+        if (!content) {
+            showNotification('Please enter a comment', 'warning');
+            $('#commentContent').focus();
+            return;
+        }
+
+        if (content.length > COMMENT_CONFIG.maxCharacters) {
+            showNotification(`Comment must not exceed ${COMMENT_CONFIG.maxCharacters} characters`, 'warning');
+            $('#commentContent').focus();
+            return;
+        }
+
+        if (!COMMENT_CONFIG.isLoggedIn) {
+            showNotification('Please login to comment', 'warning');
+            return;
+        }
+
+        submitComment(content);
+    }
+
+    function submitComment(content) {
+        console.log('Submitting comment:', content);
+
+        // Set loading state
+        commentState.isLoading = true;
+        const submitBtn = $('#commentForm button[type="submit"]');
+        const originalHtml = submitBtn.html();
+
+        submitBtn.prop('disabled', true)
+            .addClass('loading')
+            .html('<i class="fa fa-spinner fa-spin"></i> Posting...');
+
+        const requestData = {
+            content: content,
+            blogId: COMMENT_CONFIG.blogId
+        };
+
+        $.ajax({
+            url: COMMENT_CONFIG.endpoints.add,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            timeout: 30000,
+            success: function (response) {
+                console.log('Comment submitted successfully:', response);
+
+                if (response.success) {
+                    showNotification(response.message || 'Comment posted successfully!', 'success');
+
+                    // Reset form
+                    resetCommentForm();
+                    toggleCommentForm();
+
+                    // Add new comment to the list
+                    if (response.comment) {
+                        prependNewComment(response.comment);
+                        updateCommentCount(1);
+                    } else {
+                        // Fallback: reload page or reload comments
+                        setTimeout(() => window.location.reload(), 1000);
+                    }
+                } else {
+                    showNotification(response.message || 'Failed to post comment', 'error');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Comment submission error:', xhr.status, error);
+
+                let errorMessage = 'Error posting comment';
+
+                if (xhr.status === 401) {
+                    errorMessage = 'Please login to comment';
+                } else if (xhr.status === 403) {
+                    errorMessage = 'You do not have permission to comment';
+                } else if (xhr.status === 400 && xhr.responseJSON?.message) {
+                    errorMessage = xhr.responseJSON.message;
+                } else if (xhr.status === 0) {
+                    errorMessage = 'Network error. Please check your connection.';
+                } else if (status === 'timeout') {
+                    errorMessage = 'Request timeout. Please try again.';
+                }
+
+                showNotification(errorMessage, 'error');
+            },
+            complete: function () {
+                // Reset loading state
+                commentState.isLoading = false;
+                submitBtn.prop('disabled', false)
+                    .removeClass('loading')
+                    .html(originalHtml);
+            }
+        });
+    }
+
+    function resetCommentForm() {
+        $('#commentContent').val('');
+        $('#charCount').text('0').removeClass('text-danger text-warning');
+        $('#commentContent').removeClass('is-invalid');
+        commentState.editingCommentId = null;
+    }
+
+    function prependNewComment(comment) {
+        const commentHtml = createCommentHtml(comment, true);
+
+        // Remove "no comments" message if present
+        $('.no-comments').remove();
+
+        // Add to top of list
+        $('#commentsList').prepend(commentHtml);
+
+        // Animate in
+        $('#commentsList .comment-item:first')
+            .hide()
+            .slideDown(400)
+            .addClass('border-success')
+            .delay(2000)
+            .queue(function () {
+                $(this).removeClass('border-success').dequeue();
+            });
+    }
+
+    function createCommentHtml(comment, isNew = false) {
+        const timeDisplay = isNew ? 'just now' : formatRelativeTime(comment.createdAt);
+        const likeButtonClass = comment.isLikedByCurrentUser ? 'btn-primary' : 'btn-outline-primary';
+        const likeIcon = comment.isLikedByCurrentUser ? 'fa-thumbs-up' : 'fa-thumbs-o-up';
+
+        const actionsDropdown = COMMENT_CONFIG.currentUserId === comment.authorId ? `
+        <div class="comment-actions-dropdown">
+            <div class="dropdown">
+                <button class="btn btn-sm btn-link text-muted" type="button" data-toggle="dropdown">
+                    <i class="fa fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" onclick="editComment(this)" data-comment-id="${comment.commentId}">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <a class="dropdown-item text-danger" href="#" onclick="deleteComment(this)" data-comment-id="${comment.commentId}">
+                        <i class="fa fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    ` : '';
+
+        const likeButton = COMMENT_CONFIG.isLoggedIn ? `
+        <button class="btn btn-sm ${likeButtonClass}" onclick="toggleLike('${comment.commentId}')" title="Like this comment">
+            <i class="fa ${likeIcon}"></i>
+            <span class="like-count">${comment.likeCount}</span>
+        </button>
+    ` : `
+        <span class="text-muted small">
+            <i class="fa fa-thumbs-up"></i>
+            <span>${comment.likeCount}</span> likes
+        </span>
+    `;
+
+        return `
+        <div class="comment-item border-bottom py-3" data-comment-id="${comment.commentId}">
+            <div class="d-flex">
+                <div class="comment-avatar mr-3">
+                    <img src="${comment.authorAvatar || '/images/default-avatar.png'}"
+                         alt="${escapeHtml(comment.authorName)}"
+                         class="rounded-circle" width="45" height="45">
+                </div>
+                <div class="comment-content flex-grow-1">
+                    <div class="comment-header mb-2">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong class="comment-author">${escapeHtml(comment.authorName)}</strong>
+                                <small class="text-muted ml-2 comment-time" data-time="${comment.createdAt}">
+                                    ${timeDisplay}
+                                </small>
+                            </div>
+                            ${actionsDropdown}
+                        </div>
+                    </div>
+                    <div class="comment-text mb-2">${escapeHtml(comment.content)}</div>
+                    <div class="comment-actions">
+                        ${likeButton}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    }
+
+    function toggleLike(commentId) {
+        if (!COMMENT_CONFIG.isLoggedIn) {
+            showNotification('Please login to like comments', 'warning');
+            return;
+        }
+
+        const commentItem = $(`[data-comment-id="${commentId}"]`);
+        const likeBtn = commentItem.find('.btn');
+
+        // Optimistic update
+        const wasLiked = likeBtn.hasClass('btn-primary');
+        const currentCount = parseInt(commentItem.find('.like-count').text()) || 0;
+
+        if (wasLiked) {
+            likeBtn.removeClass('btn-primary').addClass('btn-outline-primary');
+            likeBtn.find('i').removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+            commentItem.find('.like-count').text(currentCount - 1);
+        } else {
+            likeBtn.removeClass('btn-outline-primary').addClass('btn-primary');
+            likeBtn.find('i').removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
+            commentItem.find('.like-count').text(currentCount + 1);
+        }
+
+        $.ajax({
+            url: `${COMMENT_CONFIG.endpoints.like}${commentId}/like`,
+            method: 'POST',
+            success: function (response) {
+                if (response.success) {
+                    // Update with server response
+                    commentItem.find('.like-count').text(response.likeCount);
+
+                    if (response.isLiked !== !wasLiked) {
+                        // Server state doesn't match optimistic update, fix it
+                        if (response.isLiked) {
+                            likeBtn.removeClass('btn-outline-primary').addClass('btn-primary');
+                            likeBtn.find('i').removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
+                        } else {
+                            likeBtn.removeClass('btn-primary').addClass('btn-outline-primary');
+                            likeBtn.find('i').removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+                        }
+                    }
+
+                    showNotification(response.message || (response.isLiked ? 'Liked!' : 'Unliked!'), 'success');
+                } else {
+                    // Revert optimistic update
+                    revertLikeButton(commentItem, wasLiked, currentCount);
+                    showNotification(response.message || 'Failed to process like', 'error');
+                }
+            },
+            error: function (xhr) {
+                // Revert optimistic update
+                revertLikeButton(commentItem, wasLiked, currentCount);
+
+                if (xhr.status === 401) {
+                    showNotification('Please login to like comments', 'warning');
+                } else {
+                    showNotification('Error processing like', 'error');
+                }
+            }
+        });
+    }
+
+    function revertLikeButton(commentItem, wasLiked, originalCount) {
+        const likeBtn = commentItem.find('.btn');
+
+        if (wasLiked) {
+            likeBtn.removeClass('btn-outline-primary').addClass('btn-primary');
+            likeBtn.find('i').removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
+        } else {
+            likeBtn.removeClass('btn-primary').addClass('btn-outline-primary');
+            likeBtn.find('i').removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+        }
+
+        commentItem.find('.like-count').text(originalCount);
+    }
+
+    function editComment(element) {
+        const commentId = $(element).data('comment-id');
+        const commentItem = $(`[data-comment-id="${commentId}"]`);
+        const commentText = commentItem.find('.comment-text');
+        const currentContent = commentText.text().trim();
+
+        // Create edit form
+        const editForm = `
+        <div class="edit-comment-form">
+            <textarea class="form-control mb-2" rows="3" maxlength="750">${escapeHtml(currentContent)}</textarea>
+            <div class="d-flex justify-content-between">
+                <small class="text-muted">Maximum 750 characters</small>
+                <div>
+                    <button class="btn btn-sm btn-success" onclick="saveCommentEdit('${commentId}')">
+                        <i class="fa fa-check"></i> Save
+                    </button>
+                    <button class="btn btn-sm btn-secondary ml-1" onclick="cancelCommentEdit('${commentId}')">
+                        <i class="fa fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+        // Replace content with edit form
+        commentText.hide().after(editForm);
+        commentState.editingCommentId = commentId;
+    }
+
+    function saveCommentEdit(commentId) {
+        const commentItem = $(`[data-comment-id="${commentId}"]`);
+        const newContent = commentItem.find('.edit-comment-form textarea').val().trim();
+
+        if (!newContent) {
+            showNotification('Comment cannot be empty', 'warning');
+            return;
+        }
+
+        if (newContent.length > COMMENT_CONFIG.maxCharacters) {
+            showNotification(`Comment must not exceed ${COMMENT_CONFIG.maxCharacters} characters`, 'warning');
+            return;
+        }
+        const requestData = {
+            content: newContent,
+            blogId: COMMENT_CONFIG.blogId // Include blogId for validation
+        };
+        console.log('📝 Updating comment:', commentId, 'with data:', requestData);
+
+        $.ajax({
+            url: `${COMMENT_CONFIG.endpoints.edit}${commentId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function (response) {
+                if (response.success) {
+                    // Update comment text
+                    commentItem.find('.comment-text').text(newContent).show();
+                    commentItem.find('.edit-comment-form').remove();
+                    commentState.editingCommentId = null;
+
+                    showNotification('Comment updated successfully', 'success');
+                } else {
+                    showNotification(response.message || 'Failed to update comment', 'error');
+                }
+            },
+            error: function (xhr) {
+                let errorMessage = 'Error updating comment';
+
+                if (xhr.status === 401) {
+                    errorMessage = 'Please login to edit comments';
+                } else if (xhr.status === 403) {
+                    errorMessage = 'You can only edit your own comments';
+                }
+
+                showNotification(errorMessage, 'error');
+            }
+        });
+    }
+
+    function cancelCommentEdit(commentId) {
+        const commentItem = $(`[data-comment-id="${commentId}"]`);
+        commentItem.find('.comment-text').show();
+        commentItem.find('.edit-comment-form').remove();
+        commentState.editingCommentId = null;
+    }
+
+    function deleteComment(element) {
+        const commentId = $(element).data('comment-id');
+
+        if (!confirm('Are you sure you want to delete this comment? This action cannot be undone.')) {
+            return;
+        }
+
+        $.ajax({
+            url: `${COMMENT_CONFIG.endpoints.delete}${commentId}`,
+            method: 'DELETE',
+            success: function (response) {
+                if (response.success) {
+                    const commentItem = $(`[data-comment-id="${commentId}"]`);
+                    commentItem.slideUp(300, function () {
+                        $(this).remove();
+                        updateCommentCount(-1);
+
+                        // Show "no comments" message if this was the last comment
+                        if ($('.comment-item').length === 0) {
+                            showNoCommentsMessage();
+                        }
+                    });
+
+                    showNotification('Comment deleted successfully', 'success');
+                } else {
+                    showNotification(response.message || 'Failed to delete comment', 'error');
+                }
+            },
+            error: function (xhr) {
+                let errorMessage = 'Error deleting comment';
+
+                if (xhr.status === 401) {
+                    errorMessage = 'Please login to delete comments';
+                } else if (xhr.status === 403) {
+                    errorMessage = 'You can only delete your own comments';
+                }
+
+                showNotification(errorMessage, 'error');
+            }
+        });
+    }
+
+    function loadMoreComments() {
+        if (commentState.isLoading || commentState.currentPage >= commentState.totalPages - 1) {
+            return;
+        }
+
+        commentState.isLoading = true;
+        const loadBtn = $('#loadMoreContainer button');
+        const originalText = loadBtn.html();
+
+        loadBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+
+        $.ajax({
+            url: `${COMMENT_CONFIG.endpoints.list}${COMMENT_CONFIG.blogId}`,
+            method: 'GET',
+            data: {
+                page: commentState.currentPage + 1,
+                size: COMMENT_CONFIG.pageSize
+            },
+            success: function (response) {
+                if (response.success && response.comments) {
+                    response.comments.forEach(comment => {
+                        const commentHtml = createCommentHtml(comment);
+                        $('#commentsList').append(commentHtml);
+                    });
+
+                    commentState.currentPage++;
+
+                    // Hide load more button if no more pages
+                    if (commentState.currentPage >= commentState.totalPages - 1) {
+                        $('#loadMoreContainer').hide();
+                    }
+
+                    // Update relative times for new comments
+                    updateRelativeTimes();
+                }
+            },
+            error: function () {
+                showNotification('Error loading more comments', 'error');
+            },
+            complete: function () {
+                commentState.isLoading = false;
+                loadBtn.prop('disabled', false).html(originalText);
+            }
+        });
+    }
+
+    function updateCommentCount(increment = 0) {
+        const currentCount = parseInt($('.comment-count-text').text()) || 0;
+        const newCount = Math.max(0, currentCount + increment);
+        const countText = newCount === 1 ? '1 Comment' : `${newCount} Comments`;
+
+        $('.comment-count-text').text(countText);
+    }
+
+    function showNoCommentsMessage() {
+        $('#commentsList').html(`
+        <div class="no-comments text-center py-5">
+            <div class="text-muted">
+                <i class="fa fa-comments fa-3x mb-3 text-light"></i>
+                <h6>No comments yet</h6>
+                <p>Be the first to share your thoughts!</p>
+            </div>
+        </div>
+    `);
+    }
+
+    function updateRelativeTimes() {
+        $('.comment-time[data-time]').each(function () {
+            const timeElement = $(this);
+            const timestamp = timeElement.data('time');
+
+            if (timestamp) {
+                const relativeTime = formatRelativeTime(timestamp);
+                timeElement.text(relativeTime);
+            }
+        });
+    }
+
+    function formatRelativeTime(timestamp) {
+        try {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - date) / 1000);
+
+            if (diffInSeconds < 60) return 'just now';
+            if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' minutes ago';
+            if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' hours ago';
+            if (diffInSeconds < 2592000) return Math.floor(diffInSeconds / 86400) + ' days ago';
+
+            return date.toLocaleDateString();
+        } catch (e) {
+            return 'recently';
+        }
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+
+        return text.toString().replace(/[&<>"']/g, function (m) {
+            return map[m];
+        });
+    }
+
+    function showNotification(message, type = 'info') {
+        // Remove existing notifications
+        $('.notification-toast').remove();
+
+        // Determine alert class
+        const alertClass = {
+            'success': 'alert-success',
+            'error': 'alert-danger',
+            'warning': 'alert-warning',
+            'info': 'alert-info'
+        }[type] || 'alert-info';
+
+        // Determine icon
+        const icon = {
+            'success': 'fa-check-circle',
+            'error': 'fa-exclamation-circle',
+            'warning': 'fa-exclamation-triangle',
+            'info': 'fa-info-circle'
+        }[type] || 'fa-info-circle';
+
+        // Create toast
+        const toast = $(`
+        <div class="notification-toast alert ${alertClass} alert-dismissible fade show"
+             style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 350px; max-width: 400px;">
+            <i class="fa ${icon} mr-2"></i>
+            ${escapeHtml(message)}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `);
+
+        // Add to body
+        $('body').append(toast);
+
+        // Auto-hide after 5 seconds
+        setTimeout(function () {
+            toast.fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, 5000);
+    }
+
+    // Global error handler for AJAX requests
+    $(document).ajaxError(function (event, xhr, settings) {
+        if (xhr.status === 401) {
+            // Session expired
+            showNotification('Your session has expired. Please login again.', 'warning');
+            setTimeout(() => {
+                window.location.href = '/admin/login';
+            }, 2000);
+        }
+    });
+
+    // Prevent accidental page refresh when editing
+    window.addEventListener('beforeunload', function (e) {
+        if (commentState.editingCommentId) {
+            e.preventDefault();
+            e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+            return e.returnValue;
+        }
+    });
+
+    console.log('Comment system script loaded successfully');
+</script>
+<script>
+    console.log("Debug Template Values:");
+    console.log("isLoggedIn:", /*[[${isLoggedIn}]]*/ 'undefined');
+    console.log("currentUser:", /*[[${currentUser}]]*/ 'undefined');
+    console.log("blog:", /*[[${blog}]]*/ 'undefined');
+</script>
 
 </body>
 

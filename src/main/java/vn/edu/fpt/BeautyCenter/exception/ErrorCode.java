@@ -29,7 +29,7 @@ public enum ErrorCode {
 
     /** Attempted to create a user that already exists. */
     USER_EXISTED(1009, "User already exists"),
-
+    USER_NOT_FOUND(1004, "User not found"),
     /** Invalid authentication or encryption key provided. */
     INVALID_KEY(1002, "Invalid message key"),
 
@@ -49,6 +49,8 @@ public enum ErrorCode {
     BLOG_TITLE_EXISTED(1409, "Blog title already exists"),
     CATEGORY_NOT_FOUND(1404, "Category not found"),
     CATEGORY_EXISTED(1409, "Category already exists"),
+    COMMENT_NOT_FOUND(1404, "Comment not found"),
+    COMMENT_ACCESS_DENIED(1404, "Comment access denied"),
     TAG_NOT_FOUND(1404, "Tag not found"),
     STAFF_NOT_FOUND(2001, "Staff not found"),
     STAFF_EMAIL_EXISTED(2002, "Email already exists");
