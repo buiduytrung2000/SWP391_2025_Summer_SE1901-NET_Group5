@@ -193,6 +193,57 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editScheduleModal" tabindex="-1" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" th:action="@{/admin/staffs/schedule/update}" id="editScheduleForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editScheduleModalLabel">Edit Schedule</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="scheduleId" id="editScheduleId">
+                    <div class="mb-2 d-flex align-items-center">
+                        <label class="form-label mb-0 me-2">Date:</label>
+                        <span id="editDateDisplay"></span>
+                        <input type="hidden" name="date" id="editDateInput">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Staff</label>
+                        <select name="staffId" class="form-select" id="editStaffSelect">
+                            <option th:each="staff : ${staffList}"
+                                    th:value="${staff.userId}"
+                                    th:text="${staff.fullName}">Staff</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Room</label>
+                        <select name="roomId" class="form-select" id="editRoomSelect">
+                            <option th:each="room : ${roomList}" th:value="${room.roomId}" th:text="${room.name}">Room</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Service</label>
+                        <select name="serviceId" class="form-select" id="editServiceSelect">
+                            <option th:each="service : ${serviceList}" th:value="${service.serviceId}" th:text="${service.name}">Service</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Shift</label>
+                        <select name="shift" class="form-select" id="editShiftSelect">
+                            <option value="MORNING">Morning (8h-14h)</option>
+                            <option value="AFTERNOON">Afternoon (14h-20h)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Attendance Modal -->
 <div class="modal fade" id="attendanceModal" tabindex="-1" aria-labelledby="attendanceModalLabel" aria-hidden="true">
@@ -254,7 +305,11 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a th:href="@{/admin/staffs/schedule/detail/{id}(id=${schedule.scheduleId})}" class="btn btn-sm btn-info">Detail</a>
+                                    <button type="button"
+                                            class="btn btn-sm btn-warning me-1"
+                                            onclick="openEditModal('${sc.scheduleId}')">
+                                        Edit
+                                    </button>
                                     <button type="button"
                                             class="btn btn-sm btn-danger"
                                             th:attr="data-id=${schedule.scheduleId}"
@@ -424,6 +479,12 @@
                 </td>
                 <td>
                     <button type="button"
+                        class="btn btn-sm btn-warning me-1"
+                        ${isStatusSet ? 'disabled' : ''}
+                        onclick="openEditModal('${sc.scheduleId}')">
+                        Edit
+                    </button>
+                    <button type="button"
                         class="btn btn-sm btn-danger"
                         ${isStatusSet ? 'disabled' : ''}
                         onclick="confirmDeleteScheduleFromList('${sc.scheduleId}')">
@@ -431,6 +492,7 @@
                     </button>
                 </td>
             `;
+
 
             tbody.appendChild(row);
         });
@@ -494,6 +556,112 @@
             }
         });
     }
+</script>
+<script>
+    async function openEditModal(scheduleId) {
+        const attendanceModal = bootstrap.Modal.getInstance(document.getElementById("attendanceModal"));
+        if (attendanceModal) {
+            attendanceModal.hide();
+        }
+        const res = await fetch(`/sbs/admin/staffs/schedule/edit/${scheduleId}`);
+        const data = await res.json();
+
+        document.getElementById("editScheduleId").value = data.scheduleId;
+        document.getElementById("editDateDisplay").textContent = data.date;
+        document.getElementById("editDateInput").value = data.date;
+        document.getElementById("editStaffSelect").value = data.staffId;
+        document.getElementById("editRoomSelect").value = data.roomId;
+        document.getElementById("editServiceSelect").value = data.serviceId;
+        document.getElementById("editShiftSelect").value = data.shift;
+
+        const modal = new bootstrap.Modal(document.getElementById("editScheduleModal"));
+        modal.show();
+    }
+</script>
+<script>
+    document.getElementById("editScheduleForm").addEventListener("submit", async function (e) {
+        e.preventDefault(); // Ngăn submit mặc định
+
+        const formData = new FormData(this);
+        const response = await fetch(this.action, {
+            method: "POST",
+            body: formData
+        });
+
+        // Ẩn modal Edit
+        const editModal = bootstrap.Modal.getInstance(document.getElementById("editScheduleModal"));
+        if (editModal) editModal.hide();
+
+        // Gọi lại modal Attendance với lịch mới
+        const selectedDate = document.getElementById("editDateInput").value;
+        await loadAttendanceSchedulesByDate(selectedDate);
+
+        const attendanceModal = new bootstrap.Modal(document.getElementById("attendanceModal"));
+        attendanceModal.show();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Schedule updated!',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    });
+
+</script>
+<script>
+    async function loadAttendanceSchedulesByDate(date) {
+        const response = await fetch(`/sbs/admin/staffs/schedule/api/day?date=${date}`);
+        const schedules = await response.json();
+
+        const tbody = document.querySelector("#attendanceModal tbody");
+        tbody.innerHTML = "";
+
+        schedules.forEach(sc => {
+            const isStatusSet = sc.status === 'ATTENDANCE' || sc.status === 'ABSENT';
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+            <td>${sc.staffName}</td>
+            <td>${sc.startTime.hour < 14 ? 'MORNING SHIFT(8H-14H)' : 'AFTERNOON SHIFT(14H-20H)'}</td>
+            <td>${sc.room || '-'}</td>
+            <td>${sc.service || '-'}</td>
+            <td>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"
+                        name="status-${sc.scheduleId}"
+                        id="att-${sc.scheduleId}"
+                        value="ATTENDANCE" ${sc.status === 'ATTENDANCE' ? 'checked' : ''}>
+                    <label class="form-check-label" for="att-${sc.scheduleId}">Attendance</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"
+                        name="status-${sc.scheduleId}"
+                        id="abs-${sc.scheduleId}"
+                        value="ABSENT" ${sc.status === 'ABSENT' ? 'checked' : ''}>
+                    <label class="form-check-label" for="abs-${sc.scheduleId}">Absent</label>
+                </div>
+            </td>
+            <td>
+                <button type="button"
+                    class="btn btn-sm btn-warning me-1"
+                    ${isStatusSet ? 'disabled' : ''}
+                    onclick="openEditModal('${sc.scheduleId}')">
+                    Edit
+                </button>
+                <button type="button"
+                    class="btn btn-sm btn-danger"
+                    ${isStatusSet ? 'disabled' : ''}
+                    onclick="confirmDeleteScheduleFromList('${sc.scheduleId}')">
+                    Delete
+                </button>
+            </td>
+        `;
+            tbody.appendChild(row);
+        });
+    }
+
 </script>
 <style>
     td[data-day][data-shift] {
