@@ -30,9 +30,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.BlogRequest;
 import vn.edu.fpt.BeautyCenter.dto.request.BlogFilterParams;
+import vn.edu.fpt.BeautyCenter.dto.request.CommentRequest;
 import vn.edu.fpt.BeautyCenter.dto.response.BlogResponse;
 import vn.edu.fpt.BeautyCenter.dto.response.BlogCategoryResponse;
 import vn.edu.fpt.BeautyCenter.dto.response.BlogTagResponse;
+import vn.edu.fpt.BeautyCenter.dto.response.CommentResponse;
 import vn.edu.fpt.BeautyCenter.entity.User;
 import vn.edu.fpt.BeautyCenter.entity.enums.BlogStatus;
 import vn.edu.fpt.BeautyCenter.entity.enums.Role;
@@ -68,6 +70,7 @@ public class BlogController {
     UserService userService;
     NotificationService notificationService;
     S3Service s3Service;
+    CommentService commentService;
 
     // List of allowed sort fields to prevent SQL injection
     private static final List<String> ALLOWED_SORT_FIELDS = Arrays.asList(
@@ -486,13 +489,8 @@ public class BlogController {
                            Model model,
                            HttpSession session,
                            RedirectAttributes redirectAttributes) {
-//        if (isNotPermit(session)) {
-//            notificationService.addErrorMessage(redirectAttributes, "Access denied. Please login to view blog details.");
-//            return "redirect:/";
-//        }
-
         try {
-            // Retrieve blog details
+            // Existing blog loading logic
             Optional<BlogResponse> blogOpt = blogService.getBlogById(blogId);
             if (blogOpt.isEmpty()) {
                 notificationService.addErrorMessage(redirectAttributes, "Blog not found or has been removed.");
@@ -500,6 +498,8 @@ public class BlogController {
             }
 
             BlogResponse blog = blogOpt.get();
+
+            // View count logic (existing)
             Set<String> viewedBlogs = (Set<String>) session.getAttribute("viewedBlogs");
             if (viewedBlogs == null) {
                 viewedBlogs = new HashSet<>();
@@ -510,14 +510,20 @@ public class BlogController {
                 session.setAttribute("viewedBlogs", viewedBlogs);
             }
 
-            // Format author name for display
+            // ** THÊM PHẦN XỬ LÝ COMMENT **
+            User currentUser = (User) session.getAttribute("user");
+            String currentUserId = currentUser != null ? currentUser.getUserId() : null;
+            // Load comments cho blog
+            List<CommentResponse> comments = commentService.getCommentsByBlogId(blogId, currentUserId);
+            long commentCount = commentService.getCommentCountByBlog(blogId);
+            List<CommentResponse> popularComments = commentService.getPopularCommentsByBlog(blogId);
+
+            // Existing formatting logic
             String authorName = userService.getUserName(blog.getAuthorId());
             blog.setAuthorName(authorName != null ? authorName : "Unknown User");
-
-            // Format tags for display
             String formattedTags = formatTags(blog.getTags());
 
-            // Get category name if available
+            // Category logic (existing)
             String categoryName = "Uncategorized";
             String categoryId = "";
             if (blog.getCategoryId() != null) {
@@ -532,16 +538,23 @@ public class BlogController {
                 }
             }
 
-            //Get recent blog
             List<BlogResponse> recentBlogs = blogService.getRecentBlogs(3);
 
-            // Add attributes for view
+            // Add all attributes including comments
             model.addAttribute("blog", blog);
             model.addAttribute("formattedTags", formattedTags);
             model.addAttribute("categoryName", categoryName);
             model.addAttribute("categoryId", categoryId);
             model.addAttribute("recentBlogs", recentBlogs);
             model.addAttribute("pageTitle", "Blog Details: " + blog.getTitle());
+
+            // ** COMMENT ATTRIBUTES **
+            model.addAttribute("comments", comments);
+            model.addAttribute("commentCount", commentCount);
+            model.addAttribute("popularComments", popularComments);
+            model.addAttribute("isLoggedIn", currentUser != null);
+            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("commentRequest", new CommentRequest()); // For form binding
 
             return "blogs/view";
 
@@ -551,6 +564,8 @@ public class BlogController {
             return "redirect:/admin/blogs";
         }
     }
+
+
 
     /**
      * Handles blog deletion with comprehensive security and validation.

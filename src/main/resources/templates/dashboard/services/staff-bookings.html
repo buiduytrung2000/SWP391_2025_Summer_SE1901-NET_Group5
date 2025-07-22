@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{/dashboard/fragments/head::admin-head}">
+  <style>
+    /* Dropdown Filter Styling */
+    .dropdown-inner {
+      background: #fff;
+      border-radius: 6px;
+    }
+
+    .dropdown-menu {
+      border: 1px solid #e1e5e9;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+    }
+
+    /* Form Controls in Dropdowns */
+    .dropdown-inner .form-control-sm,
+    .dropdown-inner .form-select-sm {
+      border-radius: 4px;
+      border: 1px solid #e1e5e9;
+      font-size: 0.875rem;
+    }
+
+    .dropdown-inner .form-control-sm:focus,
+    .dropdown-inner .form-select-sm:focus {
+      border-color: #5e72e4;
+      box-shadow: 0 0 0 0.1rem rgba(94, 114, 228, 0.25);
+    }
+
+    /* Form Labels in Dropdowns */
+    .form-label-sm {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #8094ae;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Tags Checkbox List */
+    .tags-checkbox-list {
+      border: 1px solid #e1e5e9;
+      border-radius: 4px;
+      padding: 0.5rem;
+      background: #f8f9fa;
+    }
+
+    .form-check-sm .form-check-input {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+
+    .form-check-sm .form-check-label {
+      font-size: 0.875rem;
+      margin-left: 0.25rem;
+    }
+
+    /* Button Styling in Dropdowns */
+    .dropdown-inner .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      border-radius: 4px;
+    }
+
+    /* Quick Select Buttons */
+    .btn-group-sm .btn-sm {
+      flex: 1;
+      white-space: nowrap;
+    }
+
+    /* Active Filters Alert */
+    .alert-pro {
+      border-left: 4px solid #5e72e4;
+      background: rgba(94, 114, 228, 0.1);
+      border-color: rgba(94, 114, 228, 0.2);
+    }
+
+    .badge-outline-primary {
+      color: #5e72e4;
+      border: 1px solid #5e72e4;
+      background: transparent;
+    }
+
+    /* Link List Styling */
+    .link-list-opt.no-bdr li a {
+      padding: 0.375rem 0;
+      color: #8094ae;
+      font-size: 0.875rem;
+      border: none;
+      transition: color 0.2s ease;
+    }
+
+    .link-list-opt.no-bdr li a:hover {
+      color: #5e72e4;
+      background: transparent;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .dropdown-menu {
+        min-width: 280px !important;
+        left: 0 !important;
+        right: auto !important;
+      }
+
+      .nk-block-tools li {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    /* Filter Button Active State */
+    .btn-white.btn-dim.active {
+      background-color: #5e72e4;
+      border-color: #5e72e4;
+      color: #fff;
+    }
+
+    /* Dropdown Toggle Indicator */
+    .dd-indc {
+      transition: transform 0.2s ease;
+    }
+
+    .dropdown-toggle[aria-expanded="true"] .dd-indc {
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body class="nk-body npc-default has-apps-sidebar has-sidebar ">
+<div class="nk-app-root">
+
+  <div class="nk-main ">
+    <div class="nk-wrap ">
+      <div class="nk-header nk-header-fixed" th:replace="~{/dashboard/fragments/header::admin-header}">
+      </div>
+      <div class="nk-sidebar" data-content="sidebarMenu"
+           th:replace="~{/dashboard/fragments/sidebar::admin-sidebar}">
+      </div>
+      <div class="nk-content">
+
+        <div class="nk-block-head nk-block-head-sm">
+          <div class="nk-block-between">
+            <div class="nk-block-head-content">
+              <h3 class="nk-block-title page-title">
+                Lịch Hẹn Được Giao
+                <small class="text-primary"
+                       th:text="'('+ ${totalElements} +' booking)'">(0)</small>
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's quick board -->
+        <div class="nk-block">
+          <div class="card card-bordered">
+            <div class="card-inner">
+              <h5 class="title">Lịch hôm nay</h5>
+              <div class="row g-4">
+                <div th:each="t : ${todayBookings}" class="col-6 col-md-3">
+                  <div class="alert alert-fill alert-primary d-flex flex-column align-items-center text-center">
+                    <div>
+                      <em class="icon ni ni-clock"></em>
+                      <span class="lead"
+                            th:text="${#temporals.format(t.bookingTime,'HH:mm')}"></span>
+                    </div>
+                    <div th:text="${t.serviceName}">Service</div>
+                    <small th:text="${t.customerName}">Khách hàng</small>
+                  </div>
+                </div>
+                <div th:if="${#lists.isEmpty(todayBookings)}" class="col-12 text-center">
+                  <span class="text-soft">Không có lịch hôm nay.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- nk-block -->
+
+        <!-- MAIN TABLE -->
+        <div class="nk-block">
+          <div class="card card-bordered card-stretch">
+            <div class="card-inner-group">
+
+              <div class="card-inner p-0">
+                <table class="table table-tranx">
+                  <thead>
+                  <tr>
+                    <th>Dịch vụ</th>
+                    <th>Khách</th>
+                    <th>Ngày/Giờ</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Hành động</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="b : ${bookings}">
+                    <td>
+                      <span th:text="${b.serviceName}">Service</span>
+                      <br/><small class="text-soft"
+                                  th:text="${b.serviceDuration}">60’</small>
+                    </td>
+                    <td>
+                      <span th:text="${b.customerName}">Customer</span>
+                      <br/><small class="text-soft"
+                                  th:text="${b.customerPhone}"></small>
+                    </td>
+                    <td th:text="${b.formattedBookingDateTime}">22/07 14:00</td>
+                    <td>
+                                        <span class="badge"
+                                              th:class="'badge-' + ${b.status.name().toLowerCase()}"
+                                              th:text="${b.statusDisplayName}">Assigned</span>
+                    </td>
+                    <td class="text-end">
+                      <button th:if="${b.canBeStarted}"
+                              class="btn btn-sm btn-outline-warning"
+                              th:attr="data-id=${b.bookingId}"
+                              onclick="startSvc(this)">
+                        <em class="icon ni ni-play"></em>
+                      </button>
+                      <button th:if="${b.canBeCompleted}"
+                              class="btn btn-sm btn-outline-success"
+                              th:attr="data-id=${b.bookingId}"
+                              onclick="doneSvc(this)">
+                        <em class="icon ni ni-check"></em>
+                      </button>
+                      <button th:if="${b.canBeCancelled}"
+                              class="btn btn-sm btn-outline-danger"
+                              th:attr="data-id=${b.bookingId}"
+                              onclick="cancelSvc(this)">
+                        <em class="icon ni ni-cross"></em>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr th:if="${#lists.isEmpty(bookings)}">
+                    <td colspan="6" class="text-center p-4">
+                      <em class="icon ni ni-calendar-x-fill display-4 text-soft"></em>
+                      <p class="mt-2">Chưa có lịch được giao.</p>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- PAGINATION -->
+              <div class="card-inner">
+                <div class="nk-block-between-md g-3">
+                  <nav th:if="${totalPages > 1}">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item" th:classappend="${!hasPrevious}? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/bookings/staff(page=${currentPage})}">
+                          <em class="icon ni ni-chevron-left"></em>
+                        </a>
+                      </li>
+                      <li class="page-item"
+                          th:each="p : ${#numbers.sequence(0,totalPages)}"
+                          th:classappend="${p==currentPage}? 'active'">
+                        <a class="page-link" th:href="@{/admin/bookings/staff(page=${p})}"
+                           th:text="${p+1}">1</a>
+                      </li>
+                      <li class="page-item" th:classappend="${!hasNext}? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/bookings/staff(page=${currentPage+1})}">
+                          <em class="icon ni ni-chevron-right"></em>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <div class="text-soft">
+                    <span th:text="${bookings.size()}"></span>/<span th:text="${totalElements}"></span>
+                  </div>
+                </div>
+              </div><!-- card-inner -->
+            </div>
+          </div><!-- card -->
+        </div><!-- nk-block -->
+
+      </div><!-- nk-content -->
+    </div>
+  </div>
+</div>
+<div th:replace="~{/dashboard/fragments/footer::admin-scripts}"></div>
+<script>
+  function startSvc(btn){
+    $.post('/sbs/admin/bookings/staff/start/'+btn.dataset.id).done(()=>location.reload());
+  }
+  function doneSvc(btn){
+    $.post('/sbs/admin/bookings/staff/complete/'+btn.dataset.id,
+            JSON.stringify({completionNotes:''}),
+            'json').done(()=>location.reload());
+  }
+  function cancelSvc(btn) {
+    const bookingId = btn.dataset.id;
+    const reason = prompt('Lý do hủy?');
+    if (!reason) return;
+
+    console.log('Cancel reason:', reason);
+
+    $.ajax({
+      url: `/sbs/admin/bookings/staff/cancel/${bookingId}`,
+      method: 'POST',
+      contentType: 'application/json',
+      dataType: 'json',
+      data: JSON.stringify({ cancellationReason: reason }),
+      success: function(response) {
+        if (response.success) {
+          alert('Hủy lịch thành công');
+          location.reload();
+        } else {
+          alert('Lỗi: ' + response.message);
+        }
+      },
+      error: function(xhr) {
+        let msg = 'Có lỗi khi hủy lịch';
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          msg = xhr.responseJSON.message;
+        }
+        alert(msg);
+      }
+    });
+  }
+
+</script>
+
+</body>
+</html>

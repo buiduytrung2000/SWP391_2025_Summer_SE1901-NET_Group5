@@ -30,5 +30,6 @@ public interface UserRepository extends JpaRepository<User, String> {
      */
     @Query("SELECT DISTINCT s.createdBy FROM Service s WHERE s.createdBy IS NOT NULL")
     List<String> findDistinctServiceCreators();
-
+    @Query("Select u from User u where u.role = 'staff' order by u.fullName")
+    List<User> findByRoleOrderByFullName(String staff);
 }
