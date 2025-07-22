@@ -54,7 +54,6 @@ import java.util.stream.IntStream;
  * </p>
  */
 @Controller
-@RequestMapping("/admin/services")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ServiceController {
@@ -94,7 +93,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios with flash messages
      * @return the view name for the service list with applied filters and data
      */
-    @GetMapping({"", "/"})
+    @GetMapping({"/admin/services", "/admin/services/"})
     public String getAllServiceWithAdvancedFilter(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size,
@@ -241,6 +240,146 @@ public class ServiceController {
             return "dashboard/services/list";
         }
     }
+    @GetMapping({"/services", "/services/"})
+    public String getAllServiceWithAdvancedFilterForUser(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size,
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "minPrice", required = false) @Valid BigDecimal minPrice,
+            @RequestParam(name = "maxPrice", required = false) @Valid BigDecimal maxPrice,
+            @RequestParam(name = "minDuration", required = false) Integer minDuration,
+            @RequestParam(name = "maxDuration", required = false) Integer maxDuration,
+            @RequestParam(name = "fromDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(name = "toDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+            @RequestParam(name = "selectedTags", required = false) List<String> selectedTags,
+            @RequestParam(name = "createdBy", required = false) String createdBy,
+            @RequestParam(name = "sortBy", defaultValue = "created_at") String sortBy,
+            @RequestParam(name = "sortDir", defaultValue = "desc") String sortDir,
+            HttpSession session,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        try {
+            // Validate and sanitize input parameters
+            page = Math.max(0, page); // Ensure page is not negative
+            size = Math.min(Math.max(1, size), 50); // Limit size between 1-50
+
+            // Build comprehensive filter parameters object
+            ServiceFilterParams filterParams = ServiceFilterParams.builder()
+                    .keyword(sanitizeKeyword(keyword))
+                    .minPrice(validatePrice(minPrice))
+                    .maxPrice(validatePrice(maxPrice))
+                    .minDuration(validateDuration(minDuration))
+                    .maxDuration(validateDuration(maxDuration))
+                    .fromDate(validateDate(fromDate))
+                    .toDate(validateDate(toDate))
+                    .selectedTags(sanitizeTags(selectedTags))
+                    .createdBy(sanitizeUserId(createdBy))
+                    .build();
+
+            // Validate price range logic
+            if (filterParams.getMinPrice() != null && filterParams.getMaxPrice() != null) {
+                if (filterParams.getMinPrice().compareTo(filterParams.getMaxPrice()) > 0) {
+                    notificationService.addWarningMessage(redirectAttributes,
+                            "Minimum price cannot be greater than maximum price. Filters adjusted.");
+                    filterParams.setMinPrice(null);
+                    filterParams.setMaxPrice(null);
+                }
+            }
+
+            // Validate duration range logic
+            if (filterParams.getMinDuration() != null && filterParams.getMaxDuration() != null) {
+                if (filterParams.getMinDuration() > filterParams.getMaxDuration()) {
+                    notificationService.addWarningMessage(redirectAttributes,
+                            "Minimum duration cannot be greater than maximum duration. Filters adjusted.");
+                    filterParams.setMinDuration(null);
+                    filterParams.setMaxDuration(null);
+                }
+            }
+
+            // Validate date range logic
+            if (filterParams.getFromDate() != null && filterParams.getToDate() != null) {
+                if (filterParams.getFromDate().isAfter(filterParams.getToDate())) {
+                    notificationService.addWarningMessage(redirectAttributes,
+                            "Start date cannot be after end date. Filters adjusted.");
+                    filterParams.setFromDate(null);
+                    filterParams.setToDate(null);
+                }
+            }
+
+            // Create sort direction and validate sort field for security
+            Sort.Direction direction = "asc".equalsIgnoreCase(sortDir) ?
+                    Sort.Direction.ASC : Sort.Direction.DESC;
+            String validatedSortBy = validateSortField(sortBy);
+            Pageable pageable = PageRequest.of(page, size, Sort.by(direction, validatedSortBy));
+
+            // Apply advanced filtering through service layer
+            Page<ServiceResponse> services = serviceService.getServicesWithAdvancedFilter(
+                    filterParams, pageable);
+
+            // Enhance service data with user names for display
+            for (ServiceResponse service : services) {
+                try {
+                    String userName = userService.getUserName(service.getCreatedBy());
+                    service.setCreatedBy(userName != null ? userName : "Unknown User");
+                } catch (Exception e) {
+                    service.setCreatedBy("Unknown User");
+                }
+            }
+
+            // Create a map of formatted tags for consistent display
+            Map<String, String> tagsMap = services.getContent().stream()
+                    .collect(Collectors.toMap(
+                            ServiceResponse::getServiceId,
+                            service -> formatTags(service.getTags()),
+                            (existing, replacement) -> existing // Handle duplicate keys
+                    ));
+
+            // Generate page numbers for pagination navigation
+            if (services.getTotalPages() > 0) {
+                List<Integer> pageNumbers = IntStream.rangeClosed(1, services.getTotalPages())
+                        .boxed()
+                        .collect(Collectors.toList());
+                model.addAttribute("pageNumbers", pageNumbers);
+            }
+
+            // Prepare filter-related attributes for dropdown UI
+            prepareFilterAttributes(model, filterParams);
+
+            // Prepare filter button states for active indication
+            prepareFilterButtonStates(model, filterParams);
+
+            // Add main attributes to model for view rendering
+            model.addAttribute("pageTitle", "Services Management");
+            model.addAttribute("services", services);
+            model.addAttribute("formattedTags", tagsMap);
+            model.addAttribute("filterParams", filterParams);
+            model.addAttribute("sortBy", validatedSortBy);
+            model.addAttribute("sortDir", sortDir);
+            model.addAttribute("keyword", filterParams.getKeyword());
+            model.addAttribute("hasActiveFilters", filterParams.hasActiveFilters());
+
+            // Add service statistics for dashboard insights
+            addServiceStatistics(model, services);
+
+            return "services/list";
+
+        } catch (Exception e) {
+            // Comprehensive error handling with user-friendly messages
+            String errorMessage = "Error loading services: " +
+                    (e.getMessage() != null ? e.getMessage() : "Unexpected error occurred");
+            notificationService.addErrorMessage(redirectAttributes, errorMessage);
+
+            // Log error for debugging purposes
+            System.err.println("Service filtering error: " + e.getMessage());
+
+            // Return to list view with error notification
+            model.addAttribute("pageTitle", "Services Management");
+            model.addAttribute("services", Page.empty());
+            return "dashboard/services/list";
+        }
+    }
 
     /**
      * Displays the form for adding a new service with necessary dropdown data [1].
@@ -253,7 +392,7 @@ public class ServiceController {
      * @param session current HTTP session for authentication
      * @return the view name for the add service form
      */
-    @GetMapping("/add")
+    @GetMapping("/admin/services/add")
     public String showAddForm(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
@@ -293,7 +432,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios with flash messages
      * @return redirect to appropriate page based on operation result
      */
-    @PostMapping("/add")
+    @PostMapping("/admin/services/add")
     public String saveService(@ModelAttribute("serviceCreationRequest") @Valid ServiceCreationRequest request,
                               BindingResult bindingResult,
                               HttpSession session,
@@ -358,7 +497,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios
      * @return the view name for the edit service form
      */
-    @GetMapping("/edit/{serviceId}")
+    @GetMapping("/admin/services/edit/{serviceId}")
     public String showEditForm(@PathVariable String serviceId,
                                Model model,
                                HttpSession session,
@@ -439,7 +578,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios
      * @return redirect to appropriate page based on operation result
      */
-    @PostMapping("/edit/{serviceId}")
+    @PostMapping("/admin/services/edit/{serviceId}")
     public String updateService(@PathVariable String serviceId,
                                 @ModelAttribute("serviceUpdateRequest") @Valid ServiceUpdateRequest request,
                                 BindingResult bindingResult,
@@ -498,17 +637,14 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios
      * @return the view name for the service details page
      */
-    @GetMapping("/{serviceId}")
+    @GetMapping({"/admin/services/{serviceId}","/services/{serviceId}"})
     public String viewService(@PathVariable String serviceId,
                               Model model,
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
-        if (isNotPermit(session)) {
-            notificationService.addErrorMessage(redirectAttributes, "Access denied. Please login to view service details.");
-            return "redirect:/";
-        }
 
         try {
+            User currentUser = (User) session.getAttribute("user");
             // Retrieve service details
             Optional<ServiceResponse> serviceOpt = serviceService.getServiceById(serviceId);
             if (serviceOpt.isEmpty()) {
@@ -528,9 +664,11 @@ public class ServiceController {
             // Add attributes for view
             model.addAttribute("service", service);
             model.addAttribute("formattedTags", formattedTags);
+            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("isLoggedIn", currentUser != null);
             model.addAttribute("pageTitle", "Service Details: " + service.getName());
 
-            return "dashboard/services/view";
+            return "services/view";
 
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes,
@@ -553,7 +691,7 @@ public class ServiceController {
      * @param redirectAttributes Spring MVC redirect attributes for flash messages
      * @return redirect view name with appropriate success or error feedback
      */
-    @GetMapping("/delete/{serviceId}")
+    @GetMapping("/admin/services/delete/{serviceId}")
     public String deleteService(@PathVariable String serviceId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {

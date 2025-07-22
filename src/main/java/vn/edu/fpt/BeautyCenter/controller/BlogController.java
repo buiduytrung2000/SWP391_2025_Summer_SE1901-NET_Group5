@@ -564,25 +564,6 @@ public class BlogController {
             return "redirect:/admin/blogs";
         }
     }
-    @GetMapping("/{blogId}/test")
-    public String testBlogView(@PathVariable String blogId, Model model) {
-        // Hard-code test data
-        BlogResponse testBlog = new BlogResponse();
-        testBlog.setBlogId(blogId);
-        testBlog.setTitle("Test Blog");
-
-        User testUser = new User();
-        testUser.setUserId("test-user");
-        testUser.setFullName("Test User");
-
-        model.addAttribute("blog", testBlog);
-        model.addAttribute("isLoggedIn", true);
-        model.addAttribute("currentUser", testUser);
-        model.addAttribute("comments", new ArrayList<>());
-        model.addAttribute("commentCount", 0L);
-
-        return "blogs/view";
-    }
 
 
 
