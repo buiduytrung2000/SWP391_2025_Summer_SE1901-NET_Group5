@@ -10,9 +10,6 @@ import vn.edu.fpt.BeautyCenter.dto.response.DashboardStats;
 import vn.edu.fpt.BeautyCenter.repository.ServiceAnalyticsRepository;
 import vn.edu.fpt.BeautyCenter.repository.UserRepository;
 import vn.edu.fpt.BeautyCenter.service.DashboardService;
-import vn.edu.fpt.BeautyCenter.service.WebVisitService;
-
-import java.time.*;
 import java.util.*;
 
 @RequestMapping("/admin")
@@ -28,15 +25,9 @@ public class DashboardController {
     @Autowired
     private DashboardService dashboardService;
 
-    @Autowired
-    private WebVisitService webVisitService;
-
     @GetMapping("/analysis")
     public String showDashboard(Model model) {
-
-        long weeklyVisitors = webVisitService.getWeeklyVisitorCount();
         DashboardStats stats = dashboardService.getWeeklyStats();
-        stats.setTotalVisitors(weeklyVisitors);
         model.addAttribute("stats", stats);
         List<String> serviceNames = new ArrayList<>();
         List<Long> serviceCounts = new ArrayList<>();

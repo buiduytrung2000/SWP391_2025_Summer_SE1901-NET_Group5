@@ -64,71 +64,70 @@
 <!--                                    </div>-->
 <!--                                </div>-->
                                 <!-- Top Blogs Table -->
-                                <div class="col-md-6">
-                                    <div class="card card-bordered">
-                                        <div class="card-inner">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <h6 class="mb-0">Top Blogs</h6>
-                                                <i class="fas fa-download"></i>
+                                <div class="row g-4 mb-4">
+                                    <!-- Top Services Table -->
+                                        <div class="card card-bordered">
+                                            <div class="card-inner">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="mb-0">Top Services</h6>
+                                                    <i class="fas fa-download"></i>
+                                                </div>
+                                                <table class="table align-middle">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Service</th>
+                                                        <th>Price</th>
+                                                        <th>Usage</th>
+                                                        <th>Revenue</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="s : ${stats.topServices}">
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <span th:text="${s.name}">Service Name</span>
+                                                            </div>
+                                                        </td>
+                                                        <td th:text="${#numbers.formatDecimal(s.price, 1, 'COMMA', 2, 'POINT')} + ' VND'">0 VND</td>
+                                                        <td th:text="${s.usage + ' Used'}">0 Used</td>
+                                                        <td th:text="${#numbers.formatDecimal(s.totalRevenue, 1, 'COMMA', 2, 'POINT')} + ' VND'">0 VND</td>
+                                                        <td><a href="#" class="text-primary"><i class="fas fa-search"></i></a></td>
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <table class="table align-middle">
-                                                <thead>
-                                                <tr>
-                                                    <th>Title</th>
-                                                    <th>URL</th>
-                                                    <th>Author</th>
-                                                    <th>Views</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="b : ${topBlogs}">
-                                                    <td th:text="${b.title}">Title</td>
-                                                    <td><a th:href="${b.url}" th:text="${b.url}">URL</a></td>
-                                                    <td th:text="${b.authorName}">Author</td>
-                                                    <td th:text="${b.viewCount}">0</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
                                         </div>
-                                    </div>
                                 </div>
 
-                            <div class="row g-4">
-                                <!-- Top Services Table -->
                                 <div class="col-md-6">
-                                    <div class="card card-bordered">
-                                        <div class="card-inner">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <h6 class="mb-0">Top Services</h6>
-                                                <i class="fas fa-download"></i>
-                                            </div>
-                                            <table class="table align-middle">
-                                                <thead>
-                                                <tr>
-                                                    <th>Service</th>
-                                                    <th>Price</th>
-                                                    <th>Usage</th>
-                                                    <th>Revenue</th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="s : ${stats.topServices}">
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <span th:text="${s.name}">Service Name</span>
-                                                        </div>
-                                                    </td>
-                                                    <td th:text="${#numbers.formatDecimal(s.price, 1, 'COMMA', 2, 'POINT')} + ' VND'">0 VND</td>
-                                                    <td th:text="${s.usage + ' Used'}">0 Used</td>
-                                                    <td th:text="${#numbers.formatDecimal(s.totalRevenue, 1, 'COMMA', 2, 'POINT')} + ' VND'">0 VND</td>
-                                                    <td><a href="#" class="text-primary"><i class="fas fa-search"></i></a></td>
-                                                </tr>
-
-                                                </tbody>
-                                            </table>
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="mb-0">Top Blogs</h6>
+                                            <i class="fas fa-download"></i>
                                         </div>
+                                        <table class="table align-middle">
+                                            <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>URL</th>
+                                                <th>Author</th>
+                                                <th>Views</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="b : ${topBlogs}">
+                                                <td th:text="${b.title}">Title</td>
+                                                <td><a th:href="${b.url}" th:text="${b.url}">URL</a></td>
+                                                <td th:text="${b.authorName}">Author</td>
+                                                <td th:text="${b.viewCount}">0</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
+                                </div>
                                 </div>
 
                                 <!-- Product Sales Table -->
