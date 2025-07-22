@@ -1,11 +1,17 @@
 package vn.edu.fpt.BeautyCenter.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import vn.edu.fpt.BeautyCenter.dto.response.BlogStatsDTO;
 import vn.edu.fpt.BeautyCenter.dto.response.DashboardStats;
+import vn.edu.fpt.BeautyCenter.dto.response.ServiceStatsDTO;
+import vn.edu.fpt.BeautyCenter.entity.Appointment;
+import vn.edu.fpt.BeautyCenter.repository.BlogRepository;
 import vn.edu.fpt.BeautyCenter.repository.ServiceAnalyticsRepository;
-import vn.edu.fpt.BeautyCenter.repository.UserRepository;
+import vn.edu.fpt.BeautyCenter.repository.StaffRepository;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,42 +22,56 @@ import java.util.List;
 public class DashboardService {
 
     @Autowired
-    private ServiceAnalyticsRepository staffScheduleRepo;
+    private ServiceAnalyticsRepository appointmentRepo;
 
     @Autowired
-    private UserRepository userRepo;
+    private StaffRepository staffRepository;
+    @Autowired
+    private BlogRepository blogRepository;
 
     public DashboardStats getWeeklyStats() {
-        // Lấy ngày hiện tại
         LocalDate today = LocalDate.now();
+        LocalDateTime startOfWeek = today.with(DayOfWeek.MONDAY).atStartOfDay();
+        LocalDateTime endOfWeek = today.with(DayOfWeek.SUNDAY).atTime(LocalTime.MAX);
 
-        // Chuyển sang đầu tuần (thứ 2) và cuối tuần (chủ nhật)
-        LocalDate startOfWeekDate = today.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeekDate = today.with(DayOfWeek.SUNDAY);
+        // Truy vấn các dịch vụ đã được sử dụng (status = completed)
+        List<Object[]> rawStats = appointmentRepo.countCompletedServiceStatsInWeek(
+                startOfWeek, endOfWeek, Appointment.Status.completed);
 
-        // Tạo LocalDateTime cho khoảng thời gian cần truy vấn
-        LocalDateTime startOfWeek = startOfWeekDate.atStartOfDay();
-        LocalDateTime endOfWeek = endOfWeekDate.atTime(LocalTime.MAX);
+        // Chuyển đổi sang DTO
+        List<ServiceStatsDTO> topServices = rawStats.stream().map(row ->
+                new ServiceStatsDTO(
+                        (String) row[0],
+                        (BigDecimal) row[1],
+                        (Long) row[2],
+                        (BigDecimal) row[3]
+                )
+        ).toList();
 
-        // Truy vấn dịch vụ được sử dụng
-        List<Object[]> usageData = staffScheduleRepo.countServiceUsageInWeek(startOfWeek, endOfWeek);
+        // Đếm số user mới trong tuần
+        long newCustomerCount = staffRepository.countByCreatedAtBetweenAndRole(
+                startOfWeek,
+                endOfWeek,
+                "customer"
+        );
 
-        // Truy vấn số người đăng ký mới
-        long newUserCount = userRepo.countByCreatedAtBetween(startOfWeek, endOfWeek);
-
-        // Tạo DTO kết quả
+        // Tạo đối tượng DashboardStats
         DashboardStats stats = new DashboardStats();
-        stats.setTopServices(usageData);
+        stats.setTopServices(topServices);
+        stats.setNewUsersThisWeek(newCustomerCount);
 
-        if (!usageData.isEmpty()) {
-            stats.setMostUsedService((String) usageData.get(0)[0]);
-            stats.setLeastUsedService((String) usageData.get(usageData.size() - 1)[0]);
-        } else {
-            stats.setMostUsedService("Không có dữ liệu");
-            stats.setLeastUsedService("Không có dữ liệu");
-        }
-
-        stats.setNewUsersThisWeek(newUserCount);
         return stats;
+    }
+    public List<BlogStatsDTO> getTopBlogs(int limit) {
+        List<Object[]> raw = blogRepository.findTopBlogs(PageRequest.of(0, limit));
+
+        return raw.stream().map(row ->
+                new BlogStatsDTO(
+                        (String) row[0],  // title
+                        (String) row[1],  // url (thumbnail or full URL)
+                        (String) row[2],  // author name
+                        (Integer) row[3]  // view count
+                )
+        ).toList();
     }
 }

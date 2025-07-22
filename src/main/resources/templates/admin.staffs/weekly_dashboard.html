@@ -1,39 +1,249 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{/dashboard/fragments/head :: admin-head}">
     <title>Weekly Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-<h2>Weekly Service Analytics</h2>
+<body class="nk-body npc-default has-apps-sidebar has-sidebar">
+<div class="nk-app-root">
+    <div class="nk-main">
+        <div class="nk-wrap">
 
-<div>
-    <p><strong>Service được dùng nhiều nhất:</strong> <span th:text="${stats.mostUsedService}"></span></p>
-    <p><strong>Service dùng ít nhất:</strong> <span th:text="${stats.leastUsedService}"></span></p>
-    <p><strong>Người đăng ký mới trong tuần:</strong> <span th:text="${stats.newUsersThisWeek}"></span></p>
+            <!-- Header -->
+            <div class="nk-header nk-header-fixed" th:replace="~{/dashboard/fragments/header :: admin-header}"></div>
+
+            <!-- Sidebar -->
+            <div class="nk-sidebar" data-content="sidebarMenu" th:replace="~{/dashboard/fragments/sidebar :: admin-sidebar}"></div>
+
+            <!-- Main content -->
+            <div class="nk-content">
+                <div class="container-fluid">
+                    <div class="nk-content-inner">
+                        <div class="nk-content-body">
+
+                            <div class="nk-block-head d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="nk-block-title">Weekly Analytics</h3>
+                            </div>
+
+                            <!-- Row with New Users + Service Stats -->
+                            <div class="row g-4 mb-4">
+                                <!-- User Registrations -->
+                                <div class="col-md-4">
+                                    <div class="card text-dark bg-warning shadow-sm">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h2 class="fw-bold mb-1" th:text="${stats.newUsersThisWeek}">44</h2>
+                                                <p class="mb-0">User Registrations</p>
+                                            </div>
+                                            <i class="fas fa-user-plus fa-2x text-warning opacity-25"></i>
+                                        </div>
+                                        <div class="card-footer bg-dark bg-opacity-10 border-0 text-end">
+                                            <a href="#" class="small text-dark text-decoration-none">More info <i class="fas fa-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Row: Online Store Visitors -->
+<!--                                <div class="row g-4 mb-4">-->
+<!--                                    <div class="col-12">-->
+<!--                                        <div class="card card-bordered">-->
+<!--                                            <div class="card-inner">-->
+<!--                                                <div class="d-flex justify-content-between align-items-start">-->
+<!--                                                    <div>-->
+<!--                                                        <h6 class="mb-1">Online Store Visitors</h6>-->
+<!--                                                        <h3 class="fw-bold" th:text="${stats.totalVisitors}">820</h3>-->
+<!--                                                        <p class="text-muted">Visitors Over Time</p>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <canvas id="visitorsChart" height="100"></canvas>-->
+<!--                                                <div class="d-flex justify-content-end gap-3 mt-2 small">-->
+<!--                                                    <span><span class="badge bg-primary">&nbsp;</span> This Week</span>-->
+<!--                                                    <span><span class="badge bg-secondary">&nbsp;</span> Last Week</span>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <!-- Top Blogs Table -->
+                                <div class="col-md-6">
+                                    <div class="card card-bordered">
+                                        <div class="card-inner">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 class="mb-0">Top Blogs</h6>
+                                                <i class="fas fa-download"></i>
+                                            </div>
+                                            <table class="table align-middle">
+                                                <thead>
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>URL</th>
+                                                    <th>Author</th>
+                                                    <th>Views</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="b : ${topBlogs}">
+                                                    <td th:text="${b.title}">Title</td>
+                                                    <td><a th:href="${b.url}" th:text="${b.url}">URL</a></td>
+                                                    <td th:text="${b.authorName}">Author</td>
+                                                    <td th:text="${b.viewCount}">0</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div class="row g-4">
+                                <!-- Top Services Table -->
+                                <div class="col-md-6">
+                                    <div class="card card-bordered">
+                                        <div class="card-inner">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 class="mb-0">Top Services</h6>
+                                                <i class="fas fa-download"></i>
+                                            </div>
+                                            <table class="table align-middle">
+                                                <thead>
+                                                <tr>
+                                                    <th>Service</th>
+                                                    <th>Price</th>
+                                                    <th>Usage</th>
+                                                    <th>Revenue</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="s : ${stats.topServices}">
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <span th:text="${s.name}">Service Name</span>
+                                                        </div>
+                                                    </td>
+                                                    <td th:text="${#numbers.formatDecimal(s.price, 1, 'COMMA', 2, 'POINT')} + ' VND'">0 VND</td>
+                                                    <td th:text="${s.usage + ' Used'}">0 Used</td>
+                                                    <td th:text="${#numbers.formatDecimal(s.totalRevenue, 1, 'COMMA', 2, 'POINT')} + ' VND'">0 VND</td>
+                                                    <td><a href="#" class="text-primary"><i class="fas fa-search"></i></a></td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Product Sales Table -->
+                                <div class="col-md-6">
+                                    <div class="card card-bordered">
+                                        <div class="card-inner">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 class="mb-0">Products</h6>
+                                                <i class="fas fa-download"></i>
+                                            </div>
+                                            <table class="table align-middle">
+                                                <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Price</th>
+                                                    <th>Sales</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="p : ${productStats}">
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+<!--                                                            <img th:src="${p.icon}" class="rounded-circle me-2" width="30" height="30"/>-->
+                                                            <span th:text="${p.name}"></span>
+                                                            <span th:if="${p.new}" class="badge bg-danger ms-2">NEW</span>
+                                                        </div>
+                                                    </td>
+                                                    <td th:text="${p.price + ' USD'}"></td>
+                                                    <td>
+                                                        <span th:if="${p.change > 0}" class="text-success">▲ [[${p.change+'%'}]]</span>
+                                                        <span th:if="${p.change < 0}" class="text-danger">▼ [[${p.change+'%'}]]</span>
+                                                        <span th:if="${p.change == 0}" class="text-muted">0%</span>
+                                                        <span th:text="' ' + ${p.sales} + ' Sold'"></span>
+                                                    </td>
+                                                    <td><a href="#" class="text-primary"><i class="fas fa-search"></i></a></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div th:replace="~{/dashboard/fragments/footer :: admin-scripts}"></div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<canvas id="topServicesChart" height="100"></canvas>
-
+</div>
+<!-- Chart.js Scripts -->
 <script th:inline="javascript">
     /*<![CDATA[*/
-    const labels = /*[[${topServiceNames}]]*/ [];
-    const data = /*[[${topServiceCounts}]]*/ [];
+    const visitorsThisWeek = /*[[${visitors.thisWeek}]]*/ [100, 120, 160, 155, 165, 170, 160];
+    const visitorsLastWeek = /*[[${visitors.lastWeek}]]*/ [60, 70, 68, 65, 67, 70, 85];
+    const visitorLabels = /*[[${visitors.labels}]]*/ ['18th', '20th', '22nd', '24th', '26th', '28th', '30th'];
 
-    const ctx = document.getElementById('topServicesChart');
-    new Chart(ctx, {
+    const visitorsCtx = document.getElementById('visitorsChart');
+    new Chart(visitorsCtx, {
+        type: 'line',
+        data: {
+            labels: visitorLabels,
+            datasets: [
+                {
+                    label: 'This Week',
+                    data: visitorsThisWeek,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Last Week',
+                    data: visitorsLastWeek,
+                    borderColor: '#ccc',
+                    backgroundColor: 'rgba(200,200,200,0.1)',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    const topServiceNames = /*[[${topServiceNames}]]*/ ['Facial', 'Massage', 'Hair Wash'];
+    const topServiceCounts = /*[[${topServiceCounts}]]*/ [1200, 2340, 600];
+    const topServicesCtx = document.getElementById('topServicesChart');
+    new Chart(topServicesCtx, {
         type: 'bar',
         data: {
-            labels: labels,
+            labels: topServiceNames,
             datasets: [{
                 label: 'Lượt sử dụng dịch vụ trong tuần',
-                data: data,
+                data: topServiceCounts,
                 backgroundColor: 'rgba(54, 162, 235, 0.7)'
             }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true }
+            }
         }
     });
     /*]]>*/
 </script>
-
 </body>
 </html>

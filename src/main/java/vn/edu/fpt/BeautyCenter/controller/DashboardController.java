@@ -10,10 +10,10 @@ import vn.edu.fpt.BeautyCenter.dto.response.DashboardStats;
 import vn.edu.fpt.BeautyCenter.repository.ServiceAnalyticsRepository;
 import vn.edu.fpt.BeautyCenter.repository.UserRepository;
 import vn.edu.fpt.BeautyCenter.service.DashboardService;
+import vn.edu.fpt.BeautyCenter.service.WebVisitService;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RequestMapping("/admin")
 @Controller
@@ -24,42 +24,39 @@ public class DashboardController {
 
     @Resource
     private UserRepository userRepository;
+
     @Autowired
     private DashboardService dashboardService;
+
+    @Autowired
+    private WebVisitService webVisitService;
+
     @GetMapping("/analysis")
     public String showDashboard(Model model) {
+
+        long weeklyVisitors = webVisitService.getWeeklyVisitorCount();
         DashboardStats stats = dashboardService.getWeeklyStats();
-        LocalDate today = LocalDate.now();
-        LocalDate startOfWeekDate = today.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeekDate = today.with(DayOfWeek.SUNDAY);
-
-        // ✅ Sửa tại đây: chuyển sang LocalDateTime
-        LocalDateTime startOfWeek = startOfWeekDate.atStartOfDay();
-        LocalDateTime endOfWeek = endOfWeekDate.atTime(LocalTime.MAX);
-
-        // ✅ Truyền LocalDateTime thay vì LocalDate
-        List<Object[]> topServices = analyticsRepository.countServiceUsageInWeek(startOfWeek, endOfWeek);
-
+        stats.setTotalVisitors(weeklyVisitors);
+        model.addAttribute("stats", stats);
         List<String> serviceNames = new ArrayList<>();
         List<Long> serviceCounts = new ArrayList<>();
 
-        for (Object[] row : topServices) {
-            serviceNames.add((String) row[0]);
-            serviceCounts.add((Long) row[1]);
-        }
 
-        String mostUsed = serviceNames.isEmpty() ? "Không có dữ liệu" : serviceNames.get(0);
-        String leastUsed = serviceNames.size() <= 1 ? "Không có dữ liệu" : serviceNames.get(serviceNames.size() - 1);
+        List<Map<String, Object>> products = List.of(
+                Map.of("name", "Facial Cleanser", "price", 20, "sales", 1200, "change", 5, "icon", "/images/p1.png", "new", true),
+                Map.of("name", "Body Lotion", "price", 35, "sales", 980, "change", -2, "icon", "/images/p2.png", "new", false)
+        );
 
-        long newUsers = userRepository.countByCreatedAtBetween(startOfWeek, endOfWeek);
+        Map<String, Object> visitors = new HashMap<>();
+        visitors.put("thisWeek", List.of(100, 120, 160, 155, 165, 170, 160));
+        visitors.put("lastWeek", List.of(60, 70, 68, 65, 67, 70, 85));
+        visitors.put("labels", List.of("18th", "20th", "22nd", "24th", "26th", "28th", "30th"));
 
         model.addAttribute("topServiceNames", serviceNames);
         model.addAttribute("topServiceCounts", serviceCounts);
-        model.addAttribute("mostUsedService", mostUsed);
-        model.addAttribute("leastUsedService", leastUsed);
-        model.addAttribute("newUsersThisWeek", newUsers);
-        model.addAttribute("stats", stats);
+        model.addAttribute("productStats", products);
+        model.addAttribute("visitors", visitors);
+        model.addAttribute("topBlogs", dashboardService.getTopBlogs(5));
         return "admin.staffs/weekly_dashboard";
     }
-
 }

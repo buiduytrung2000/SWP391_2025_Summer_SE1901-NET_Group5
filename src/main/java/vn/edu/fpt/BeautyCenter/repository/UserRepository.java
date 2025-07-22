@@ -31,5 +31,5 @@ public interface UserRepository extends JpaRepository<User, String> {
      */
     @Query("SELECT DISTINCT s.createdBy FROM Service s WHERE s.createdBy IS NOT NULL")
     List<String> findDistinctServiceCreators();
-    long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
 }

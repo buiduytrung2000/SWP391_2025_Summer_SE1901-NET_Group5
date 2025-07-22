@@ -84,5 +84,14 @@ public interface BlogRepository extends JpaRepository<Blog, String>, JpaSpecific
     @Modifying
     @Query("UPDATE Blog b SET b.viewCount = b.viewCount + 1 WHERE b.blogId = :blogId")
     void incrementViewCount(@Param("blogId") String blogId);
+
+    @Query("""
+    SELECT b.title, b.thumbnailUrl, a.fullName, b.viewCount
+    FROM Blog b
+    JOIN b.author a
+    ORDER BY b.viewCount DESC
+""")
+    List<Object[]> findTopBlogs(Pageable pageable);  // Ví dụ: PageRequest.of(0, 5)
+
 }
 

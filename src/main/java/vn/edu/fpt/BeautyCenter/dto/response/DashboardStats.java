@@ -6,8 +6,9 @@ import java.util.List;
 
 @Data
 public class DashboardStats {
-    private String mostUsedService;
-    private String leastUsedService;
+
     private long newUsersThisWeek;
-    private List<Object[]> topServices; // Object[]{name, count}
+    private long totalVisitors;
+    private List<ServiceStatsDTO> topServices;
+
 }
