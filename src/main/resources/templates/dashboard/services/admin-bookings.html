@@ -141,7 +141,7 @@
           <div class="nk-block-between">
             <div class="nk-block-head-content">
               <h3 class="nk-block-title page-title">
-                Quản lý Lịch Hẹn
+                Bookings Management
                 <small class="text-primary"
                        th:text="'('+ ${totalElements} +' booking)'"> (0 booking)</small>
               </h3>
@@ -166,7 +166,7 @@
                                       onchange="location.href=this.value">
                                 <option th:value="@{/admin/bookings/admin}"
                                         th:selected="${selectedStatus == null}">
-                                  Tất cả
+                                  All
                                 </option>
                                 <option th:each="s : ${bookingStatuses}"
                                         th:value="@{/admin/bookings/admin(status=${s})}"
@@ -178,7 +178,7 @@
                           </li>
                           <li>
                                                     <span class="badge badge-dim bg-warning">
-                                                        Chờ Xử Lý:
+                                                        Pending:
                                                         <span th:text="${pendingCount}">0</span>
                                                     </span>
                           </li>
@@ -195,11 +195,11 @@
         <!-- ALERT (từ Controller) -->
         <div th:if="${message}" class="alert alert-success alert-fill alert-icon">
           <em class="icon ni ni-check-circle-cut"></em>
-          <strong th:text="${message}">Thành công</strong>
+          <strong th:text="${message}">Success</strong>
         </div>
         <div th:if="${error}" class="alert alert-danger alert-fill alert-icon">
           <em class="icon ni ni-cross-circle"></em>
-          <strong th:text="${error}">Lỗi</strong>
+          <strong th:text="${error}">Error</strong>
         </div>
 
         <!-- LIST TABLE -->
@@ -212,12 +212,12 @@
                 <table class="table table-tranx">
                   <thead>
                   <tr class="tb-tnx-head">
-                    <th>Khách hàng</th>
-                    <th>Dịch vụ</th>
-                    <th>Ngày/Giờ</th>
-                    <th>Nhân viên</th>
-                    <th>Trạng thái</th>
-                    <th class="text-end">Thao tác</th>
+                    <th>Customer</th>
+                    <th>Service</th>
+                    <th>Time</th>
+                    <th>Staff</th>
+                    <th>Status</th>
+                    <th class="text-end">Operations</th>
                   </tr>
                   </thead>
 
@@ -236,12 +236,12 @@
                     <td>
                       <span th:text="${bk.formattedBookingDateTime}">22/07 14:00</span><br/>
                       <span class="sub-text"
-                            th:text="'Tạo: ' + ${#temporals.format(bk.createdAt,'dd/MM HH:mm')}">
-                                            Tạo
+                            th:text="'Create: ' + ${#temporals.format(bk.createdAt,'dd/MM HH:mm')}">
+                                            Create
                                         </span>
                     </td>
                     <td>
-                      <span th:text="${bk.staffName ?: 'Chưa phân công'}">Staff</span>
+                      <span th:text="${bk.staffName ?: 'Unassigned'}">Staff</span>
                     </td>
                     <td>
                                         <span class="badge"
@@ -260,7 +260,7 @@
                           <ul class="link-list-opt">
                             <li><a th:href="@{/admin/bookings/{id}(id=${bk.bookingId})}">
                               <em class="icon ni ni-eye"></em>
-                              <span>Chi tiết</span></a></li>
+                              <span>Details</span></a></li>
                             <li th:if="${bk.canBeAssigned}">
                               <a href="#"
                                  th:attr="data-id=${bk.bookingId},
@@ -269,14 +269,14 @@
                                  data-booking-datetime=${bk.bookingDate}"
                                  onclick="openAssign(this)">
                                 <em class="icon ni ni-user-add"></em>
-                                <span>Phân công</span></a>
+                                <span>Assign</span></a>
                             </li>
                             <li th:if="${bk.canBeCancelled}">
                               <a href="#"
                                  th:attr="data-id=${bk.bookingId}"
                                  onclick="openCancel(this)">
                                 <em class="icon ni ni-cross"></em>
-                                <span>Hủy</span></a>
+                                <span>Cancel</span></a>
                             </li>
                           </ul>
                         </div>
@@ -288,7 +288,7 @@
                   <tr th:if="${#lists.isEmpty(bookings)}">
                     <td colspan="7" class="text-center p-4">
                       <em class="icon ni ni-calendar-x-fill display-4 text-soft"></em>
-                      <p class="mt-2">Không có booking phù hợp.</p>
+                      <p class="mt-2">No Booking.</p>
                     </td>
                   </tr>
                   </tbody>
@@ -324,7 +324,7 @@
                     </ul>
                   </nav>
                   <div class="text-soft">
-                    Hiển thị
+                    Display
                     <span th:text="${bookings.size()}">0</span> /
                     <span th:text="${totalElements}">0</span> booking
                   </div>
@@ -347,7 +347,7 @@
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="assignStaffModalLabel">
           <i class="icon ni ni-user-add"></i>
-          Phân công nhân viên
+          Assign staff
         </h5>
         <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -362,26 +362,26 @@
             <div class="card-body">
               <h6 class="card-title text-primary">
                 <i class="icon ni ni-calendar-booking"></i>
-                Thông tin lịch hẹn
+                Booking information
               </h6>
               <div class="row">
                 <div class="col-md-6">
                   <p class="mb-2">
-                    <strong>Mã booking:</strong>
+                    <strong>Booking code:</strong>
                     <span id="assignBookingId" class="text-primary">BK001</span>
                   </p>
                   <p class="mb-2">
-                    <strong>Dịch vụ:</strong>
+                    <strong>Service:</strong>
                     <span id="assignServiceName">Tên dịch vụ</span>
                   </p>
                 </div>
                 <div class="col-md-6">
                   <p class="mb-2">
-                    <strong>Khách hàng:</strong>
-                    <span id="assignCustomerName">Tên khách hàng</span>
+                    <strong>Customer:</strong>
+                    <span id="assignCustomerName">Customer name:</span>
                   </p>
                   <p class="mb-2">
-                    <strong>Thời gian:</strong>
+                    <strong>Time:</strong>
                     <span id="assignDateTime">25/07/2025 14:00</span>
                   </p>
                 </div>
@@ -399,13 +399,13 @@
               Chọn nhân viên <span class="text-danger">*</span>
             </label>
             <select class="form-select" id="staffSelect" name="staffId" required>
-              <option value="">-- Đang tải danh sách nhân viên --</option>
+              <option value="">-- Loading staff list --</option>
             </select>
             <div class="invalid-feedback">
-              Vui lòng chọn nhân viên để phân công
+              Please select staff to assign
             </div>
             <small class="form-text text-muted">
-              Chỉ hiển thị nhân viên có thể làm việc trong khung giờ này
+              Show only employees who are available to work during these hours
             </small>
           </div>
 
@@ -413,7 +413,7 @@
           <div class="form-group mb-4">
             <label for="assignmentNotes" class="form-label">
               <i class="icon ni ni-edit"></i>
-              Ghi chú phân công (tùy chọn)
+              Notes
             </label>
             <textarea class="form-control"
                       id="assignmentNotes"
@@ -423,10 +423,10 @@
                       placeholder="Ghi chú đặc biệt cho nhân viên về lịch hẹn này..."></textarea>
             <div class="d-flex justify-content-between mt-1">
               <small class="form-text text-muted">
-                Thông tin này sẽ được gửi đến nhân viên
+                This information will be sent to the staff.
               </small>
               <small class="form-text text-muted">
-                <span id="notesCount">0</span>/500 ký tự
+                <span id="notesCount">0</span>/500 character
               </small>
             </div>
           </div>
@@ -435,7 +435,7 @@
         <!-- Warning Alert -->
         <div class="alert alert-warning d-none" id="assignWarning">
           <i class="icon ni ni-alert-circle"></i>
-          <span id="warningMessage">Thông báo cảnh báo</span>
+          <span id="warningMessage">Warning</span>
         </div>
       </div>
 
@@ -445,7 +445,7 @@
           <div class="assignment-info">
             <small class="text-muted">
               <i class="icon ni ni-info"></i>
-              Phân công sẽ thay đổi trạng thái booking thành "Đã phân công"
+              Assignment will change booking status to "Assigned"
             </small>
           </div>
           <div class="modal-actions">
@@ -455,7 +455,7 @@
             </button>
             <button type="button" class="btn btn-primary" id="confirmAssignBtn" onclick="confirmAssignStaff()">
               <i class="icon ni ni-check"></i>
-              Phân công ngay
+              Assign
             </button>
           </div>
         </div>
@@ -520,7 +520,7 @@
     const warningAlert = document.getElementById('assignWarning');
 
     // Show loading state
-    staffSelect.innerHTML = '<option value="">⏳ Đang tải danh sách nhân viên...</option>';
+    staffSelect.innerHTML = '<option value="">⏳ Loading staff list...</option>';
     staffSelect.disabled = true;
 
     // Hide previous warnings
@@ -556,7 +556,7 @@
             .catch(error => {
               console.error('❌ Error loading staff:', error);
 
-              staffSelect.innerHTML = '<option value="">❌ Lỗi tải danh sách nhân viên</option>';
+              staffSelect.innerHTML = '<option value="">❌ Error loading staff list</option>';
 
               // Show error in warning area
               document.getElementById('warningMessage').textContent =
@@ -576,10 +576,10 @@
     const staffSelect = document.getElementById('staffSelect');
 
     // Clear previous options
-    staffSelect.innerHTML = '<option value="">-- Chọn nhân viên --</option>';
+    staffSelect.innerHTML = '<option value="">-- Choose staff --</option>';
 
     if (!staffList || staffList.length === 0) {
-      staffSelect.innerHTML = '<option value="">Không có nhân viên khả dụng</option>';
+      staffSelect.innerHTML = '<option value="">No available staff</option>';
       return;
     }
 

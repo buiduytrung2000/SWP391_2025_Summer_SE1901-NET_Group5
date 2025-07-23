@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head th:replace="~{fragments/header::common-head}">
-  <title th:text="'Đặt lịch - ' + ${service.name}">Đặt lịch dịch vụ</title>
+  <title th:text="'Đặt lịch - ' + ${service.name}">Book Service</title>
 </head>
 
 <body id="bg">
@@ -21,8 +21,8 @@
       <div class="overlay-main bg-black opacity-07"></div>
       <div class="container">
         <div class="wt-bnr-inr-entry">
-          <h1 class="text-white">Đặt Lịch Dịch Vụ</h1>
-          <p class="text-white" th:text="${service.name}">Tên dịch vụ</p>
+          <h1 class="text-white">Book Service</h1>
+          <p class="text-white" th:text="${service.name}">Service name</p>
         </div>
       </div>
     </div>
@@ -32,10 +32,10 @@
     <div class="bg-gray-light p-tb20">
       <div class="container">
         <ul class="wt-breadcrumb breadcrumb-style-2">
-          <li><a href="/sbs"><i class="fa fa-home"></i> Trang chủ</a></li>
-          <li><a href="/sbs/services">Dịch vụ</a></li>
-          <li><a href="#" th:href="@{/sbs/services/{serviceId}(serviceId=${service.serviceId})}" th:text="${service.name}">Dịch vụ</a></li>
-          <li>Đặt lịch</li>
+          <li><a href="/sbs"><i class="fa fa-home"></i> Home</a></li>
+          <li><a href="/sbs/services">Service</a></li>
+          <li><a href="#" th:href="@{/sbs/services/{serviceId}(serviceId=${service.serviceId})}" th:text="${service.name}">Service name</a></li>
+          <li>Book service</li>
         </ul>
       </div>
     </div>
@@ -67,14 +67,14 @@
           <div class="col-lg-8">
             <div class="booking-form-container">
               <div class="section-head text-left">
-                <h2 class="text-uppercase">Thông Tin Đặt Lịch</h2>
+                <h2 class="text-uppercase">Booking infomation</h2>
                 <div class="wt-separator-outer">
                   <div class="wt-separator style-square">
                     <span class="separator-left site-bg-primary"></span>
                     <span class="separator-right site-bg-primary"></span>
                   </div>
                 </div>
-                <p>Vui lòng điền đầy đủ thông tin để đặt lịch dịch vụ của chúng tôi.</p>
+                <p>Please fill in information.</p>
               </div>
 
               <!-- BOOKING FORM -->
@@ -88,18 +88,18 @@
                     <div class="card-body">
                       <div class="row align-items-center">
                         <div class="col-md-6">
-                          <h5 class="mb-1" th:text="${service.name}">Tên dịch vụ</h5>
+                          <h5 class="mb-1" th:text="${service.name}">Service name</h5>
                           <p class="text-muted mb-0">
-                            <i class="fa fa-clock"></i> Thời gian: <span th:text="${service.duration}">60 phút</span>
+                            <i class="fa fa-clock"></i> Thời gian: <span th:text="${service.duration}">60 minutes</span>
                           </p>
                           <p class="text-muted mb-0" th:if="${service.content}">
-                            <i class="fa fa-info-circle"></i> <span th:text="${#strings.abbreviate(service.content, 100)}">Mô tả dịch vụ</span>
+                            <i class="fa fa-info-circle"></i> <span th:text="${#strings.abbreviate(service.content, 100)}">Description</span>
                           </p>
                         </div>
                         <div class="col-md-4 text-right">
                           <div class="price-badge">
                             <span class="h4 text-primary" th:text="${#numbers.formatCurrency(service.price)}">500,000 VNĐ</span>
-                            <small class="d-block text-muted">/ dịch vụ</small>
+                            <small class="d-block text-muted">/ time</small>
                           </div>
                         </div>
                       </div>
@@ -111,20 +111,20 @@
                 <div class="form-section mb-4">
                   <h4 class="section-title">
                     <i class="fa fa-user text-primary"></i>
-                    Thông Tin Khách Hàng
+                    Customer information
                   </h4>
 
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label for="customerName">Họ và tên <span class="text-danger">*</span></label>
+                        <label for="customerName">Full name <span class="text-danger">*</span></label>
                         <input type="text"
                                class="form-control"
                                id="customerName"
                                th:value="${currentUser?.fullName}"
                                readonly
                                placeholder="Họ và tên khách hàng">
-                        <small class="form-text text-muted">Thông tin từ tài khoản đã đăng nhập</small>
+                        <small class="form-text text-muted">Information from logged in account</small>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -143,25 +143,25 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label for="customerPhone">Số điện thoại</label>
+                        <label for="customerPhone">Phone</label>
                         <input type="tel"
                                class="form-control"
                                id="customerPhone"
                                th:value="${currentUser?.phone}"
                                readonly
-                               placeholder="Số điện thoại">
+                               placeholder="Phone number">
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label for="customerAge">Độ tuổi</label>
+                        <label for="customerAge">Age-range</label>
                         <select class="form-control" id="customerAge">
-                          <option value="">-- Chọn độ tuổi --</option>
-                          <option value="18-25">18-25 tuổi</option>
-                          <option value="26-35">26-35 tuổi</option>
-                          <option value="36-45">36-45 tuổi</option>
-                          <option value="46-55">46-55 tuổi</option>
-                          <option value="55+">Trên 55 tuổi</option>
+                          <option value="">-- Select age range --</option>
+                          <option value="18-25">18-25 yo</option>
+                          <option value="26-35">26-35 yo</option>
+                          <option value="36-45">36-45 yo</option>
+                          <option value="46-55">46-55 yo</option>
+                          <option value="55+">Over 55</option>
                         </select>
                       </div>
                     </div>
@@ -172,13 +172,13 @@
                 <div class="form-section mb-4">
                   <h4 class="section-title">
                     <i class="fa fa-calendar text-primary"></i>
-                    Thời Gian Đặt Lịch
+                    Booking time
                   </h4>
 
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label for="bookingDate">Chọn ngày <span class="text-danger">*</span></label>
+                        <label for="bookingDate">Select date <span class="text-danger">*</span></label>
                         <input type="date"
                                class="form-control"
                                id="bookingDate"
@@ -186,23 +186,23 @@
                                th:field="*{bookingDate}"
                                th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
                                required>
-                        <small class="form-text text-muted">Chỉ có thể đặt lịch từ hôm nay trở đi</small>
+                        <small class="form-text text-muted">Date only can be from today</small>
                         <div class="invalid-feedback"></div>
                       </div>
                     </div>
 
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label for="bookingTime">Chọn giờ <span class="text-danger">*</span></label>
+                        <label for="bookingTime">Select time <span class="text-danger">*</span></label>
                         <select class="form-control"
                                 id="bookingTime"
                                 name="bookingTime"
                                 th:field="*{bookingTime}"
                                 required>
-                          <option value="">-- Chọn khung giờ --</option>
+                          <option value="">-- Select time --</option>
                         </select>
                         <small class="form-text text-muted" id="timeSlotInfo">
-                          Giờ làm việc: 8:00 - 18:00
+                          Open hour: 8:00 - 18:00
                         </small>
                         <div class="invalid-feedback"></div>
                       </div>
@@ -213,7 +213,7 @@
                   <div class="available-slots-info mt-3">
                     <div class="alert alert-info" id="slotsInfoAlert" style="display: none;">
                       <i class="fa fa-info-circle"></i>
-                      <span id="slotsInfoText">Thông tin về khung giờ trống sẽ hiển thị khi bạn chọn ngày</span>
+                      <span id="slotsInfoText">Information about available time will show here</span>
                     </div>
                   </div>
                 </div>
@@ -222,26 +222,26 @@
                 <div class="form-section mb-4">
                   <h4 class="section-title">
                     <i class="fa fa-sticky-note text-primary"></i>
-                    Thông Tin Bổ Sung
+                    Additional information
                   </h4>
 
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label for="notes">Ghi chú đặc biệt</label>
+                        <label for="notes">Notes</label>
                         <textarea class="form-control"
                                   id="notes"
                                   name="notes"
                                   th:field="*{notes}"
                                   rows="4"
                                   maxlength="500"
-                                  placeholder="Ghi chú về tình trạng da, dị ứng, yêu cầu đặc biệt..."></textarea>
+                                  placeholder="Notes on skin conditions, allergies, special requests..."></textarea>
                         <div class="d-flex justify-content-between mt-2">
                           <small class="form-text text-muted">
-                            Chia sẻ thông tin giúp chúng tôi phục vụ bạn tốt hơn
+                            Sharing information helps us serve you better
                           </small>
                           <small class="form-text text-muted">
-                            <span id="notesCount">0</span>/500 ký tự
+                            <span id="notesCount">0</span>/500 character
                           </small>
                         </div>
                       </div>
@@ -252,23 +252,23 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Loại da của bạn</label>
+                        <label>Your skin type</label>
                         <div class="skin-type-options">
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="skinType" id="skinNormal" value="normal">
-                            <label class="form-check-label" for="skinNormal">Da thường</label>
+                            <label class="form-check-label" for="skinNormal">Normal skin</label>
                           </div>
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="skinType" id="skinDry" value="dry">
-                            <label class="form-check-label" for="skinDry">Da khô</label>
+                            <label class="form-check-label" for="skinDry">Dry skin</label>
                           </div>
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="skinType" id="skinOily" value="oily">
-                            <label class="form-check-label" for="skinOily">Da dầu</label>
+                            <label class="form-check-label" for="skinOily">Oily skin</label>
                           </div>
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="skinType" id="skinSensitive" value="sensitive">
-                            <label class="form-check-label" for="skinSensitive">Da nhạy cảm</label>
+                            <label class="form-check-label" for="skinSensitive">Sensitive skin</label>
                           </div>
                         </div>
                       </div>
@@ -276,65 +276,30 @@
 
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Đã từng sử dụng dịch vụ này?</label>
+                        <label>Have used this service before?</label>
                         <div class="previous-service-options">
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="previousService" id="firstTime" value="first-time">
-                            <label class="form-check-label" for="firstTime">Lần đầu tiên</label>
+                            <label class="form-check-label" for="firstTime">First time</label>
                           </div>
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="previousService" id="returning" value="returning">
-                            <label class="form-check-label" for="returning">Đã từng sử dụng</label>
+                            <label class="form-check-label" for="returning">Returning</label>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <!-- Terms and Conditions -->
-                <div class="form-section mb-4">
-                  <h4 class="section-title">
-                    <i class="fa fa-file-text text-primary"></i>
-                    Điều Khoản & Chính Sách
-                  </h4>
-
-                  <div class="terms-container">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms" required>
-                      <label class="form-check-label" for="agreeTerms">
-                        Tôi đồng ý với <a href="#" data-toggle="modal" data-target="#termsModal">Điều khoản dịch vụ</a>
-                        và <a href="#" data-toggle="modal" data-target="#policyModal">Chính sách bảo mật</a> của Beauty Center
-                        <span class="text-danger">*</span>
-                      </label>
-                    </div>
-
-                    <div class="form-check mt-2">
-                      <input class="form-check-input" type="checkbox" id="agreeCancel" name="agreeCancel" required>
-                      <label class="form-check-label" for="agreeCancel">
-                        Tôi hiểu rằng cần hủy lịch trước 24 giờ để tránh phí phạt
-                        <span class="text-danger">*</span>
-                      </label>
-                    </div>
-
-                    <div class="form-check mt-2">
-                      <input class="form-check-input" type="checkbox" id="agreeContact" name="agreeContact">
-                      <label class="form-check-label" for="agreeContact">
-                        Tôi đồng ý nhận thông báo và ưu đãi qua email/SMS
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
                 <!-- Submit Buttons -->
                 <div class="form-actions text-center">
-                  <button type="submit" class="btn btn-primary btn-lg mr-3" id="submitBookingBtn">
+                  <button type="submit" class="btn btn-primary btn-lg mr-3" id="submitBookingBtn" onclick="appendSkinTypeToNotes()">
                     <i class="fa fa-calendar-check"></i>
-                    Xác Nhận Đặt Lịch
+                    Confirm booking
                   </button>
                   <a th:href="@{/admin/services/{serviceId}(serviceId=${service.serviceId})}" class="btn btn-outline-secondary btn-lg">
                     <i class="fa fa-arrow-left"></i>
-                    Quay Lại
+                    Back
                   </a>
                 </div>
               </form>
@@ -350,20 +315,20 @@
                   <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">
                       <i class="fa fa-clipboard-list"></i>
-                      Tóm Tắt Đặt Lịch
+                      Schedule Summary
                     </h5>
                   </div>
                   <div class="card-body">
                     <!-- Service Summary -->
                     <div class="service-summary mb-3">
-                      <h6 class="text-primary">Dịch vụ đã chọn</h6>
+                      <h6 class="text-primary">Chose service</h6>
                       <div class="d-flex justify-content-between">
-                        <span th:text="${service.name}">Tên dịch vụ</span>
+                        <span th:text="${service.name}">Service name</span>
                         <strong th:text="${#numbers.formatCurrency(service.price)}">500,000 VNĐ</strong>
                       </div>
                       <small class="text-muted">
                         <i class="fa fa-clock"></i>
-                        Thời gian: <span th:text="${service.duration}">60 phút</span>
+                        Thời gian: <span th:text="${service.duration}">60 minutes</span>
                       </small>
                     </div>
 
@@ -371,18 +336,18 @@
 
                     <!-- Appointment Summary -->
                     <div class="appointment-summary mb-3">
-                      <h6 class="text-primary">Thông tin lịch hẹn</h6>
+                      <h6 class="text-primary">Schedule information</h6>
                       <div class="summary-item">
                         <i class="fa fa-calendar text-muted"></i>
-                        <span id="summaryDate">Chọn ngày</span>
+                        <span id="summaryDate">Date</span>
                       </div>
                       <div class="summary-item">
                         <i class="fa fa-clock text-muted"></i>
-                        <span id="summaryTime">Chọn giờ</span>
+                        <span id="summaryTime">Time</span>
                       </div>
                       <div class="summary-item">
                         <i class="fa fa-user text-muted"></i>
-                        <span th:text="${currentUser?.fullName}">Tên khách hàng</span>
+                        <span th:text="${currentUser?.fullName}">Customer name</span>
                       </div>
                     </div>
 
@@ -391,35 +356,10 @@
                     <!-- Total Price -->
                     <div class="total-price">
                       <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Tổng cộng:</h5>
+                        <h5 class="mb-0">Total:</h5>
                         <h4 class="mb-0 text-primary" th:text="${#numbers.formatCurrency(service.price)}">500,000 VNĐ</h4>
                       </div>
-                      <small class="text-muted">Đã bao gồm VAT</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Help Card -->
-              <div class="help-card mt-4">
-                <div class="card border-info">
-                  <div class="card-header bg-light">
-                    <h6 class="mb-0 text-info">
-                      <i class="fa fa-question-circle"></i>
-                      Cần Hỗ Trợ?
-                    </h6>
-                  </div>
-                  <div class="card-body">
-                    <p class="card-text">
-                      Nếu bạn cần hỗ trợ trong quá trình đặt lịch, đừng ngần ngại liên hệ với chúng tôi.
-                    </p>
-                    <div class="contact-options">
-                      <a href="tel:+84123456789" class="btn btn-outline-info btn-sm btn-block mb-2">
-                        <i class="fa fa-phone"></i> Gọi: 0123.456.789
-                      </a>
-                      <button class="btn btn-outline-info btn-sm btn-block" onclick="openChatSupport()">
-                        <i class="fa fa-comments"></i> Chat hỗ trợ
-                      </button>
+                      <small class="text-muted">VAT included</small>
                     </div>
                   </div>
                 </div>
@@ -431,22 +371,18 @@
                   <div class="card-header bg-light">
                     <h6 class="mb-0 text-warning">
                       <i class="fa fa-clock"></i>
-                      Giờ Làm Việc
+                      Open hour
                     </h6>
                   </div>
                   <div class="card-body">
                     <div class="working-hours-list">
                       <div class="d-flex justify-content-between">
-                        <span>Thứ 2 - Thứ 6:</span>
+                        <span>Monday - Friday:</span>
                         <span>8:00 - 18:00</span>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <span>Thứ 7:</span>
+                        <span>Weekend:</span>
                         <span>8:00 - 17:00</span>
-                      </div>
-                      <div class="d-flex justify-content-between">
-                        <span>Chủ nhật:</span>
-                        <span class="text-muted">Nghỉ</span>
                       </div>
                     </div>
                   </div>
@@ -470,66 +406,6 @@
   <!-- BUTTON TOP START -->
   <button class="scroltop"><span class="iconmoon-house relative" id="btn-vibrate"></span>Top</button>
 
-</div>
-
-<!-- Terms Modal -->
-<div class="modal fade" id="termsModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Điều Khoản Dịch Vụ</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span>&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h6>1. Điều khoản đặt lịch</h6>
-        <p>Khách hàng cần đặt lịch trước ít nhất 2 giờ. Việc đặt lịch chỉ được xác nhận khi nhận được email xác nhận từ Beauty Center.</p>
-
-        <h6>2. Chính sách hủy lịch</h6>
-        <p>Khách hàng có thể hủy lịch miễn phí trước 24 giờ. Hủy lịch trong vòng 24 giờ sẽ bị tính phí 50% giá trị dịch vụ.</p>
-
-        <h6>3. Chính sách đến muộn</h6>
-        <p>Nếu khách hàng đến muộn quá 15 phút, Beauty Center có quyền hủy lịch hẹn và tính phí theo chính sách hủy lịch.</p>
-
-        <h6>4. Trách nhiệm của khách hàng</h6>
-        <p>Khách hàng cần cung cấp thông tin chính xác về tình trạng sức khỏe và da để đảm bảo an toàn trong quá trình điều trị.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Policy Modal -->
-<div class="modal fade" id="policyModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Chính Sách Bảo Mật</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span>&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h6>1. Thu thập thông tin</h6>
-        <p>Chúng tôi chỉ thu thập thông tin cần thiết để cung cấp dịch vụ và liên lạc với khách hàng.</p>
-
-        <h6>2. Bảo mật thông tin</h6>
-        <p>Mọi thông tin cá nhân của khách hàng được bảo mật tuyệt đối và không chia sẻ với bên thứ ba.</p>
-
-        <h6>3. Sử dụng thông tin</h6>
-        <p>Thông tin chỉ được sử dụng để cung cấp dịch vụ, gửi thông báo về lịch hẹn và các ưu đãi (nếu khách hàng đồng ý).</p>
-
-        <h6>4. Quyền của khách hàng</h6>
-        <p>Khách hàng có quyền yêu cầu xem, chỉnh sửa hoặc xóa thông tin cá nhân bất cứ lúc nào.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- Hidden data for JavaScript -->
@@ -902,7 +778,7 @@
           populateTimeSlots(response.availableSlots);
           updateSlotsInfo(response.availableSlots.length);
         } else {
-          timeSelect.html('<option value="">❌ Không có lịch trống</option>');
+          timeSelect.html('<option value="">❌ No available schedule</option>');
           infoAlert.removeClass('alert-info').addClass('alert-danger');
           infoText.text('❌ Không thể tải lịch trống cho ngày này');
         }
@@ -964,7 +840,7 @@
       infoText.text(`⚠️ Chỉ còn ${count} khung giờ trống cho ngày này.`);
     } else {
       infoAlert.removeClass('alert-info alert-warning alert-danger').addClass('alert-success');
-      infoText.text(`✅ Có ${count} khung giờ trống cho ngày này.`);
+      infoText.text(`✅ There's ${count} available time for this day.`);
     }
   }
 
@@ -1010,17 +886,6 @@
       isValid = false;
     }
 
-    // Validate terms
-    if (!$('#agreeTerms').is(':checked')) {
-      showNotification('Vui lòng đồng ý với điều khoản dịch vụ', 'warning');
-      isValid = false;
-    }
-
-    if (!$('#agreeCancel').is(':checked')) {
-      showNotification('Vui lòng xác nhận hiểu chính sách hủy lịch', 'warning');
-      isValid = false;
-    }
-
     return isValid;
   }
 
@@ -1061,10 +926,21 @@
       });
     }, 5000);
   }
+  /*<![CDATA[*/
+  function appendSkinTypeToNotes() {
+    const skinTypeVal = document.querySelector('input[name="skinType"]:checked')?.value || '';
+    const notesField  = document.getElementById('notes');
 
-  function openChatSupport() {
-    showNotification('Tính năng chat hỗ trợ sẽ được triển khai sớm!', 'info');
+    if (!skinTypeVal) return;            // Chưa chọn -> không thay đổi
+
+    const tag = `Skin type: ${skinTypeVal}`; // Có thể dịch sang nhãn tiếng Việt đầy đủ
+
+    if (!notesField.value.includes(tag)) {
+      // Giữ nguyên nội dung người dùng nhưng thêm xuống dòng mới (hoặc ký tự phân cách)
+      notesField.value = notesField.value ? `${notesField.value}\n${tag}` : tag;
+    }
   }
+  /*]]>*/
 
   console.log('🚀 Booking page script loaded successfully');
 </script>

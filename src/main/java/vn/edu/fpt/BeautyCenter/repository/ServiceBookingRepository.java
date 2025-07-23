@@ -80,7 +80,14 @@ public interface ServiceBookingRepository extends JpaRepository<ServiceBooking, 
     long countByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
     // Find today's bookings
-    List<ServiceBooking> findByBookingDateOrderByBookingTimeAsc(LocalDate today);
+    @Query("""
+        SELECT b
+        FROM ServiceBooking b
+        WHERE b.bookingDate = :bookingDate
+        AND b.status NOT IN (vn.edu.fpt.BeautyCenter.entity.enums.BookingStatus.COMPLETED, vn.edu.fpt.BeautyCenter.entity.enums.BookingStatus.CANCELLED)
+        ORDER BY b.bookingTime ASC
+    """)
+    List<ServiceBooking> findByBookingDateOrderByBookingTimeAsc(LocalDate bookingDate);
 
     // Find overdue bookings (past date/time but not completed)
     @Query("SELECT sb FROM ServiceBooking sb WHERE " +
