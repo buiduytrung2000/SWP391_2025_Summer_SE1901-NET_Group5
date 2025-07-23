@@ -219,19 +219,25 @@
                 </ul>
               </li>
               <li class="submenu-direction">
+                <a th:href="@{/admin/blogs}"
+                >Blogs</a>
+              </li>
+              <li class="submenu-direction">
+                <a th:href="@{/services}"
+                >Services</a>
+              </li>
+              <li class="submenu-direction">
                 <a th:if="${session.user}" th:href="@{/admin/bookings/my-bookings}"
                 >My bookings</a>
               </li>
               <li class="submenu-direction">
-                <a th:if="${session.user}" th:href="@{/admin/bookings/staff}"
+                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.staff)}" th:href="@{/admin/bookings/staff}"
                 >Booking Management</a>
               </li>
               <li class="submenu-direction">
                 <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.admin)}" th:href="@{/admin}"
                 >Dashboard</a>
               </li>
-
-
             </ul>
           </div>
           <!-- NAV Toggle Button -->

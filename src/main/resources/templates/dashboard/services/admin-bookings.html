@@ -349,7 +349,7 @@
           <i class="icon ni ni-user-add"></i>
           Assign staff
         </h5>
-        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close">
+        <button type="button" class="btn-close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -449,10 +449,14 @@
             </small>
           </div>
           <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                    onclick="closeAssign()">
               <i class="icon ni ni-cross"></i>
-              Hủy
+              Cancel
             </button>
+
             <button type="button" class="btn btn-primary" id="confirmAssignBtn" onclick="confirmAssignStaff()">
               <i class="icon ni ni-check"></i>
               Assign
@@ -508,6 +512,9 @@
     // Show modal
     const modal = new bootstrap.Modal(document.getElementById('assignStaffModal'));
     modal.show();
+  }
+  function closeAssign(){
+    $('#assignStaffModal').modal('hide');
   }
 
   /**
