@@ -11,11 +11,11 @@ package vn.edu.fpt.BeautyCenter.entity.enums;
  */
 
 public enum BookingStatus {
-    PENDING("Pending", "Chờ xử lý"),
-    ASSIGNED("Assigned", "Đã phân công"),
-    IN_PROGRESS("In Progress", "Đang thực hiện"),
-    COMPLETED("Completed", "Hoàn thành"),
-    CANCELLED("Cancelled", "Đã hủy");
+    PENDING("Pending", "Pending"),
+    ASSIGNED("Assigned", "Assigned"),
+    IN_PROGRESS("In Progress", "In Progress"),
+    COMPLETED("Completed", "Completed"),
+    CANCELLED("Cancelled", "Cancelled");
 
     private final String englishName;
     private final String vietnameseName;

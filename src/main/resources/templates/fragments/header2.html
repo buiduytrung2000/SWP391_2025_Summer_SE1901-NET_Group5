@@ -206,7 +206,10 @@
                                     <li><a th:href="@{/checkout.html}">Checkout</a></li>
                                 </ul>
                             </li>
-
+                            <li class="submenu-direction">
+                                <a th:if="${session.user}" th:href="@{/admin/bookings/my-bookings}"
+                                >My bookings</a>
+                            </li>
                             <li class="submenu-direction">
                                 <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.admin)}" th:href="@{/admin}"
                                 >Dashboard</a>

@@ -202,7 +202,7 @@
                             <div class="wt-post-tags" th:if="${service.tags != null and !service.tags.isEmpty()}">
                                 <i class="fa fa-tags"></i>
                                 <span th:each="tag, iterStat : ${service.tags}" class="tag-item">
-                  <span class="badge badge-light" th:text="${tag}"></span>
+                  <span class="" th:text="${tag}"></span>
                 </span>
                             </div>
 
@@ -220,6 +220,12 @@
                                        title="VIEW DETAILS" rel="bookmark"
                                        class="site-button radius-sm">
                                         <i class="fa fa-eye"></i> View Details
+                                    </a>
+                                    <a th:if="${isLoggedIn}"
+                                       th:href="@{/admin/bookings/service/{serviceId}(serviceId=${service.serviceId})}"
+                                       title="BOOK NOW!" rel="bookmark"
+                                       class="site-button radius-sm">
+                                        <i class="fa fa-eye"></i> Book Now!
                                     </a>
                                 </div>
                             </div>

@@ -349,7 +349,9 @@ public class ServiceController {
 
             // Prepare filter button states for active indication
             prepareFilterButtonStates(model, filterParams);
-
+            if(session.getAttribute("user")!=null){
+                model.addAttribute("isLoggedIn", true);
+            }
             // Add main attributes to model for view rendering
             model.addAttribute("pageTitle", "Services Management");
             model.addAttribute("services", services);

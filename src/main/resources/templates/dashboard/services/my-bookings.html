@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head th:replace="~{fragments/header::common-head}">
-  <title th:text="'Lịch hẹn của tôi - Beauty Center'">My Bookings - Beauty Center</title>
+  <title th:text="'My bookings - Beauty Center'">My Bookings - Beauty Center</title>
 </head>
 
 <body id="bg">
@@ -21,8 +21,8 @@
       <div class="overlay-main bg-black opacity-07"></div>
       <div class="container">
         <div class="wt-bnr-inr-entry">
-          <h1 class="text-white">Lịch Hẹn Của Tôi</h1>
-          <p class="text-white">Quản lý và theo dõi tất cả lịch hẹn dịch vụ</p>
+          <h1 class="text-white">My bookings</h1>
+          <p class="text-white">Manage bookings</p>
         </div>
       </div>
     </div>
@@ -33,8 +33,7 @@
       <div class="container">
         <ul class="wt-breadcrumb breadcrumb-style-2">
           <li><a href="/sbs"><i class="fa fa-home"></i> Trang chủ</a></li>
-          <li><a href="/sbs/dashboard">Dashboard</a></li>
-          <li>Lịch hẹn của tôi</li>
+          <li>My bookings</li>
         </ul>
       </div>
     </div>
@@ -66,22 +65,22 @@
           <div class="row align-items-center">
             <div class="col-lg-8">
               <div class="section-head text-left">
-                <h2 class="text-uppercase">Lịch Hẹn Của Tôi</h2>
+                <h2 class="text-uppercase">My bookings</h2>
                 <div class="wt-separator-outer">
                   <div class="wt-separator style-square">
                     <span class="separator-left site-bg-primary"></span>
                     <span class="separator-right site-bg-primary"></span>
                   </div>
                 </div>
-                <p th:text="'Tổng cộng ' + ${totalElements} + ' lịch hẹn'">
-                  Quản lý tất cả lịch hẹn dịch vụ của bạn
+                <p th:text="'Total ' + ${totalElements} + ' schedules'">
+                  Manage your bookings
                 </p>
               </div>
             </div>
             <div class="col-lg-4 text-right">
               <a th:href="@{/admin/services}" class="btn btn-primary btn-lg">
                 <i class="fa fa-plus"></i>
-                Đặt Lịch Mới
+                New booking
               </a>
             </div>
           </div>
@@ -94,27 +93,27 @@
               <form method="GET" th:action="@{/admin/bookings/my-bookings}">
                 <div class="row align-items-end">
                   <div class="col-md-3">
-                    <label for="statusFilter" class="form-label">Trạng thái:</label>
+                    <label for="statusFilter" class="form-label">Status:</label>
                     <select class="form-control" id="statusFilter" name="status">
-                      <option value="">Tất cả trạng thái</option>
-                      <option value="PENDING" th:selected="${param.status == 'PENDING'}">Chờ xử lý</option>
-                      <option value="ASSIGNED" th:selected="${param.status == 'ASSIGNED'}">Đã phân công</option>
-                      <option value="IN_PROGRESS" th:selected="${param.status == 'IN_PROGRESS'}">Đang thực hiện</option>
-                      <option value="COMPLETED" th:selected="${param.status == 'COMPLETED'}">Hoàn thành</option>
-                      <option value="CANCELLED" th:selected="${param.status == 'CANCELLED'}">Đã hủy</option>
+                      <option value="">All status</option>
+                      <option value="PENDING" th:selected="${param.status == 'PENDING'}">PENDING</option>
+                      <option value="ASSIGNED" th:selected="${param.status == 'ASSIGNED'}">ASSIGNED</option>
+                      <option value="IN_PROGRESS" th:selected="${param.status == 'IN_PROGRESS'}">IN_PROGRESS</option>
+                      <option value="COMPLETED" th:selected="${param.status == 'COMPLETED'}">COMPLETED</option>
+                      <option value="CANCELLED" th:selected="${param.status == 'CANCELLED'}">CANCELLED</option>
                     </select>
                   </div>
                   <div class="col-md-3">
-                    <label for="fromDate" class="form-label">Từ ngày:</label>
+                    <label for="fromDate" class="form-label">From Date:</label>
                     <input type="date" class="form-control" id="fromDate" name="fromDate" th:value="${param.fromDate}">
                   </div>
                   <div class="col-md-3">
-                    <label for="toDate" class="form-label">Đến ngày:</label>
+                    <label for="toDate" class="form-label">To Date:</label>
                     <input type="date" class="form-control" id="toDate" name="toDate" th:value="${param.toDate}">
                   </div>
                   <div class="col-md-3">
                     <button type="submit" class="btn btn-primary">
-                      <i class="fa fa-filter"></i> Lọc
+                      <i class="fa fa-filter"></i> Filter
                     </button>
                     <a href="/admin/bookings/my-bookings" class="btn btn-outline-secondary ml-2">
                       <i class="fa fa-refresh"></i> Reset
@@ -134,11 +133,11 @@
             <div class="empty-state-icon mb-4">
               <i class="fa fa-calendar-times fa-5x text-muted"></i>
             </div>
-            <h4 class="text-muted mb-3">Chưa có lịch hẹn nào</h4>
-            <p class="text-muted mb-4">Bạn chưa đặt lịch dịch vụ nào. Hãy khám phá và đặt lịch các dịch vụ tuyệt vời của chúng tôi!</p>
+            <h4 class="text-muted mb-3">There's no schedule yet</h4>
+            <p class="text-muted mb-4">You have not booked any services yet. Explore and book our great services!</p>
             <a href="/sbs/services" class="btn btn-primary btn-lg">
               <i class="fa fa-calendar-plus"></i>
-              Đặt Lịch Ngay
+              Explore now!
             </a>
           </div>
 
@@ -160,10 +159,10 @@
                                  alt="Service Image"
                                  class="img-fluid rounded service-thumb">
                           </div>
-                          <h5 class="service-name mb-1" th:text="${booking.serviceName}">Tên dịch vụ</h5>
+                          <h5 class="service-name mb-1" th:text="${booking.serviceName}">Service name</h5>
                           <small class="text-muted">
                             <i class="fa fa-clock"></i>
-                            <span th:text="${booking.serviceDuration}">60 phút</span>
+                            <span th:text="${booking.serviceDuration}">60 minutes</span>
                           </small>
                         </div>
                       </div>
@@ -174,13 +173,13 @@
                           <div class="booking-datetime mb-2">
                             <h6 class="mb-1">
                               <i class="fa fa-calendar text-primary"></i>
-                              <span th:text="${booking.formattedBookingDateTime}">25/07/2025 lúc 14:00</span>
+                              <span th:text="${booking.formattedBookingDateTime}">25/07/2025 at 14:00</span>
                             </h6>
                           </div>
 
                           <div class="booking-id mb-2">
                             <small class="text-muted">
-                              <strong>Mã booking:</strong>
+                              <strong>Booking code:</strong>
                               <span class="booking-code" th:text="${booking.bookingId}">BK001</span>
                             </small>
                           </div>
@@ -188,8 +187,8 @@
                           <div class="staff-info" th:if="${booking.staffName}">
                             <small class="text-muted">
                               <i class="fa fa-user"></i>
-                              <strong>Nhân viên:</strong>
-                              <span th:text="${booking.staffName}">Tên nhân viên</span>
+                              <strong>Staff:</strong>
+                              <span th:text="${booking.staffName}">Staff name</span>
                             </small>
                           </div>
                         </div>
@@ -201,7 +200,7 @@
                           <span class="badge badge-pill"
                                 th:class="'badge-' + ${booking.status.name().toLowerCase()}"
                                 th:text="${booking.statusDisplayName}">
-                            Chờ xử lý
+                            Pending
                           </span>
                         </div>
                         <div class="booking-price">
@@ -220,7 +219,7 @@
                           <a th:href="@{/admin/services/{id}(id=${booking.serviceId})}"
                              class="btn btn-sm btn-outline-info mb-2">
                             <i class="fa fa-eye"></i>
-                            Chi tiết
+                            Service Details
                           </a>
 
                           <!-- CANCEL BOOKING (if cancellable) -->
@@ -232,7 +231,7 @@
                                            data-service-name=${booking.serviceName},
                                            data-booking-date=${booking.formattedBookingDateTime}">
                             <i class="fa fa-times"></i>
-                            Hủy lịch
+                            Cancel schedule
                           </button>
 
                           <!-- BOOK AGAIN -->
@@ -240,7 +239,7 @@
                              th:href="@{/admin/bookings/service/{serviceId}(serviceId=${booking.serviceId})}"
                              class="btn btn-sm btn-success mb-2 ml-1">
                             <i class="fa fa-redo"></i>
-                            Đặt lại
+                            Book Service again
                           </a>
 
                         </div>
@@ -248,7 +247,7 @@
                         <!-- CREATED DATE -->
                         <div class="booking-created">
                           <small class="text-muted">
-                            Đặt lúc: <br>
+                            Booked at: <br>
                             <span th:text="${#temporals.format(booking.createdAt, 'dd/MM/yyyy HH:mm')}">
                               20/07/2025 10:30
                             </span>
@@ -262,8 +261,8 @@
                     <div th:if="${booking.notes}" class="row mt-3">
                       <div class="col-12">
                         <div class="booking-notes">
-                          <strong class="text-muted">Ghi chú:</strong>
-                          <p class="mb-0" th:text="${booking.notes}">Ghi chú của khách hàng</p>
+                          <strong class="text-muted">Notes:</strong>
+                          <p class="mb-0" th:text="${booking.notes}">Customers note</p>
                         </div>
                       </div>
                     </div>
@@ -273,7 +272,7 @@
                       <div class="col-12">
                         <div class="cancellation-reason alert alert-warning">
                           <strong>Lý do hủy:</strong>
-                          <span th:text="${booking.cancellationReason}">Lý do hủy lịch</span>
+                          <span th:text="${booking.cancellationReason}">Cancel reason</span>
                         </div>
                       </div>
                     </div>
@@ -325,8 +324,8 @@
           <!-- Pagination Info -->
           <div class="pagination-info text-center mt-3">
             <small class="text-muted">
-              Hiển thị <span th:text="${#lists.size(bookings)}">10</span>
-              trong tổng số <span th:text="${totalElements}">50</span> lịch hẹn
+              Show <span th:text="${#lists.size(bookings)}">10</span>
+              of <span th:text="${totalElements}">50</span> schedules
             </small>
           </div>
         </div>
@@ -355,7 +354,7 @@
       <div class="modal-header bg-danger text-white">
         <h5 class="modal-title">
           <i class="fa fa-exclamation-triangle"></i>
-          Xác Nhận Hủy Lịch
+          Confirm cancel schedule
         </h5>
         <button type="button" class="close text-white" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
@@ -364,15 +363,15 @@
 
       <div class="modal-body">
         <div class="cancel-booking-info mb-4">
-          <h6>Thông tin lịch hẹn:</h6>
+          <h6>Booking information:</h6>
           <div class="booking-summary p-3 bg-light rounded">
             <p class="mb-1">
               <strong>Dịch vụ:</strong>
-              <span id="cancelServiceName">Tên dịch vụ</span>
+              <span id="cancelServiceName">Service name</span>
             </p>
             <p class="mb-0">
-              <strong>Thời gian:</strong>
-              <span id="cancelBookingDate">25/07/2025 lúc 14:00</span>
+              <strong>Time:</strong>
+              <span id="cancelBookingDate">25/07/2025 at 14:00</span>
             </p>
           </div>
         </div>
@@ -380,7 +379,7 @@
         <form id="cancelBookingForm" method="POST">
           <div class="form-group">
             <label for="cancellationReason">
-              Lý do hủy lịch <span class="text-danger">*</span>
+              Cancel reason <span class="text-danger">*</span>
             </label>
             <textarea class="form-control"
                       id="cancellationReason"
@@ -390,23 +389,18 @@
                       required
                       placeholder="Vui lòng cho biết lý do hủy lịch..."></textarea>
             <small class="form-text text-muted">
-              <span id="reasonCount">0</span>/500 ký tự
+              <span id="reasonCount">0</span>/500 character
             </small>
-          </div>
-
-          <div class="alert alert-warning">
-            <i class="fa fa-info-circle"></i>
-            <strong>Lưu ý:</strong> Việc hủy lịch trong vòng 24 giờ có thể bị tính phí theo chính sách của chúng tôi.
           </div>
         </form>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          <i class="fa fa-times"></i> Không hủy
+          <i class="fa fa-times"></i> Back
         </button>
         <button type="button" class="btn btn-danger" onclick="confirmCancelBooking()">
-          <i class="fa fa-check"></i> Xác nhận hủy
+          <i class="fa fa-check"></i> Confirm
         </button>
       </div>
     </div>
