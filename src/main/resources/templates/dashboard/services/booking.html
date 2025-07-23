@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:replace="~{fragments/header::common-head}">
+  <title th:text="'Đặt lịch - ' + ${service.name}">Book Service</title>
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+
+  <!-- HEADER START -->
+  <header th:replace="~{fragments/header::header}">
+  </header>
+  <!-- HEADER END -->
+
+  <!-- CONTENT START -->
+  <div class="page-content">
+
+    <!-- INNER PAGE BANNER -->
+    <div class="wt-bnr-inr overlay-wraper" th:style="|background-image: url('@{/images/background/bg-1.jpg}')|">
+      <div class="overlay-main bg-black opacity-07"></div>
+      <div class="container">
+        <div class="wt-bnr-inr-entry">
+          <h1 class="text-white">Book Service</h1>
+          <p class="text-white" th:text="${service.name}">Service name</p>
+        </div>
+      </div>
+    </div>
+    <!-- INNER PAGE BANNER END -->
+
+    <!-- BREADCRUMB ROW -->
+    <div class="bg-gray-light p-tb20">
+      <div class="container">
+        <ul class="wt-breadcrumb breadcrumb-style-2">
+          <li><a href="/sbs"><i class="fa fa-home"></i> Home</a></li>
+          <li><a href="/sbs/services">Service</a></li>
+          <li><a href="#" th:href="@{/sbs/services/{serviceId}(serviceId=${service.serviceId})}" th:text="${service.name}">Service name</a></li>
+          <li>Book service</li>
+        </ul>
+      </div>
+    </div>
+    <!-- BREADCRUMB ROW END -->
+
+    <!-- BOOKING SECTION START -->
+    <div class="section-full p-t80 p-b50">
+      <div class="container">
+
+        <!-- Alert Messages -->
+        <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fa fa-check-circle mr-2"></i>
+          <span th:text="${message}"></span>
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="fa fa-exclamation-triangle mr-2"></i>
+          <span th:text="${error}"></span>
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="row">
+          <!-- BOOKING FORM COLUMN -->
+          <div class="col-lg-8">
+            <div class="booking-form-container">
+              <div class="section-head text-left">
+                <h2 class="text-uppercase">Booking infomation</h2>
+                <div class="wt-separator-outer">
+                  <div class="wt-separator style-square">
+                    <span class="separator-left site-bg-primary"></span>
+                    <span class="separator-right site-bg-primary"></span>
+                  </div>
+                </div>
+                <p>Please fill in information.</p>
+              </div>
+
+              <!-- BOOKING FORM -->
+
+              <form id="bookingForm" method="post" th:action="@{/admin/bookings/book}" th:object="${bookingRequest}">
+                <input type="hidden" th:field="*{serviceId}" th:value="${service.serviceId}">
+
+                <!-- Service Info Card -->
+                <div class="service-info-card mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-md-6">
+                          <h5 class="mb-1" th:text="${service.name}">Service name</h5>
+                          <p class="text-muted mb-0">
+                            <i class="fa fa-clock"></i> Thời gian: <span th:text="${service.duration}">60 minutes</span>
+                          </p>
+                          <p class="text-muted mb-0" th:if="${service.content}">
+                            <i class="fa fa-info-circle"></i> <span th:text="${#strings.abbreviate(service.content, 100)}">Description</span>
+                          </p>
+                        </div>
+                        <div class="col-md-4 text-right">
+                          <div class="price-badge">
+                            <span class="h4 text-primary" th:text="${#numbers.formatCurrency(service.price)}">500,000 VNĐ</span>
+                            <small class="d-block text-muted">/ time</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Customer Information -->
+                <div class="form-section mb-4">
+                  <h4 class="section-title">
+                    <i class="fa fa-user text-primary"></i>
+                    Customer information
+                  </h4>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="customerName">Full name <span class="text-danger">*</span></label>
+                        <input type="text"
+                               class="form-control"
+                               id="customerName"
+                               th:value="${currentUser?.fullName}"
+                               readonly
+                               placeholder="Họ và tên khách hàng">
+                        <small class="form-text text-muted">Information from logged in account</small>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="customerEmail">Email <span class="text-danger">*</span></label>
+                        <input type="email"
+                               class="form-control"
+                               id="customerEmail"
+                               th:value="${currentUser?.email}"
+                               readonly
+                               placeholder="email@example.com">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="customerPhone">Phone</label>
+                        <input type="tel"
+                               class="form-control"
+                               id="customerPhone"
+                               th:value="${currentUser?.phone}"
+                               readonly
+                               placeholder="Phone number">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="customerAge">Age-range</label>
+                        <select class="form-control" id="customerAge">
+                          <option value="">-- Select age range --</option>
+                          <option value="18-25">18-25 yo</option>
+                          <option value="26-35">26-35 yo</option>
+                          <option value="36-45">36-45 yo</option>
+                          <option value="46-55">46-55 yo</option>
+                          <option value="55+">Over 55</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Appointment Details -->
+                <div class="form-section mb-4">
+                  <h4 class="section-title">
+                    <i class="fa fa-calendar text-primary"></i>
+                    Booking time
+                  </h4>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="bookingDate">Select date <span class="text-danger">*</span></label>
+                        <input type="date"
+                               class="form-control"
+                               id="bookingDate"
+                               name="bookingDate"
+                               th:field="*{bookingDate}"
+                               th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+                               required>
+                        <small class="form-text text-muted">Date only can be from today</small>
+                        <div class="invalid-feedback"></div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="bookingTime">Select time <span class="text-danger">*</span></label>
+                        <select class="form-control"
+                                id="bookingTime"
+                                name="bookingTime"
+                                th:field="*{bookingTime}"
+                                required>
+                          <option value="">-- Select time --</option>
+                        </select>
+                        <small class="form-text text-muted" id="timeSlotInfo">
+                          Open hour: 8:00 - 18:00
+                        </small>
+                        <div class="invalid-feedback"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Available Slots Info -->
+                  <div class="available-slots-info mt-3">
+                    <div class="alert alert-info" id="slotsInfoAlert" style="display: none;">
+                      <i class="fa fa-info-circle"></i>
+                      <span id="slotsInfoText">Information about available time will show here</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="form-section mb-4">
+                  <h4 class="section-title">
+                    <i class="fa fa-sticky-note text-primary"></i>
+                    Additional information
+                  </h4>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea class="form-control"
+                                  id="notes"
+                                  name="notes"
+                                  th:field="*{notes}"
+                                  rows="4"
+                                  maxlength="500"
+                                  placeholder="Notes on skin conditions, allergies, special requests..."></textarea>
+                        <div class="d-flex justify-content-between mt-2">
+                          <small class="form-text text-muted">
+                            Sharing information helps us serve you better
+                          </small>
+                          <small class="form-text text-muted">
+                            <span id="notesCount">0</span>/500 character
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Skin Type Selection -->
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Your skin type</label>
+                        <div class="skin-type-options">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="skinType" id="skinNormal" value="normal">
+                            <label class="form-check-label" for="skinNormal">Normal skin</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="skinType" id="skinDry" value="dry">
+                            <label class="form-check-label" for="skinDry">Dry skin</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="skinType" id="skinOily" value="oily">
+                            <label class="form-check-label" for="skinOily">Oily skin</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="skinType" id="skinSensitive" value="sensitive">
+                            <label class="form-check-label" for="skinSensitive">Sensitive skin</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Have used this service before?</label>
+                        <div class="previous-service-options">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="previousService" id="firstTime" value="first-time">
+                            <label class="form-check-label" for="firstTime">First time</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="previousService" id="returning" value="returning">
+                            <label class="form-check-label" for="returning">Returning</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Submit Buttons -->
+                <div class="form-actions text-center">
+                  <button type="submit" class="btn btn-primary btn-lg mr-3" id="submitBookingBtn" onclick="appendSkinTypeToNotes()">
+                    <i class="fa fa-calendar-check"></i>
+                    Confirm booking
+                  </button>
+                  <a th:href="@{/admin/services/{serviceId}(serviceId=${service.serviceId})}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fa fa-arrow-left"></i>
+                    Back
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- BOOKING SUMMARY COLUMN -->
+          <div class="col-lg-4">
+            <div class="booking-summary-container">
+              <!-- Booking Summary Card -->
+              <div class="booking-summary-card">
+                <div class="card shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                      <i class="fa fa-clipboard-list"></i>
+                      Schedule Summary
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <!-- Service Summary -->
+                    <div class="service-summary mb-3">
+                      <h6 class="text-primary">Chose service</h6>
+                      <div class="d-flex justify-content-between">
+                        <span th:text="${service.name}">Service name</span>
+                        <strong th:text="${#numbers.formatCurrency(service.price)}">500,000 VNĐ</strong>
+                      </div>
+                      <small class="text-muted">
+                        <i class="fa fa-clock"></i>
+                        Thời gian: <span th:text="${service.duration}">60 minutes</span>
+                      </small>
+                    </div>
+
+                    <hr>
+
+                    <!-- Appointment Summary -->
+                    <div class="appointment-summary mb-3">
+                      <h6 class="text-primary">Schedule information</h6>
+                      <div class="summary-item">
+                        <i class="fa fa-calendar text-muted"></i>
+                        <span id="summaryDate">Date</span>
+                      </div>
+                      <div class="summary-item">
+                        <i class="fa fa-clock text-muted"></i>
+                        <span id="summaryTime">Time</span>
+                      </div>
+                      <div class="summary-item">
+                        <i class="fa fa-user text-muted"></i>
+                        <span th:text="${currentUser?.fullName}">Customer name</span>
+                      </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Total Price -->
+                    <div class="total-price">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Total:</h5>
+                        <h4 class="mb-0 text-primary" th:text="${#numbers.formatCurrency(service.price)}">500,000 VNĐ</h4>
+                      </div>
+                      <small class="text-muted">VAT included</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Working Hours Card -->
+              <div class="working-hours-card mt-4">
+                <div class="card border-warning">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0 text-warning">
+                      <i class="fa fa-clock"></i>
+                      Open hour
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="working-hours-list">
+                      <div class="d-flex justify-content-between">
+                        <span>Monday - Friday:</span>
+                        <span>8:00 - 18:00</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span>Weekend:</span>
+                        <span>8:00 - 17:00</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- BOOKING SECTION END -->
+
+  </div>
+  <!-- CONTENT END -->
+
+  <!-- FOOTER START -->
+  <footer th:replace="~{fragments/footer :: footer}">
+  </footer>
+  <!-- FOOTER END -->
+
+  <!-- BUTTON TOP START -->
+  <button class="scroltop"><span class="iconmoon-house relative" id="btn-vibrate"></span>Top</button>
+
+</div>
+
+<!-- Hidden data for JavaScript -->
+<div id="bookingData"
+     th:attr="data-service-id=${service.serviceId},
+              data-service-name=${service.name},
+              data-service-price=${service.price},
+              data-is-logged-in=${isLoggedIn},
+              data-current-user-id=${currentUser?.userId},
+              data-current-user-name=${currentUser?.fullName}"
+     style="display: none;">
+</div>
+
+<!-- CSS STYLES -->
+<style>
+  /* ========== BOOKING PAGE STYLES ========== */
+  .booking-form-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .service-info-card .card {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+  }
+
+
+  .price-badge {
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .form-section {
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 1.5rem;
+  }
+
+  .form-section:last-child {
+    border-bottom: none;
+  }
+
+  .section-title {
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .section-title i {
+    margin-right: 10px;
+    width: 20px;
+  }
+
+  .form-control {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+  }
+
+
+  .form-control.is-invalid {
+    border-color: #dc3545;
+  }
+
+
+  .skin-type-options .form-check,
+  .previous-service-options .form-check {
+    margin-bottom: 0.5rem;
+  }
+
+  .terms-container {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .form-actions {
+    padding-top: 2rem;
+    border-top: 2px solid #e9ecef;
+    margin-top: 2rem;
+  }
+
+  /* ========== BOOKING SUMMARY STYLES ========== */
+  .booking-summary-container {
+    position: sticky;
+    top: 20px;
+  }
+
+  .booking-summary-card .card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  .service-summary,
+  .appointment-summary {
+    font-size: 14px;
+  }
+
+  .summary-item {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .summary-item i {
+    margin-right: 10px;
+    width: 16px;
+  }
+
+  .total-price {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: -1rem -1rem 0 -1rem;
+  }
+
+  /* ========== HELP CARD STYLES ========== */
+  .help-card .card,
+  .working-hours-card .card {
+    border-radius: 10px;
+  }
+
+  .contact-options .btn {
+    border-radius: 6px;
+    font-weight: 500;
+  }
+
+  .working-hours-list {
+    font-size: 14px;
+  }
+
+  .working-hours-list > div {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .working-hours-list > div:not(:last-child) {
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  /* ========== AVAILABLE SLOTS INFO ========== */
+  .available-slots-info .alert {
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  /* ========== RESPONSIVE DESIGN ========== */
+  @media (max-width: 992px) {
+    .booking-summary-container {
+      position: static;
+      margin-top: 2rem;
+    }
+
+    .booking-form-container {
+      padding: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .booking-form-container {
+      padding: 1rem;
+    }
+
+    .form-actions .btn {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .service-info-card .row {
+      text-align: center;
+    }
+
+    .service-info-card .col-md-4 {
+      margin-top: 1rem;
+    }
+  }
+
+  /* ========== LOADING STATES ========== */
+  .btn.loading {
+    position: relative;
+    color: transparent !important;
+  }
+
+  .btn.loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #ffffff;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* ========== ALERT STYLES ========== */
+  .booking-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 576px) {
+    .booking-alert {
+      right: 10px;
+      left: 10px;
+      min-width: auto;
+    }
+  }
+</style>
+
+<!-- JAVASCRIPT -->
+
+
+<!-- JAVASCRIPT FILES -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
+<script th:inline="javascript">
+  // ========== BOOKING CONFIGURATION ==========
+  const BOOKING_CONFIG = {
+    serviceId: /*[[${service.serviceId}]]*/ 'default-service-id',
+    serviceName: /*[[${service.name}]]*/ 'Service Name',
+    servicePrice: /*[[${service.price}]]*/ 0,
+    isLoggedIn: /*[[${isLoggedIn}]]*/ false,
+    currentUserId: /*[[${currentUser?.userId}]]*/ null,
+    currentUserName: /*[[${currentUser?.fullName}]]*/ null,
+    endpoints: {
+      availableSlots: '/sbs/admin/bookings/available-slots/',
+      book: '/sbs/admin/bookings/book'
+    }
+  };
+  console.log(BOOKING_CONFIG)
+
+  $(document).ready(function() {
+    console.log('🏥 Booking system initializing...');
+    console.log('🔧 Config:', BOOKING_CONFIG);
+
+    // Validate config
+    if (!BOOKING_CONFIG.serviceId || BOOKING_CONFIG.serviceId === 'default-service-id') {
+      console.error('❌ Service ID not found! Check template data binding.');
+      showNotification('Lỗi: Không tìm thấy ID dịch vụ', 'error');
+      return;
+    }
+
+    initializeBookingSystem();
+  });
+
+  function initializeBookingSystem() {
+    setupDatePicker();
+    setupFormValidation();
+    setupCharacterCounter();
+    setupSummaryUpdates();
+    bindEventHandlers();
+
+    console.log('✅ Booking page ready');
+  }
+
+  function setupDatePicker() {
+    const dateInput = $('#bookingDate');
+    const today = new Date().toISOString().split('T')[0];
+
+    dateInput.attr('min', today);
+
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 3);
+    dateInput.attr('max', maxDate.toISOString().split('T')[0]);
+  }
+
+  function setupFormValidation() {
+    // Date change handler
+    $(document).on('change', '#bookingDate', function() {
+      const selectedDate = $(this).val();
+      console.log('📅 Date changed to:', selectedDate);
+
+      if (selectedDate) {
+        clearFieldError('bookingDate');
+        loadAvailableTimeSlots(selectedDate);
+        updateSummaryDate(selectedDate);
+      }
+    });
+
+    // Time change handler
+    $(document).on('change', '#bookingTime', function() {
+      const selectedTime = $(this).val();
+      console.log('🕒 Time changed to:', selectedTime);
+
+      if (selectedTime) {
+        clearFieldError('bookingTime');
+        updateSummaryTime(selectedTime);
+      }
+    });
+
+    // Form submission
+    $('#bookingForm').on('submit', function(e) {
+      if (!validateBookingForm()) {
+        e.preventDefault();
+        return false;
+      }
+
+      // Set loading state
+      const submitBtn = $('#submitBookingBtn');
+      submitBtn.addClass('loading').prop('disabled', true);
+    });
+  }
+
+  function setupCharacterCounter() {
+    $('#notes').on('input', function() {
+      const length = $(this).val().length;
+      $('#notesCount').text(length);
+
+      if (length > 500) {
+        $(this).addClass('is-invalid');
+      } else {
+        $(this).removeClass('is-invalid');
+      }
+    });
+  }
+
+  function setupSummaryUpdates() {
+    // Initialize summary with current user name
+    updateSummaryDate('');
+    updateSummaryTime('');
+  }
+
+  function bindEventHandlers() {
+    // Terms modals
+    $('.terms-container a[data-toggle="modal"]').on('click', function(e) {
+      e.preventDefault();
+    });
+  }
+
+  function loadAvailableTimeSlots(date) {
+    console.log('🕒 Loading time slots for:', date);
+
+    const timeSelect = $('#bookingTime');
+    const infoAlert = $('#slotsInfoAlert');
+    const infoText = $('#slotsInfoText');
+
+    // Show loading
+    timeSelect.html('<option value="">⏳ Đang tải...</option>').prop('disabled', true);
+    infoAlert.show().removeClass('alert-success alert-warning alert-danger').addClass('alert-info');
+    infoText.text('⏳ Đang kiểm tra lịch trống...');
+
+    $.ajax({
+      url: `${BOOKING_CONFIG.endpoints.availableSlots}${BOOKING_CONFIG.serviceId}`,
+      method: 'GET',
+      data: { date: date },
+      timeout: 10000,
+      success: function(response) {
+        console.log('✅ Time slots loaded:', response);
+
+        if (response.success && response.availableSlots) {
+          populateTimeSlots(response.availableSlots);
+          updateSlotsInfo(response.availableSlots.length);
+        } else {
+          timeSelect.html('<option value="">❌ No available schedule</option>');
+          infoAlert.removeClass('alert-info').addClass('alert-danger');
+          infoText.text('❌ Không thể tải lịch trống cho ngày này');
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error('❌ Time slots error:', xhr.status, error);
+
+        let errorMsg = 'Lỗi kết nối';
+        if (status === 'timeout') {
+          errorMsg = 'Quá thời gian chờ';
+        } else if (xhr.status === 404) {
+          errorMsg = 'Dịch vụ không tồn tại';
+        }
+
+        timeSelect.html(`<option value="">❌ ${errorMsg}</option>`);
+        infoAlert.removeClass('alert-info').addClass('alert-danger');
+        infoText.text(`❌ ${errorMsg}`);
+      },
+      complete: function() {
+        timeSelect.prop('disabled', false);
+      }
+    });
+  }
+
+  function populateTimeSlots(timeSlots) {
+    const timeSelect = $('#bookingTime');
+    timeSelect.empty().append('<option value="">-- Chọn khung giờ --</option>');
+
+    if (timeSlots.length === 0) {
+      timeSelect.append('<option value="" disabled>Hết lịch trống</option>');
+      return;
+    }
+
+    timeSlots.forEach(function(time) {
+      const timeFormatted = formatTimeDisplay(time);
+      timeSelect.append(`<option value="${time}">${timeFormatted}</option>`);
+    });
+  }
+
+  function formatTimeDisplay(time) {
+    const [hours, minutes] = time.split(':');
+    const startTime = `${hours}:${minutes}`;
+
+    let endHour = parseInt(hours) + 1;
+    const endTime = `${endHour.toString().padStart(2, '0')}:${minutes}`;
+
+    return `${startTime} - ${endTime}`;
+  }
+
+  function updateSlotsInfo(count) {
+    const infoAlert = $('#slotsInfoAlert');
+    const infoText = $('#slotsInfoText');
+
+    if (count === 0) {
+      infoAlert.removeClass('alert-info alert-success').addClass('alert-warning');
+      infoText.text('⚠️ Ngày này đã hết lịch trống. Vui lòng chọn ngày khác.');
+    } else if (count <= 3) {
+      infoAlert.removeClass('alert-info alert-danger').addClass('alert-warning');
+      infoText.text(`⚠️ Chỉ còn ${count} khung giờ trống cho ngày này.`);
+    } else {
+      infoAlert.removeClass('alert-info alert-warning alert-danger').addClass('alert-success');
+      infoText.text(`✅ There's ${count} available time for this day.`);
+    }
+  }
+
+  function updateSummaryDate(date) {
+    const summaryDate = $('#summaryDate');
+    if (date) {
+      const formattedDate = new Date(date).toLocaleDateString('vi-VN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      summaryDate.text(formattedDate);
+    } else {
+      summaryDate.text('Chọn ngày');
+    }
+  }
+
+  function updateSummaryTime(time) {
+    const summaryTime = $('#summaryTime');
+    if (time) {
+      const formattedTime = formatTimeDisplay(time);
+      summaryTime.text(formattedTime);
+    } else {
+      summaryTime.text('Chọn giờ');
+    }
+  }
+
+  function validateBookingForm() {
+    let isValid = true;
+
+    // Validate date
+    const date = $('#bookingDate').val();
+    if (!date) {
+      showFieldError('bookingDate', 'Vui lòng chọn ngày đặt lịch');
+      isValid = false;
+    }
+
+    // Validate time
+    const time = $('#bookingTime').val();
+    if (!time) {
+      showFieldError('bookingTime', 'Vui lòng chọn khung giờ');
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  function showFieldError(fieldId, message) {
+    const field = $(`#${fieldId}`);
+    field.addClass('is-invalid');
+    field.siblings('.invalid-feedback').text(message);
+  }
+
+  function clearFieldError(fieldId) {
+    const field = $(`#${fieldId}`);
+    field.removeClass('is-invalid');
+  }
+
+  function showNotification(message, type = 'info') {
+    const alertClass = {
+      'success': 'alert-success',
+      'error': 'alert-danger',
+      'warning': 'alert-warning',
+      'info': 'alert-info'
+    }[type] || 'alert-info';
+
+    const alert = `
+        <div class="alert ${alertClass} alert-dismissible fade show booking-alert">
+            <strong>${message}</strong>
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    `;
+
+    $('.booking-alert').remove();
+    $('body').append(alert);
+
+    setTimeout(() => {
+      $('.booking-alert').fadeOut(400, function() {
+        $(this).remove();
+      });
+    }, 5000);
+  }
+  /*<![CDATA[*/
+  function appendSkinTypeToNotes() {
+    const skinTypeVal = document.querySelector('input[name="skinType"]:checked')?.value || '';
+    const notesField  = document.getElementById('notes');
+
+    if (!skinTypeVal) return;            // Chưa chọn -> không thay đổi
+
+    const tag = `Skin type: ${skinTypeVal}`; // Có thể dịch sang nhãn tiếng Việt đầy đủ
+
+    if (!notesField.value.includes(tag)) {
+      // Giữ nguyên nội dung người dùng nhưng thêm xuống dòng mới (hoặc ký tự phân cách)
+      notesField.value = notesField.value ? `${notesField.value}\n${tag}` : tag;
+    }
+  }
+  /*]]>*/
+
+  console.log('🚀 Booking page script loaded successfully');
+</script>
+
+</body>
+</html>

@@ -27,6 +27,20 @@ public class StaffSchedule {
     @JoinColumn(name = "staff_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     private Staff staff;
 
+    @Column(name = "room_id", columnDefinition = "char(36)")
+    private String roomId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id", referencedColumnName = "room_id", insertable = false, updatable = false)
+    private Room room;
+
+    @Column(name = "service_id", columnDefinition = "char(36)")
+    private String serviceId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id", insertable = false, updatable = false)
+    private Service service;
+
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
@@ -44,7 +58,6 @@ public class StaffSchedule {
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-
     private LocalDateTime updatedAt;
 
     public enum Status {

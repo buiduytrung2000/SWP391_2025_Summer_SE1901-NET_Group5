@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:replace="~{fragments/header::common-head}">
+  <title th:text="'My bookings - Beauty Center'">My Bookings - Beauty Center</title>
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+
+  <!-- HEADER START -->
+  <header th:replace="~{fragments/header::header}">
+  </header>
+  <!-- HEADER END -->
+
+  <!-- CONTENT START -->
+  <div class="page-content">
+
+    <!-- INNER PAGE BANNER -->
+    <div class="wt-bnr-inr overlay-wraper" th:style="|background-image: url('@{/images/background/bg-1.jpg}')|">
+      <div class="overlay-main bg-black opacity-07"></div>
+      <div class="container">
+        <div class="wt-bnr-inr-entry">
+          <h1 class="text-white">My bookings</h1>
+          <p class="text-white">Manage bookings</p>
+        </div>
+      </div>
+    </div>
+    <!-- INNER PAGE BANNER END -->
+
+    <!-- BREADCRUMB ROW -->
+    <div class="bg-gray-light p-tb20">
+      <div class="container">
+        <ul class="wt-breadcrumb breadcrumb-style-2">
+          <li><a href="/sbs"><i class="fa fa-home"></i> Trang chủ</a></li>
+          <li>My bookings</li>
+        </ul>
+      </div>
+    </div>
+    <!-- BREADCRUMB ROW END -->
+
+    <!-- MY BOOKINGS SECTION START -->
+    <div class="section-full p-t80 p-b50">
+      <div class="container">
+
+        <!-- Alert Messages -->
+        <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fa fa-check-circle mr-2"></i>
+          <span th:text="${message}"></span>
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="fa fa-exclamation-triangle mr-2"></i>
+          <span th:text="${error}"></span>
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <!-- PAGE HEADER -->
+        <div class="my-bookings-header mb-5">
+          <div class="row align-items-center">
+            <div class="col-lg-8">
+              <div class="section-head text-left">
+                <h2 class="text-uppercase">My bookings</h2>
+                <div class="wt-separator-outer">
+                  <div class="wt-separator style-square">
+                    <span class="separator-left site-bg-primary"></span>
+                    <span class="separator-right site-bg-primary"></span>
+                  </div>
+                </div>
+                <p th:text="'Total ' + ${totalElements} + ' schedules'">
+                  Manage your bookings
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-4 text-right">
+              <a th:href="@{/services}" class="btn btn-primary btn-lg">
+                <i class="fa fa-plus"></i>
+                New booking
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILTER AND SEARCH BAR -->
+        <div class="booking-filters mb-4">
+          <div class="card">
+            <div class="card-body">
+              <form method="GET" th:action="@{/admin/bookings/my-bookings}">
+                <div class="row align-items-end">
+                  <div class="col-md-3">
+                    <label for="statusFilter" class="form-label">Status:</label>
+                    <select class="form-control" id="statusFilter" name="status">
+                      <option value="">All status</option>
+                      <option value="PENDING" th:selected="${param.status == 'PENDING'}">PENDING</option>
+                      <option value="ASSIGNED" th:selected="${param.status == 'ASSIGNED'}">ASSIGNED</option>
+                      <option value="IN_PROGRESS" th:selected="${param.status == 'IN_PROGRESS'}">IN_PROGRESS</option>
+                      <option value="COMPLETED" th:selected="${param.status == 'COMPLETED'}">COMPLETED</option>
+                      <option value="CANCELLED" th:selected="${param.status == 'CANCELLED'}">CANCELLED</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="fromDate" class="form-label">From Date:</label>
+                    <input type="date" class="form-control" id="fromDate" name="fromDate" th:value="${param.fromDate}">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="toDate" class="form-label">To Date:</label>
+                    <input type="date" class="form-control" id="toDate" name="toDate" th:value="${param.toDate}">
+                  </div>
+                  <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa fa-filter"></i> Filter
+                    </button>
+                    <a href="/admin/bookings/my-bookings" class="btn btn-outline-secondary ml-2">
+                      <i class="fa fa-refresh"></i> Reset
+                    </a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOOKINGS LIST -->
+        <div class="bookings-list">
+
+          <!-- NO BOOKINGS STATE -->
+          <div th:if="${totalElements == 0}" class="no-bookings-state text-center py-5">
+            <div class="empty-state-icon mb-4">
+              <i class="fa fa-calendar-times fa-5x text-muted"></i>
+            </div>
+            <h4 class="text-muted mb-3">There's no schedule yet</h4>
+            <p class="text-muted mb-4">You have not booked any services yet. Explore and book our great services!</p>
+            <a href="/sbs/services" class="btn btn-primary btn-lg">
+              <i class="fa fa-calendar-plus"></i>
+              Explore now!
+            </a>
+          </div>
+
+          <!-- BOOKINGS GRID -->
+          <div th:if="${totalElements > 0}" class="row">
+            <div class="col-lg-12">
+
+              <!-- BOOKING ITEMS -->
+              <div th:each="booking : ${bookings}" class="booking-item mb-4">
+                <div class="card booking-card">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+
+                      <!-- SERVICE INFO -->
+                      <div class="col-md-3">
+                        <div class="service-info">
+                          <div class="service-image mb-2">
+                            <img th:src="@{/images/services/default-service.jpg}"
+                                 alt="Service Image"
+                                 class="img-fluid rounded service-thumb">
+                          </div>
+                          <h5 class="service-name mb-1" th:text="${booking.serviceName}">Service name</h5>
+                          <small class="text-muted">
+                            <i class="fa fa-clock"></i>
+                            <span th:text="${booking.serviceDuration}">60 minutes</span>
+                          </small>
+                        </div>
+                      </div>
+
+                      <!-- BOOKING DETAILS -->
+                      <div class="col-md-4">
+                        <div class="booking-details">
+                          <div class="booking-datetime mb-2">
+                            <h6 class="mb-1">
+                              <i class="fa fa-calendar text-primary"></i>
+                              <span th:text="${booking.formattedBookingDateTime}">25/07/2025 at 14:00</span>
+                            </h6>
+                          </div>
+
+                          <div class="booking-id mb-2">
+                            <small class="text-muted">
+                              <strong>Booking code:</strong>
+                              <span class="booking-code" th:text="${booking.bookingId}">BK001</span>
+                            </small>
+                          </div>
+
+                          <div class="staff-info" th:if="${booking.staffName}">
+                            <small class="text-muted">
+                              <i class="fa fa-user"></i>
+                              <strong>Staff:</strong>
+                              <span th:text="${booking.staffName}">Staff name</span>
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- STATUS AND PRICE -->
+                      <div class="col-md-2 text-center">
+                        <div class="booking-status mb-2">
+                          <span class="badge badge-pill"
+                                th:class="'badge-' + ${booking.status.name().toLowerCase()}"
+                                th:text="${booking.statusDisplayName}">
+                            Pending
+                          </span>
+                        </div>
+                        <div class="booking-price">
+                          <h5 class="price-amount text-primary mb-0"
+                              th:text="${#numbers.formatCurrency(booking.totalPrice)}">
+                            500,000 VNĐ
+                          </h5>
+                        </div>
+                      </div>
+
+                      <!-- ACTIONS -->
+                      <div class="col-md-3 text-right">
+                        <div class="booking-actions">
+
+                          <!-- VIEW DETAILS -->
+                          <a th:href="@{/admin/services/{id}(id=${booking.serviceId})}"
+                             class="btn btn-sm btn-outline-info mb-2">
+                            <i class="fa fa-eye"></i>
+                            Service Details
+                          </a>
+
+                          <!-- CANCEL BOOKING (if cancellable) -->
+                          <button th:if="${booking.canBeCancelled}"
+                                  type="button"
+                                  class="btn btn-sm btn-outline-danger mb-2 ml-1"
+                                  onclick="showCancelModal(this)"
+                                  th:attr="data-booking-id=${booking.bookingId},
+                                           data-service-name=${booking.serviceName},
+                                           data-booking-date=${booking.formattedBookingDateTime}">
+                            <i class="fa fa-times"></i>
+                            Cancel schedule
+                          </button>
+
+                          <!-- BOOK AGAIN -->
+                          <a th:if="${booking.status.name() == 'COMPLETED'}"
+                             th:href="@{/admin/bookings/service/{serviceId}(serviceId=${booking.serviceId})}"
+                             class="btn btn-sm btn-success mb-2 ml-1">
+                            <i class="fa fa-redo"></i>
+                            Book Service again
+                          </a>
+
+                        </div>
+
+                        <!-- CREATED DATE -->
+                        <div class="booking-created">
+                          <small class="text-muted">
+                            Booked at: <br>
+                            <span th:text="${#temporals.format(booking.createdAt, 'dd/MM/yyyy HH:mm')}">
+                              20/07/2025 10:30
+                            </span>
+                          </small>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- NOTES (if exists) -->
+                    <div th:if="${booking.notes}" class="row mt-3">
+                      <div class="col-12">
+                        <div class="booking-notes">
+                          <strong class="text-muted">Notes:</strong>
+                          <p class="mb-0" th:text="${booking.notes}">Customers note</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- CANCELLATION REASON (if cancelled) -->
+                    <div th:if="${booking.status.name() == 'CANCELLED'}" class="row mt-3">
+                      <div class="col-12">
+                        <div class="cancellation-reason alert alert-warning">
+                          <strong>Lý do hủy:</strong>
+                          <span th:text="${booking.cancellationReason}">Cancel reason</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PAGINATION -->
+        <div th:if="${totalPages > 1}" class="pagination-section mt-5">
+          <nav aria-label="Bookings pagination">
+            <ul class="pagination justify-content-center">
+
+              <!-- Previous Page -->
+              <li class="page-item" th:class="${hasPrevious} ? '' : 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/bookings/my-bookings(page=${currentPage - 1}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
+                   aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+
+              <!-- Page Numbers -->
+              <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                  class="page-item"
+                  th:class="${pageNum == currentPage} ? 'active' : ''">
+                <a class="page-link"
+                   th:href="@{/admin/bookings/my-bookings(page=${pageNum}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
+                   th:text="${pageNum + 1}">1</a>
+              </li>
+
+              <!-- Next Page -->
+              <li class="page-item" th:class="${hasNext} ? '' : 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/bookings/my-bookings(page=${currentPage + 1}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
+                   aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+
+            </ul>
+          </nav>
+
+          <!-- Pagination Info -->
+          <div class="pagination-info text-center mt-3">
+            <small class="text-muted">
+              Show <span th:text="${#lists.size(bookings)}">10</span>
+              of <span th:text="${totalElements}">50</span> schedules
+            </small>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- MY BOOKINGS SECTION END -->
+
+  </div>
+  <!-- CONTENT END -->
+
+  <!-- FOOTER START -->
+  <footer th:replace="~{fragments/footer :: footer}">
+  </footer>
+  <!-- FOOTER END -->
+
+  <!-- BUTTON TOP START -->
+  <button class="scroltop"><span class="iconmoon-house relative" id="btn-vibrate"></span>Top</button>
+
+</div>
+
+<!-- CANCEL BOOKING MODAL -->
+<div class="modal fade" id="cancelBookingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">
+          <i class="fa fa-exclamation-triangle"></i>
+          Confirm cancel schedule
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="cancel-booking-info mb-4">
+          <h6>Booking information:</h6>
+          <div class="booking-summary p-3 bg-light rounded">
+            <p class="mb-1">
+              <strong>Dịch vụ:</strong>
+              <span id="cancelServiceName">Service name</span>
+            </p>
+            <p class="mb-0">
+              <strong>Time:</strong>
+              <span id="cancelBookingDate">25/07/2025 at 14:00</span>
+            </p>
+          </div>
+        </div>
+
+        <form id="cancelBookingForm" method="POST">
+          <div class="form-group">
+            <label for="cancellationReason">
+              Cancel reason <span class="text-danger">*</span>
+            </label>
+            <textarea class="form-control"
+                      id="cancellationReason"
+                      name="cancellationReason"
+                      rows="4"
+                      maxlength="500"
+                      required
+                      placeholder="Vui lòng cho biết lý do hủy lịch..."></textarea>
+            <small class="form-text text-muted">
+              <span id="reasonCount">0</span>/500 character
+            </small>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fa fa-times"></i> Back
+        </button>
+        <button type="button" class="btn btn-danger" onclick="confirmCancelBooking()">
+          <i class="fa fa-check"></i> Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSS STYLES -->
+<style>
+  /* ========== MY BOOKINGS PAGE STYLES ========== */
+  .my-bookings-header {
+    margin-bottom: 2rem;
+  }
+
+  .booking-filters .card {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .booking-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .booking-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .booking-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .booking-card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  }
+
+  .service-thumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .service-name {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .booking-datetime h6 {
+    color: #333;
+    font-weight: 600;
+  }
+
+  .booking-code {
+    font-family: 'Courier New', monospace;
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  .price-amount {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  /* Status Badges */
+  .badge-pending {
+    background-color: #ffc107;
+    color: #212529;
+  }
+
+  .badge-assigned {
+    background-color: #17a2b8;
+    color: white;
+  }
+
+  .badge-in_progress {
+    background-color: #fd7e14;
+    color: white;
+  }
+
+  .badge-completed {
+    background-color: #28a745;
+    color: white;
+  }
+
+
+  .booking-actions .btn {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+
+  .booking-notes {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .cancellation-reason {
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  /* Empty State */
+  .no-bookings-state {
+    padding: 4rem 2rem;
+  }
+
+  .empty-state-icon {
+    opacity: 0.5;
+  }
+
+  /* Pagination */
+  .pagination {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .pagination .page-link {
+    border: none;
+    padding: 10px 15px;
+    margin: 0 2px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .pagination .page-item.active .page-link {
+    color: white;
+  }
+
+  .pagination .page-link:hover {
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .pagination-info {
+    color: #6c757d;
+    font-size: 14px;
+  }
+
+  /* Modal Styles */
+  .modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+  }
+
+  .modal-header {
+    border-radius: 15px 15px 0 0;
+    padding: 1.5rem;
+  }
+
+  .booking-summary {
+    border: 2px dashed #dee2e6;
+  }
+
+  .form-control {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    box-shadow: 0 0 0 0.2rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .booking-card .row {
+      text-align: center;
+    }
+
+    .booking-card .col-md-3,
+    .booking-card .col-md-4,
+    .booking-card .col-md-2 {
+      margin-bottom: 1rem;
+    }
+
+    .booking-actions {
+      justify-content: center;
+    }
+
+    .booking-actions .btn {
+      margin: 2px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .my-bookings-header .row {
+      text-align: center;
+    }
+
+    .my-bookings-header .col-lg-4 {
+      margin-top: 1rem;
+    }
+
+    .booking-filters .row {
+      text-align: center;
+    }
+
+    .booking-filters .col-md-3 {
+      margin-bottom: 1rem;
+    }
+
+    .service-thumb {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  /* Loading States */
+  .btn.loading {
+    position: relative;
+    color: transparent !important;
+  }
+
+  .btn.loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #ffffff;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Alert Animations */
+  .alert {
+    border-radius: 10px;
+    border: none;
+  }
+
+  .booking-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 576px) {
+    .booking-alert {
+      right: 10px;
+      left: 10px;
+      min-width: auto;
+    }
+  }
+</style>
+
+<!-- JAVASCRIPT -->
+<script th:inline="javascript">
+  // ========== MY BOOKINGS PAGE CONFIGURATION ==========
+  const MY_BOOKINGS_CONFIG = {
+    currentUserId: /*[[${currentUser?.userId}]]*/ null,
+    currentUserName: /*[[${currentUser?.fullName}]]*/ null,
+    endpoints: {
+      cancel: '/sbs/admin/bookings/cancel/',
+      details: '/sbs/admin/bookings/'
+    }
+  };
+
+  $(document).ready(function() {
+    console.log('🏥 My Bookings page initializing...');
+    initializeMyBookingsPage();
+  });
+
+  function initializeMyBookingsPage() {
+    setupCharacterCounter();
+    setupFilterSubmission();
+    bindEventHandlers();
+
+    console.log('✅ My Bookings page ready');
+  }
+
+  function setupCharacterCounter() {
+    $('#cancellationReason').on('input', function() {
+      const length = $(this).val().length;
+      const counter = $('#reasonCount');
+
+      counter.text(length);
+
+      if (length > 500) {
+        counter.addClass('text-danger');
+        $(this).addClass('is-invalid');
+      } else if (length > 450) {
+        counter.addClass('text-warning').removeClass('text-danger');
+        $(this).removeClass('is-invalid');
+      } else {
+        counter.removeClass('text-warning text-danger');
+        $(this).removeClass('is-invalid');
+      }
+    });
+  }
+
+  function setupFilterSubmission() {
+    // Auto-submit when date filters change
+    $('#fromDate, #toDate, #statusFilter').on('change', function() {
+      $(this).closest('form').submit();
+    });
+  }
+
+  function bindEventHandlers() {
+    // Modal events
+    $('#cancelBookingModal').on('hidden.bs.modal', function() {
+      resetCancelForm();
+    });
+  }
+
+  // ========== BOOKING ACTIONS ==========
+  function showCancelModal(element) {
+    const bookingId = $(element).data('booking-id');
+    const serviceName = $(element).data('service-name');
+    const bookingDate = $(element).data('booking-date');
+
+    console.log('🗑️ Opening cancel modal for booking:', bookingId);
+
+    // Update modal content
+    $('#cancelServiceName').text(serviceName);
+    $('#cancelBookingDate').text(bookingDate);
+    $('#cancelBookingForm').attr('action', `${MY_BOOKINGS_CONFIG.endpoints.cancel}${bookingId}`);
+
+    // Show modal
+    $('#cancelBookingModal').modal('show');
+  }
+
+  function confirmCancelBooking() {
+    const form = $('#cancelBookingForm');
+    const reason = $('#cancellationReason').val().trim();
+
+    if (!reason) {
+      showNotification('Vui lòng nhập lý do hủy lịch', 'warning');
+      $('#cancellationReason').focus();
+      return;
+    }
+
+    if (reason.length > 500) {
+      showNotification('Lý do hủy không được vượt quá 500 ký tự', 'warning');
+      return;
+    }
+
+    console.log('🗑️ Cancelling booking with reason:', reason);
+
+    // Set loading state
+    const confirmBtn = $('.modal-footer .btn-danger');
+    const originalText = confirmBtn.html();
+    confirmBtn.addClass('loading').prop('disabled', true);
+
+    // Submit via AJAX
+    $.ajax({
+      url: form.attr('action'),
+      method: 'POST',
+      data: { cancellationReason: reason },
+      success: function(response) {
+        console.log('✅ Booking cancelled successfully');
+
+        $('#cancelBookingModal').modal('hide');
+        showNotification('Lịch hẹn đã được hủy thành công', 'success');
+
+        // Reload page after success
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      },
+      error: function(xhr, status, error) {
+        console.error('❌ Cancel booking error:', xhr.status, error);
+
+        let errorMessage = 'Có lỗi xảy ra khi hủy lịch';
+
+        if (xhr.status === 401) {
+          errorMessage = 'Phiên đăng nhập đã hết hạn';
+          setTimeout(() => {
+            window.location.href = '/admin/login';
+          }, 2000);
+        } else if (xhr.status === 403) {
+          errorMessage = 'Bạn không có quyền hủy lịch hẹn này';
+        } else if (xhr.status === 400 && xhr.responseJSON?.message) {
+          errorMessage = xhr.responseJSON.message;
+        }
+
+        showNotification(errorMessage, 'error');
+      },
+      complete: function() {
+        confirmBtn.removeClass('loading').prop('disabled', false).html(originalText);
+      }
+    });
+  }
+
+  function resetCancelForm() {
+    $('#cancellationReason').val('');
+    $('#reasonCount').text('0').removeClass('text-warning text-danger');
+    $('#cancellationReason').removeClass('is-invalid');
+  }
+
+  // ========== UTILITY FUNCTIONS ==========
+  function showNotification(message, type = 'info') {
+    const alertClass = {
+      'success': 'alert-success',
+      'error': 'alert-danger',
+      'warning': 'alert-warning',
+      'info': 'alert-info'
+    }[type] || 'alert-info';
+
+    const icon = {
+      'success': 'fa-check-circle',
+      'error': 'fa-exclamation-triangle',
+      'warning': 'fa-exclamation-triangle',
+      'info': 'fa-info-circle'
+    }[type] || 'fa-info-circle';
+
+    const alert = `
+        <div class="alert ${alertClass} alert-dismissible fade show booking-alert">
+            <i class="fa ${icon} mr-2"></i>
+            <strong>${message}</strong>
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    `;
+
+    $('.booking-alert').remove();
+    $('body').append(alert);
+
+    setTimeout(() => {
+      $('.booking-alert').fadeOut(400, function() {
+        $(this).remove();
+      });
+    }, 5000);
+  }
+
+  function copyBookingCode(element) {
+    const code = $(element).text();
+    navigator.clipboard.writeText(code).then(() => {
+      showNotification('Đã sao chép mã booking', 'success');
+    });
+  }
+
+  console.log('🚀 My Bookings page script loaded successfully');
+</script>
+
+<!-- JAVASCRIPT FILES -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
+
+</body>
+</html>

@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{/dashboard/fragments/head::admin-head}">
+  <style>
+    /* Dropdown Filter Styling */
+    .dropdown-inner {
+      background: #fff;
+      border-radius: 6px;
+    }
+
+    .dropdown-menu {
+      border: 1px solid #e1e5e9;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+    }
+
+    /* Form Controls in Dropdowns */
+    .dropdown-inner .form-control-sm,
+    .dropdown-inner .form-select-sm {
+      border-radius: 4px;
+      border: 1px solid #e1e5e9;
+      font-size: 0.875rem;
+    }
+
+    .dropdown-inner .form-control-sm:focus,
+    .dropdown-inner .form-select-sm:focus {
+      border-color: #5e72e4;
+      box-shadow: 0 0 0 0.1rem rgba(94, 114, 228, 0.25);
+    }
+
+    /* Form Labels in Dropdowns */
+    .form-label-sm {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #8094ae;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Tags Checkbox List */
+    .tags-checkbox-list {
+      border: 1px solid #e1e5e9;
+      border-radius: 4px;
+      padding: 0.5rem;
+      background: #f8f9fa;
+    }
+
+    .form-check-sm .form-check-input {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+
+    .form-check-sm .form-check-label {
+      font-size: 0.875rem;
+      margin-left: 0.25rem;
+    }
+
+    /* Button Styling in Dropdowns */
+    .dropdown-inner .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      border-radius: 4px;
+    }
+
+    /* Quick Select Buttons */
+    .btn-group-sm .btn-sm {
+      flex: 1;
+      white-space: nowrap;
+    }
+
+    /* Active Filters Alert */
+    .alert-pro {
+      border-left: 4px solid #5e72e4;
+      background: rgba(94, 114, 228, 0.1);
+      border-color: rgba(94, 114, 228, 0.2);
+    }
+
+    .badge-outline-primary {
+      color: #5e72e4;
+      border: 1px solid #5e72e4;
+      background: transparent;
+    }
+
+    /* Link List Styling */
+    .link-list-opt.no-bdr li a {
+      padding: 0.375rem 0;
+      color: #8094ae;
+      font-size: 0.875rem;
+      border: none;
+      transition: color 0.2s ease;
+    }
+
+    .link-list-opt.no-bdr li a:hover {
+      color: #5e72e4;
+      background: transparent;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .dropdown-menu {
+        min-width: 280px !important;
+        left: 0 !important;
+        right: auto !important;
+      }
+
+      .nk-block-tools li {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    /* Filter Button Active State */
+    .btn-white.btn-dim.active {
+      background-color: #5e72e4;
+      border-color: #5e72e4;
+      color: #fff;
+    }
+
+    /* Dropdown Toggle Indicator */
+    .dd-indc {
+      transition: transform 0.2s ease;
+    }
+
+    .dropdown-toggle[aria-expanded="true"] .dd-indc {
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body class="nk-body npc-default has-apps-sidebar has-sidebar ">
+<div class="nk-app-root">
+
+  <div class="nk-main ">
+    <div class="nk-wrap ">
+      <div class="nk-header nk-header-fixed" th:replace="~{/dashboard/fragments/header::admin-header}">
+      </div>
+      <div class="nk-sidebar" data-content="sidebarMenu"
+           th:replace="~{/dashboard/fragments/sidebar::admin-sidebar}">
+      </div>
+      <div class="nk-content">
+
+        <!-- PAGE HEADER -->
+        <div class="nk-block-head nk-block-head-sm">
+          <div class="nk-block-between">
+            <div class="nk-block-head-content">
+              <h3 class="nk-block-title page-title">
+                Bookings Management
+                <small class="text-primary"
+                       th:text="'('+ ${totalElements} +' booking)'"> (0 booking)</small>
+              </h3>
+            </div>
+            <div class="nk-block-head-content">
+              <!-- Quick-stat -->
+              <div class="nk-toolbar">
+                <ul class="nk-toolbar-tools gx-3">
+                  <li class="opt-menu-md">
+                    <a href="#filter" class="btn btn-trigger btn-icon d-md-none"
+                       data-toggle="collapse">
+                      <em class="icon ni ni-filter-alt"></em></a>
+                    <div class="toggle-wrap d-none d-md-block">
+                      <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                         data-target="pageMenu"><em class="icon ni ni-menu"></em></a>
+                      <div class="toggle-expand-content" data-content="pageMenu">
+                        <ul class="nk-block-tools g-3">
+                          <li>
+                            <div class="form-control-wrap">
+                              <select class="form-select"
+                                      id="statusSelect"
+                                      onchange="location.href=this.value">
+                                <option th:value="@{/admin/bookings/admin}"
+                                        th:selected="${selectedStatus == null}">
+                                  All
+                                </option>
+                                <option th:each="s : ${bookingStatuses}"
+                                        th:value="@{/admin/bookings/admin(status=${s})}"
+                                        th:selected="${selectedStatus == s}"
+                                        th:text="${s.vietnameseName}">Pending
+                                </option>
+                              </select>
+                            </div>
+                          </li>
+                          <li>
+                                                    <span class="badge badge-dim bg-warning">
+                                                        Pending:
+                                                        <span th:text="${pendingCount}">0</span>
+                                                    </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div><!-- .toggle-wrap -->
+                  </li>
+                </ul>
+              </div><!-- .nk-toolbar -->
+            </div>
+          </div>
+        </div><!-- .nk-block-head -->
+
+        <!-- ALERT (từ Controller) -->
+        <div th:if="${message}" class="alert alert-success alert-fill alert-icon">
+          <em class="icon ni ni-check-circle-cut"></em>
+          <strong th:text="${message}">Success</strong>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-fill alert-icon">
+          <em class="icon ni ni-cross-circle"></em>
+          <strong th:text="${error}">Error</strong>
+        </div>
+
+        <!-- LIST TABLE -->
+        <div class="nk-block">
+          <div class="card card-bordered card-stretch">
+            <div class="card-inner-group">
+
+              <!-- TABLE HEAD -->
+              <div class="card-inner p-0">
+                <table class="table table-tranx">
+                  <thead>
+                  <tr class="tb-tnx-head">
+                    <th>Customer</th>
+                    <th>Service</th>
+                    <th>Time</th>
+                    <th>Staff</th>
+                    <th>Status</th>
+                    <th class="text-end">Operations</th>
+                  </tr>
+                  </thead>
+
+                  <!-- TABLE BODY -->
+                  <tbody>
+                  <tr th:each="bk : ${bookings}" class="tb-tnx-item">
+                    <td>
+                      <div class="tb-lead" th:text="${bk.customerName}">Customer</div>
+                      <span class="sub-text" th:text="${bk.customerEmail}">email</span>
+                    </td>
+                    <td>
+                      <span th:text="${bk.serviceName}">Service</span>
+                      <span class="badge bg-light"
+                            th:text="${bk.serviceDuration}">60'</span>
+                    </td>
+                    <td>
+                      <span th:text="${bk.formattedBookingDateTime}">22/07 14:00</span><br/>
+                      <span class="sub-text"
+                            th:text="'Create: ' + ${#temporals.format(bk.createdAt,'dd/MM HH:mm')}">
+                                            Create
+                                        </span>
+                    </td>
+                    <td>
+                      <span th:text="${bk.staffName ?: 'Unassigned'}">Staff</span>
+                    </td>
+                    <td>
+                                        <span class="badge"
+                                              th:class="'badge-' + ${bk.status.name().toLowerCase()}"
+                                              th:text="${bk.statusDisplayName}">Pending</span>
+                    </td>
+
+                    <!-- ACTIONS -->
+                    <td class="text-end">
+                      <div class="dropdown">
+                        <a class="btn btn-sm btn-icon btn-trigger dropdown-toggle"
+                           data-bs-toggle="dropdown">
+                          <em class="icon ni ni-more-v"></em>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                          <ul class="link-list-opt">
+                            <li><a th:href="@{/admin/bookings/{id}(id=${bk.bookingId})}">
+                              <em class="icon ni ni-eye"></em>
+                              <span>Details</span></a></li>
+                            <li th:if="${bk.canBeAssigned}">
+                              <a href="#"
+                                 th:attr="data-id=${bk.bookingId},
+                                 data-service-name=${bk.serviceName},
+                                 data-customer-name=${bk.customerName},
+                                 data-booking-datetime=${bk.bookingDate}"
+                                 onclick="openAssign(this)">
+                                <em class="icon ni ni-user-add"></em>
+                                <span>Assign</span></a>
+                            </li>
+                            <li th:if="${bk.canBeCancelled}">
+                              <a href="#"
+                                 th:attr="data-id=${bk.bookingId}"
+                                 onclick="openCancel(this)">
+                                <em class="icon ni ni-cross"></em>
+                                <span>Cancel</span></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Empty State -->
+                  <tr th:if="${#lists.isEmpty(bookings)}">
+                    <td colspan="7" class="text-center p-4">
+                      <em class="icon ni ni-calendar-x-fill display-4 text-soft"></em>
+                      <p class="mt-2">No Booking.</p>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div><!-- .card-inner -->
+
+              <!-- PAGINATION -->
+              <div class="card-inner">
+                <div class="nk-block-between-md g-3">
+                  <nav th:if="${totalPages > 1}">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item"
+                          th:classappend="${!hasPrevious}? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/admin/bookings/admin(page=${currentPage},status=${selectedStatus})}">
+                          <em class="icon ni ni-chevron-left"></em>
+                        </a>
+                      </li>
+                      <li class="page-item"
+                          th:each="p : ${#numbers.sequence(0,totalPages - 1)}"
+                          th:classappend="${p==currentPage}? 'active'">
+                        <a class="page-link"
+                           th:href="@{/admin/bookings/admin(page=${p},status=${selectedStatus})}"
+                           th:text="${p + 1}">1</a>
+                      </li>
+                      <li class="page-item"
+                          th:classappend="${!hasNext}? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/admin/bookings/admin(page=${currentPage+1},status=${selectedStatus})}">
+                          <em class="icon ni ni-chevron-right"></em>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <div class="text-soft">
+                    Display
+                    <span th:text="${bookings.size()}">0</span> /
+                    <span th:text="${totalElements}">0</span> booking
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div><!-- .nk-block -->
+
+      </div><!-- .nk-content -->
+    </div>
+  </div>
+</div>
+<!-- Assign Staff Modal -->
+<div class="modal fade" id="assignStaffModal" tabindex="-1" role="dialog" aria-labelledby="assignStaffModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="assignStaffModalLabel">
+          <i class="icon ni ni-user-add"></i>
+          Assign staff
+        </h5>
+        <button type="button" class="btn-close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!-- Booking Info Summary -->
+        <div class="assign-booking-summary mb-4">
+          <div class="card border-primary">
+            <div class="card-body">
+              <h6 class="card-title text-primary">
+                <i class="icon ni ni-calendar-booking"></i>
+                Booking information
+              </h6>
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="mb-2">
+                    <strong>Booking code:</strong>
+                    <span id="assignBookingId" class="text-primary">BK001</span>
+                  </p>
+                  <p class="mb-2">
+                    <strong>Service:</strong>
+                    <span id="assignServiceName">Tên dịch vụ</span>
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <p class="mb-2">
+                    <strong>Customer:</strong>
+                    <span id="assignCustomerName">Customer name:</span>
+                  </p>
+                  <p class="mb-2">
+                    <strong>Time:</strong>
+                    <span id="assignDateTime">25/07/2025 14:00</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assignment Form -->
+        <form id="assignStaffForm" novalidate>
+          <!-- Staff Selection -->
+          <div class="form-group mb-4">
+            <label for="staffSelect" class="form-label">
+              <i class="icon ni ni-user"></i>
+              Chọn nhân viên <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="staffSelect" name="staffId" required>
+              <option value="">-- Loading staff list --</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select staff to assign
+            </div>
+            <small class="form-text text-muted">
+              Show only employees who are available to work during these hours
+            </small>
+          </div>
+
+          <!-- Assignment Notes -->
+          <div class="form-group mb-4">
+            <label for="assignmentNotes" class="form-label">
+              <i class="icon ni ni-edit"></i>
+              Notes
+            </label>
+            <textarea class="form-control"
+                      id="assignmentNotes"
+                      name="assignmentNotes"
+                      rows="3"
+                      maxlength="500"
+                      placeholder="Ghi chú đặc biệt cho nhân viên về lịch hẹn này..."></textarea>
+            <div class="d-flex justify-content-between mt-1">
+              <small class="form-text text-muted">
+                This information will be sent to the staff.
+              </small>
+              <small class="form-text text-muted">
+                <span id="notesCount">0</span>/500 character
+              </small>
+            </div>
+          </div>
+        </form>
+
+        <!-- Warning Alert -->
+        <div class="alert alert-warning d-none" id="assignWarning">
+          <i class="icon ni ni-alert-circle"></i>
+          <span id="warningMessage">Warning</span>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <div class="d-flex justify-content-between w-100 align-items-center">
+          <div class="assignment-info">
+            <small class="text-muted">
+              <i class="icon ni ni-info"></i>
+              Assignment will change booking status to "Assigned"
+            </small>
+          </div>
+          <div class="modal-actions">
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                    onclick="closeAssign()">
+              <i class="icon ni ni-cross"></i>
+              Cancel
+            </button>
+
+            <button type="button" class="btn btn-primary" id="confirmAssignBtn" onclick="confirmAssignStaff()">
+              <i class="icon ni ni-check"></i>
+              Assign
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{/dashboard/fragments/footer::admin-scripts}"></div>
+<script>
+  // Global variables
+  let currentBookingId = null;
+  let availableStaff = [];
+
+  /**
+   * Mở modal phân công
+   */
+  function openAssign(buttonElement) {
+    // Lấy thông tin từ button attributes
+    const bookingId = buttonElement.dataset.id || buttonElement.getAttribute('data-booking-id');
+    const serviceName = buttonElement.dataset.service-name || buttonElement.getAttribute('data-service-name');
+    const customerName = buttonElement.dataset.customer-name || buttonElement.getAttribute('data-customer-name');
+    const bookingDateTime  = buttonElement.dataset.bookingDatetime
+            || buttonElement.getAttribute('data-booking-datetime')
+            || 'Không xác định';
+    console.log('🔄 Opening assign modal for booking:', bookingId);
+
+    // Validate required data
+    if (!bookingId) {
+      console.error('❌ Missing booking ID');
+      showNotification('Lỗi: Không tìm thấy ID booking', 'error');
+      return;
+    }
+
+    // Store current booking ID
+    currentBookingId = bookingId;
+
+    // Update modal content
+    document.getElementById('assignBookingId').textContent = bookingId;
+    document.getElementById('assignServiceName').textContent = serviceName || 'Không xác định';
+    document.getElementById('assignCustomerName').textContent = customerName || 'Không xác định';
+    document.getElementById('assignDateTime').textContent = bookingDateTime || 'Không xác định';
+
+    // Reset form
+    resetAssignForm();
+
+    // Load available staff
+    loadAvailableStaff(bookingId);
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('assignStaffModal'));
+    modal.show();
+  }
+  function closeAssign(){
+    $('#assignStaffModal').modal('hide');
+  }
+
+  /**
+   * Load danh sách nhân viên có thể phân công
+   */
+  function loadAvailableStaff(bookingId) {
+    console.log('👥 Loading available staff for booking:', bookingId);
+
+    const staffSelect = document.getElementById('staffSelect');
+    const warningAlert = document.getElementById('assignWarning');
+
+    // Show loading state
+    staffSelect.innerHTML = '<option value="">⏳ Loading staff list...</option>';
+    staffSelect.disabled = true;
+
+    // Hide previous warnings
+    warningAlert.classList.add('d-none');
+
+    // AJAX call to get available staff
+    fetch(`/sbs/admin/bookings/available-staff/${bookingId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('✅ Staff data loaded:', data);
+              if (data.success && data.staff) {
+                populateStaffSelect(data.staff);
+
+                // Show warnings if any
+                if (data.warnings && data.warnings.length > 0) {
+                  showAssignWarnings(data.warnings);
+                }
+              } else {
+                throw new Error(data.message || 'Không thể tải danh sách nhân viên');
+              }
+            })
+            .catch(error => {
+              console.error('❌ Error loading staff:', error);
+
+              staffSelect.innerHTML = '<option value="">❌ Error loading staff list</option>';
+
+              // Show error in warning area
+              document.getElementById('warningMessage').textContent =
+                      'Không thể tải danh sách nhân viên: ' + error.message;
+              warningAlert.classList.remove('d-none');
+              warningAlert.className = 'alert alert-danger';
+            })
+            .finally(() => {
+              staffSelect.disabled = false;
+            });
+  }
+
+  /**
+   * Populate staff select dropdown
+   */
+  function populateStaffSelect(staffList) {
+    const staffSelect = document.getElementById('staffSelect');
+
+    // Clear previous options
+    staffSelect.innerHTML = '<option value="">-- Choose staff --</option>';
+
+    if (!staffList || staffList.length === 0) {
+      staffSelect.innerHTML = '<option value="">No available staff</option>';
+      return;
+    }
+
+    // Add staff options
+    staffList.forEach(staff => {
+      const option = document.createElement('option');
+      option.value = staff.userId;
+
+      // Format staff info
+      let displayText = staff.fullName;
+      if (staff.specialization) {
+        displayText += ` - ${staff.specialization}`;
+      }
+      if (staff.workload !== undefined) {
+        displayText += ` (${staff.workload} booking đang xử lý)`;
+      }
+
+      option.textContent = displayText;
+
+      // Add data attributes for additional info
+      option.setAttribute('data-email', staff.email || '');
+      option.setAttribute('data-phone', staff.phone || '');
+      option.setAttribute('data-workload', staff.workload || 0);
+
+      staffSelect.appendChild(option);
+    });
+
+    // Store for later use
+    availableStaff = staffList;
+
+    console.log(`📝 Added ${staffList.length} staff members to dropdown`);
+  }
+
+  /**
+   * Show assignment warnings
+   */
+  function showAssignWarnings(warnings) {
+    const warningAlert = document.getElementById('assignWarning');
+    const warningMessage = document.getElementById('warningMessage');
+
+    const warningText = warnings.join('; ');
+    warningMessage.textContent = warningText;
+
+    warningAlert.className = 'alert alert-warning';
+    warningAlert.classList.remove('d-none');
+
+    console.log('⚠️ Assignment warnings:', warnings);
+  }
+
+  /**
+   * Confirm assignment
+   */
+  function confirmAssignStaff() {
+    console.log('✅ Confirming staff assignment...');
+
+    // Validate form
+    if (!validateAssignForm()) {
+      return;
+    }
+    console.log('staffId element:', document.getElementById('staffSelect').value);
+    console.log('notes element:', document.getElementById('assignmentNotes').value);
+    const staffId = document.getElementById('staffSelect').value;
+    const notes = document.getElementById('assignmentNotes').value.trim();
+
+    // Prepare request data
+    const assignmentData = {
+      staffId: staffId,
+      assignmentNotes: notes,
+      };
+
+    console.log('📤 Assignment data:', assignmentData);
+
+    // Set loading state
+    const confirmBtn = document.getElementById('confirmAssignBtn');
+    const originalText = confirmBtn.innerHTML;
+    confirmBtn.innerHTML = '<i class="spinner-border spinner-border-sm me-2"></i>Đang phân công...';
+    confirmBtn.disabled = true;
+
+    // Send assignment request
+    fetch(`/sbs/admin/bookings/assign/${currentBookingId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify(assignmentData)
+    })
+            .then(response => {
+              if (!response.ok) {
+                return response.json().then(err => {
+                  throw new Error(err.message || `HTTP ${response.status}`);
+                });
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('✅ Assignment successful:', data);
+
+              if (data.success) {
+                // Get assigned staff info
+                const assignedStaff = availableStaff.find(s => s.userId === staffId);
+                const staffName = assignedStaff ? assignedStaff.fullName : 'Nhân viên';
+
+                showNotification(
+                        `Đã phân công ${staffName} cho booking ${currentBookingId}`,
+                        'success'
+                );
+
+                // Close modal
+
+                const modal = new bootstrap.Modal(document.getElementById('assignStaffModal'));
+                modal.hide();
+
+                // Reload page to update table
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1500);
+              } else {
+                throw new Error(data.message || 'Phân công không thành công');
+              }
+            })
+            .catch(error => {
+              console.error('❌ Assignment error:', error);
+
+              let errorMessage = 'Có lỗi xảy ra khi phân công nhân viên';
+
+              if (error.message.includes('401')) {
+                errorMessage = 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.';
+                setTimeout(() => {
+                  window.location.href = '/admin/login';
+                }, 2000);
+              } else if (error.message.includes('403')) {
+                errorMessage = 'Bạn không có quyền thực hiện thao tác này';
+              } else if (error.message.includes('409')) {
+                errorMessage = 'Nhân viên đã có lịch trùng với thời gian này';
+              } else if (error.message) {
+                errorMessage = error.message;
+              }
+
+              showNotification(errorMessage, 'error');
+            })
+            .finally(() => {
+              // Reset button state
+              confirmBtn.innerHTML = originalText;
+              confirmBtn.disabled = false;
+            });
+  }
+
+  /**
+   * Validate assignment form
+   */
+  function validateAssignForm() {
+    let isValid = true;
+
+    // Validate staff selection
+    const staffSelect = document.getElementById('staffSelect');
+    if (!staffSelect.value) {
+      staffSelect.classList.add('is-invalid');
+      isValid = false;
+    } else {
+      staffSelect.classList.remove('is-invalid');
+    }
+
+    // Validate notes length
+    const notes = document.getElementById('assignmentNotes');
+    if (notes.value.length > 500) {
+      notes.classList.add('is-invalid');
+      isValid = false;
+    } else {
+      notes.classList.remove('is-invalid');
+    }
+
+    if (!isValid) {
+      showNotification('Vui lòng kiểm tra và điền đầy đủ thông tin', 'warning');
+    }
+
+    return isValid;
+  }
+
+  /**
+   * Reset assignment form
+   */
+  function resetAssignForm() {
+    const form = document.getElementById('assignStaffForm');
+    form.reset();
+
+    // Clear validation states
+    form.querySelectorAll('.is-invalid').forEach(element => {
+      element.classList.remove('is-invalid');
+    });
+
+    // Reset notes counter
+    document.getElementById('notesCount').textContent = '0';
+
+    // Hide warnings
+    document.getElementById('assignWarning').classList.add('d-none');
+
+    // Reset staff select
+    document.getElementById('staffSelect').innerHTML = '<option value="">-- Chọn nhân viên --</option>';
+
+    console.log('🔄 Assignment form reset');
+  }
+
+  /**
+   * Character counter for notes
+   */
+  document.addEventListener('DOMContentLoaded', function() {
+    const notesTextarea = document.getElementById('assignmentNotes');
+    const notesCounter = document.getElementById('notesCount');
+
+    if (notesTextarea && notesCounter) {
+      notesTextarea.addEventListener('input', function() {
+        const length = this.value.length;
+        notesCounter.textContent = length;
+
+        // Update styling based on length
+        if (length > 500) {
+          notesCounter.classList.add('text-danger');
+          this.classList.add('is-invalid');
+        } else if (length > 450) {
+          notesCounter.classList.remove('text-danger');
+          notesCounter.classList.add('text-warning');
+          this.classList.remove('is-invalid');
+        } else {
+          notesCounter.classList.remove('text-danger', 'text-warning');
+          this.classList.remove('is-invalid');
+        }
+      });
+    }
+  });
+
+  /**
+   * Show notification
+   */
+  function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    document.querySelectorAll('.booking-notification').forEach(el => el.remove());
+
+    const alertClass = {
+      'success': 'alert-success',
+      'error': 'alert-danger',
+      'warning': 'alert-warning',
+      'info': 'alert-info'
+    }[type] || 'alert-info';
+
+    const icon = {
+      'success': 'ni ni-check-circle',
+      'error': 'ni ni-cross-circle',
+      'warning': 'ni ni-alert-circle',
+      'info': 'ni ni-info'
+    }[type] || 'ni ni-info';
+
+    const notification = document.createElement('div');
+    notification.className = `alert ${alertClass} alert-dismissible fade show booking-notification`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 350px;
+        max-width: 500px;
+        border-radius: 8px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    `;
+
+    notification.innerHTML = `
+        <i class="icon ${icon} me-2"></i>
+        <strong>${message}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 5000);
+  }
+
+</script>
+
+</body>
+</html>

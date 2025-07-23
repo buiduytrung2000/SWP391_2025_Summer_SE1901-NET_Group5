@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.edu.fpt.BeautyCenter.entity.Staff;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface StaffRepository extends JpaRepository<Staff, String> {
@@ -18,4 +19,5 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
             "LOWER(s.email) LIKE %:keyword% OR " +
             "LOWER(s.phone) LIKE %:keyword%")
     Page<Staff> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+    long countByCreatedAtBetweenAndRole(LocalDateTime start, LocalDateTime end, String role);
 }

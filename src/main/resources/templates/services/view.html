@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header::common-head}">
+    <!-- PAGE TITLE HERE -->
+    <title th:text="${service.name}">Tên dịch vụ</title>
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+
+    <!-- HEADER START -->
+    <header th:replace="~{fragments/header::header}">
+    </header>
+    <!-- HEADER END -->
+
+    <!-- CONTENT START -->
+    <div class="page-content">
+
+        <!-- INNER PAGE BANNER -->
+        <div class="wt-bnr-inr overlay-wraper" th:style="|background-image: url('@{/images/background/bg-1.jpg}')|">
+            <div class="overlay-main bg-black opacity-07"></div>
+            <div class="container">
+                <div class="wt-bnr-inr-entry">
+                    <h1 class="text-white" th:text="${service.name}">Blog single on sidebar</h1>
+                </div>
+
+            </div>
+        </div>
+        <!-- INNER PAGE BANNER END -->
+
+        <!-- BREADCRUMB ROW -->
+        <div class="bg-gray-light p-tb20">
+            <div class="container">
+                <ul class="wt-breadcrumb breadcrumb-style-2">
+                    <li><a href="javascript:void(0);"><i class="fa fa-home"></i> Home</a></li>
+                    <li th:text="${service.name}">Blog single on sidebar</li>
+                </ul>
+            </div>
+        </div>
+        <!-- BREADCRUMB ROW END -->
+
+        <!-- SECTION CONTENT START -->
+        <div class="section-full p-t80 p-b50">
+            <div class="container">
+                <div class="wt-mid-page">
+
+                    <!-- BLOG START -->
+                    <div class="blog-post date-style-1 blog-post-single">
+                        <div class="wt-post-media wt-img-effect">
+                            <img src="images/blog/default/thum1.jpg" alt="">
+                        </div>
+                        <div class="post-description-area p-t30">
+                            <div class="wt-post-meta ">
+                                <ul>
+                                    <li class="post-date"><i class="fa fa-credit-card"></i><span
+                                            th:text="'Price: ' + ${#numbers.formatCurrency(service.price)}">Price</span>
+                                    </li>
+                                    <li class="post-author"><i class="fa fa-clock-o"></i><span
+                                            th:text="'Duration: ' + ${service.duration} ">Time</span></li>
+                                </ul>
+                            </div>
+                            <div class="wt-post-text" th:utext="${service.content}">
+                            </div>
+                            <div class="widget bg-white  widget_tag_cloud">
+                                <h4 class="tagcloud">Tags</h4>
+                                <div class="tagcloud" th:if="${not #lists.isEmpty(service.tags)}">
+                                    <a href="about-1.html" th:each="tag : ${service.tags}"
+                                       class="tag"
+                                       th:text="${tag}">Tag 1</a>
+
+                                </div>
+                            </div>
+                            <div id="commentData"
+                                 th:attr="data-service=${service},
+              data-is-logged-in=${isLoggedIn},
+              data-current-user=${currentUser},
+              data-current-user-id=${currentUser?.userId},
+              data-current-user-name=${currentUser?.fullName},
+              data-current-user-avatar=${currentUser?.avatarUrl}"
+                                 style="display: none;">
+                            </div>
+
+                        </div>
+                        <div class="post-description-area p-t30">
+                            <!-- Booking Card -->
+                            <div class="booking-card card shadow-sm sticky-top">
+                                <div class="card-body">
+                                    <!-- Service Quick Info -->
+                                    <div class="service-quick-info mb-4">
+                                        <div class="info-item d-flex justify-content-between mb-2">
+                                            <span><i class="fa fa-clock text-muted"></i> Time:</span>
+                                            <strong th:text="${service.duration}">60 phút</strong>
+                                        </div>
+                                        <div class="info-item d-flex justify-content-between mb-2">
+                                            <span><i class="fa fa-user text-muted"></i> Staff:</span>
+                                            <strong>Available</strong>
+                                        </div>
+                                        <div class="info-item d-flex justify-content-between">
+                                            <span><i class="fa fa-star text-muted"></i> Rate:</span>
+                                            <strong>4.9/5 ⭐</strong>
+                                        </div>
+                                    </div>
+
+                                    <!-- Booking Actions -->
+                                    <div class="booking-actions">
+                                        <!-- Alternative: Redirect Button -->
+                                        <a th:if="${isLoggedIn}"
+                                           th:href="@{/admin/bookings/service/{serviceId}(serviceId=${service.serviceId})}"
+                                           class="btn btn-success btn-lg btn-block mb-2">
+                                            <i class="fa fa-external-link-alt"></i>
+                                            Book Now!
+                                        </a>
+
+                                        <!-- Login Required -->
+                                        <div th:unless="${isLoggedIn}" class="text-center">
+                                            <p class="text-muted mb-3">
+                                                <i class="fa fa-lock"></i>
+                                                Vui lòng đăng nhập để đặt lịch
+                                            </p>
+                                            <a href="/sbs/login" class="btn btn-outline-primary btn-lg btn-block">
+                                                <i class="fa fa-sign-in-alt"></i>
+                                                Đăng Nhập
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- SECTION CONTENT END -->
+
+    </div>
+    <!-- CONTENT END -->
+
+    <!-- FOOTER START -->
+    <footer th:replace="~{fragments/footer :: footer}">
+
+    </footer>
+    <!-- FOOTER END -->
+
+    <!-- BUTTON TOP START -->
+    <button class="scroltop"><span class=" iconmoon-house relative" id="btn-vibrate"></span>Top</button>
+
+</div>
+
+
+<!-- LOADING AREA START ===== -->
+<div class="loading-area">
+    <div class="loading-box"></div>
+    <div class="loading-pic">
+        <div class="cssload-container">
+            <div class="cssload-progress cssload-float cssload-shadow">
+                <div class="cssload-progress-item"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOADING AREA  END ====== -->
+<!-- STYLE SWITCHER  ======= -->
+<div class="styleswitcher">
+
+    <div class="switcher-btn-bx">
+        <a class="switch-btn">
+            <span class="fa fa-cog fa-spin"></span>
+        </a>
+    </div>
+
+    <div class="styleswitcher-inner">
+
+        <h6 class="switcher-title">Color Skin</h6>
+        <ul class="color-skins">
+            <li><a class="theme-skin skin-1" href="?theme=css/skin/skin-1" title="default Theme"></a></li>
+            <li><a class="theme-skin skin-2" href="?theme=css/skin/skin-2" title="pink Theme"></a></li>
+            <li><a class="theme-skin skin-3" href="?theme=css/skin/skin-3" title="sky Theme"></a></li>
+            <li><a class="theme-skin skin-4" href="?theme=css/skin/skin-4" title="green Theme"></a></li>
+            <li><a class="theme-skin skin-5" href="?theme=css/skin/skin-5" title="red Theme"></a></li>
+            <li><a class="theme-skin skin-6" href="?theme=css/skin/skin-6" title="orange Theme"></a></li>
+            <li><a class="theme-skin skin-7" href="?theme=css/skin/skin-7" title="purple Theme"></a></li>
+            <li><a class="theme-skin skin-8" href="?theme=css/skin/skin-8" title="blue Theme"></a></li>
+            <li><a class="theme-skin skin-9" href="?theme=css/skin/skin-9" title="gray Theme"></a></li>
+            <li><a class="theme-skin skin-10" href="?theme=css/skin/skin-10" title="brown Theme"></a></li>
+            <li><a class="theme-skin skin-11" href="?theme=css/skin/skin-11" title="gray Theme"></a></li>
+            <li><a class="theme-skin skin-12" href="?theme=css/skin/skin-12" title="golden Theme"></a></li>
+        </ul>
+
+        <h6 class="switcher-title">Nav</h6>
+        <ul class="nav-view">
+            <li class="nav-light active">Light</li>
+            <li class="nav-dark">Dark</li>
+        </ul>
+
+        <h6 class="switcher-title">Nav</h6>
+        <ul class="nav-width">
+            <li class="nav-boxed active">Boxed</li>
+            <li class="nav-wide">Wide</li>
+        </ul>
+
+        <h6 class="switcher-title">Header</h6>
+        <ul class="header-view">
+            <li class="header-fixed active">Fixed</li>
+            <li class="header-static">Static</li>
+        </ul>
+
+        <h6 class="switcher-title">Layout</h6>
+        <ul class="layout-view">
+            <li class="wide-layout active">Wide</li>
+            <li class="boxed">Boxed</li>
+        </ul>
+
+        <h6 class="switcher-title">Background Image</h6>
+        <ul class="background-switcher">
+            <li><img src="images/switcher/switcher-bg/thum/bg1.jpg" rel="images/switcher/switcher-bg/large/bg1.jpg"
+                     alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg2.jpg" rel="images/switcher/switcher-bg/large/bg2.jpg"
+                     alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg3.jpg" rel="images/switcher/switcher-bg/large/bg3.jpg"
+                     alt=""></li>
+            <li><img src="images/switcher/switcher-bg/thum/bg4.jpg" rel="images/switcher/switcher-bg/large/bg4.jpg"
+                     alt=""></li>
+        </ul>
+
+        <h6 class="switcher-title">Background Pattern</h6>
+        <ul class="pattern-switcher">
+            <li><img src="images/switcher/switcher-patterns/thum/bg1.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt1.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg2.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt2.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg3.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt3.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg4.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt4.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg5.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt5.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg6.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt6.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg7.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt7.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg8.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt8.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg9.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt9.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg10.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt10.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg11.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt11.jpg" alt=""></li>
+            <li><img src="images/switcher/switcher-patterns/thum/bg12.jpg"
+                     rel="images/switcher/switcher-patterns/large/pt12.jpg" alt=""></li>
+        </ul>
+
+
+    </div>
+</div>
+<!-- STYLE SWITCHER END ==== -->
+<style>
+    /* ========== BOOKING CARD STYLES ========== */
+    .booking-card {
+        border-radius: 15px;
+        border: none;
+        top: 20px;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .booking-card:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .booking-card .card-body {
+        padding: 2rem;
+    }
+
+    .booking-header .price-display {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .booking-header .price-display::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: rotate(45deg);
+        transition: transform 0.3s ease;
+    }
+
+    .booking-header .price-display:hover::before {
+        transform: rotate(45deg) translate(100%, 100%);
+    }
+
+    .booking-header .price-amount {
+        font-size: 24px;
+        font-weight: bold;
+        display: block;
+    }
+
+    .service-quick-info {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+    }
+
+    .service-quick-info .info-item {
+        padding: 5px 0;
+        transition: color 0.2s ease;
+    }
+
+    .service-quick-info .info-item:hover {
+        color: #667eea;
+    }
+
+    .service-quick-info .info-item i {
+        width: 18px;
+    }
+
+    /* ========== BOOKING BUTTONS ========== */
+    .booking-actions .btn {
+        font-weight: 600;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .booking-actions .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .booking-actions .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .booking-actions .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .booking-actions .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .booking-actions .btn-success {
+        background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+        border: none;
+        box-shadow: 0 4px 15px rgba(86, 171, 47, 0.3);
+    }
+
+    .booking-actions .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(86, 171, 47, 0.4);
+    }
+
+    .booking-actions .btn-outline-primary {
+        border: 2px solid #667eea;
+        color: #667eea;
+    }
+
+    .booking-actions .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: transparent;
+        color: white;
+    }
+
+    /* ========== QUICK CONTACT ========== */
+    .quick-contact {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        margin: -2rem -2rem -2rem -2rem;
+        margin-top: 1.5rem;
+        padding: 1.5rem 2rem;
+        border-radius: 0 0 15px 15px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .contact-buttons .btn {
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .contact-buttons .btn:hover {
+        transform: scale(1.02);
+    }
+
+    /* ========== MODAL STYLES ========== */
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-bottom: none;
+        padding: 1.5rem 2rem;
+    }
+
+    .modal-header .modal-title {
+        font-weight: 600;
+    }
+
+    .modal-header .close {
+        color: white;
+        opacity: 0.8;
+        font-size: 1.5rem;
+        text-shadow: none;
+    }
+
+    .modal-header .close:hover {
+        color: white;
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .booking-service-summary {
+        border: 2px dashed #dee2e6;
+        transition: border-color 0.3s ease;
+    }
+
+    .booking-service-summary:hover {
+        border-color: #667eea;
+    }
+
+    .booking-service-summary .badge-lg {
+        font-size: 16px;
+        padding: 8px 12px;
+        border-radius: 6px;
+    }
+
+    /* ========== FORM STYLES ========== */
+    .form-group label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group label i {
+        margin-right: 8px;
+        width: 16px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+        padding: 12px 15px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        transform: translateY(-1px);
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    .form-control.is-warning {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    }
+
+    .invalid-feedback {
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+    .warning-feedback {
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    .booking-total {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 15px;
+        border-radius: 8px;
+        margin: -15px -15px 15px -15px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    /* ========== LOADING STATES ========== */
+    .btn.loading {
+        position: relative;
+        color: transparent !important;
+    }
+
+    .btn.loading::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        left: 50%;
+        margin-left: -8px;
+        margin-top: -8px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        border-top-color: #ffffff;
+        animation: spin 1s linear infinite;
+        z-index: 1;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* ========== ALERT NOTIFICATIONS ========== */
+    .booking-alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 350px;
+        max-width: 500px;
+        border-radius: 10px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border: none;
+    }
+
+    .booking-alert .fa-2x {
+        font-size: 1.5em;
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 1200px) {
+        .booking-card {
+            margin-top: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .booking-card {
+            position: static !important;
+            margin-top: 30px;
+        }
+
+        .booking-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .booking-actions .btn-lg {
+            font-size: 16px;
+            padding: 12px 20px;
+        }
+
+        .booking-header .price-amount {
+            font-size: 20px;
+        }
+
+        .booking-alert {
+            right: 10px;
+            left: 10px;
+            min-width: auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .service-quick-info .info-item {
+            flex-direction: column;
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .service-quick-info .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .booking-service-summary .row {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .booking-service-summary .col-md-4 {
+            margin-top: 10px;
+        }
+
+        .modal-footer {
+            flex-direction: column;
+        }
+
+        .modal-footer .w-100 {
+            margin-bottom: 10px;
+        }
+
+        .modal-footer button {
+            width: 100%;
+            margin: 5px 0;
+        }
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideInUp {
+        from {
+            transform: translateY(30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .booking-card {
+        animation: slideInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInScale {
+        from {
+            transform: scale(0.9);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .modal.show .modal-dialog {
+        animation: fadeInScale 0.3s ease-out;
+    }
+
+    /* ========== UTILITY CLASSES ========== */
+    .sticky-top {
+        position: sticky;
+        top: 20px;
+        z-index: 100;
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: bold;
+    }
+
+</style>
+<script>
+
+    // ========== BOOKING SYSTEM CONFIGURATION ==========
+    const dataElement = document.getElementById('commentData');
+    let BOOKING_CONFIG = {
+        serviceId: dataElement.dataset.serviceId || null,
+        isLoggedIn: dataElement.dataset.isLoggedIn || false,
+        currentUser: dataElement.dataset.currentUser || null,
+        service: dataElement.dataset.service || null,
+        endpoints: {
+            availableSlots: '/admin/bookings/available-slots/',
+            book: '/admin/bookings/book'
+        },
+        businessHours: {
+            open: '08:00',
+            close: '18:00',
+            slotDuration: 30 // minutes
+        }
+    };
+
+    $(document).ready(function () {
+        console.log('🏥 Booking system initializing...');
+        initializeBookingSystem();
+    });
+
+    // ========== INITIALIZATION ==========
+    function initializeBookingSystem() {
+        setupDatePicker();
+        setupFormValidation();
+        setupCharacterCounter();
+        bindEventHandlers();
+
+        console.log('✅ Booking system ready');
+    }
+
+    function setupDatePicker() {
+        const dateInput = $('#bookingDate');
+        const today = new Date().toISOString().split('T')[0];
+
+        // Set date constraints
+        dateInput.attr('min', today);
+
+        const maxDate = new Date();
+        maxDate.setMonth(maxDate.getMonth() + 3);
+        dateInput.attr('max', maxDate.toISOString().split('T')[0]);
+    }
+
+    function setupFormValidation() {
+        $('#bookingForm').on('submit', function (e) {
+            e.preventDefault();
+            submitBooking();
+            return false;
+        });
+
+        $(document).on('change', '#bookingDate', function () {
+            console.log('did goes here')
+            const selectedDate = $(this).val();
+            console.log('selected date: ' + selectedDate);
+            if (selectedDate) {
+                clearFieldError('bookingDate');
+                loadAvailableTimeSlots(selectedDate);
+                validateBookingDate(selectedDate);
+            }
+        });
+
+
+        // Time change handler
+        $('#bookingTime').on('change', function () {
+            if ($(this).val()) {
+                clearFieldError('bookingTime');
+                validateBookingTime();
+            }
+        });
+    }
+
+    function setupCharacterCounter() {
+        $('#notes').on('input', function () {
+            const length = $(this).val().length;
+            const counter = $('#notesCount');
+
+            counter.text(length);
+
+            if (length > 500) {
+                counter.addClass('text-danger').removeClass('text-warning');
+                $(this).addClass('is-invalid');
+            } else if (length > 450) {
+                counter.addClass('text-warning').removeClass('text-danger');
+                $(this).removeClass('is-invalid');
+            } else {
+                counter.removeClass('text-warning text-danger');
+                $(this).removeClass('is-invalid');
+            }
+        });
+    }
+
+    function bindEventHandlers() {
+        // Modal events
+        $('#bookingModal').on('shown.bs.modal', function () {
+            $('#bookingDate').focus();
+        });
+
+        $('#bookingModal').on('hidden.bs.modal', function () {
+            resetBookingForm();
+        });
+
+        // Prevent modal close on backdrop click while loading
+        $('#bookingModal').on('hide.bs.modal', function (e) {
+            if ($('#submitBookingBtn').hasClass('loading')) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    // ========== MAIN BOOKING FUNCTIONS ==========
+    function showBookingModal() {
+        if (!BOOKING_CONFIG.isLoggedIn) {
+            showLoginPrompt();
+            return;
+        }
+
+        console.log('📅 Opening booking modal');
+        $('#bookingModal').modal('show');
+    }
+
+    function loadAvailableTimeSlots(date) {
+        console.log('🕒 Loading time slots for:', date);
+
+        const timeSelect = $('#bookingTime');
+        const infoElement = $('#timeSlotInfo');
+
+        // Show loading
+        timeSelect.html('<option value="">⏳ Đang tải...</option>').prop('disabled', true);
+        infoElement.html('<span class="text-info">⏳ Đang kiểm tra lịch trống...</span>');
+
+        $.ajax({
+            url: `${BOOKING_CONFIG.endpoints.availableSlots}${BOOKING_CONFIG.serviceId}`,
+            method: 'GET',
+            data: {date: date},
+            timeout: 10000,
+            success: function (response) {
+                console.log('✅ Time slots loaded:', response.availableSlots?.length || 0);
+
+                if (response.success && response.availableSlots) {
+                    populateTimeSlots(response.availableSlots);
+                    updateSlotInfo(response.availableSlots.length);
+                } else {
+                    timeSelect.html('<option value="">❌ Không có lịch trống</option>');
+                    infoElement.html('<span class="text-danger">❌ Không thể tải lịch trống</span>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('❌ Time slots error:', status, error);
+
+                let errorMsg = 'Lỗi kết nối';
+                if (status === 'timeout') {
+                    errorMsg = 'Quá thời gian chờ';
+                } else if (xhr.status === 404) {
+                    errorMsg = 'Dịch vụ không tồn tại';
+                }
+
+                timeSelect.html(`<option value="">❌ ${errorMsg}</option>`);
+                infoElement.html(`<span class="text-danger">❌ ${errorMsg}</span>`);
+            },
+            complete: function () {
+                timeSelect.prop('disabled', false);
+            }
+        });
+    }
+
+    function populateTimeSlots(timeSlots) {
+        const timeSelect = $('#bookingTime');
+        timeSelect.empty().append('<option value="">-- Chọn khung giờ --</option>');
+
+        if (timeSlots.length === 0) {
+            timeSelect.append('<option value="" disabled>Hết lịch trống</option>');
+            return;
+        }
+
+        timeSlots.forEach(function (time) {
+            const timeFormatted = formatTimeDisplay(time);
+            timeSelect.append(`<option value="${time}">${timeFormatted}</option>`);
+        });
+    }
+
+    function formatTimeDisplay(time) {
+        const [hours, minutes] = time.split(':');
+        const startTime = `${hours}:${minutes}`;
+
+        // Calculate end time (assuming 1 hour service)
+        let endHour = parseInt(hours) + 1;
+        const endTime = `${endHour.toString().padStart(2, '0')}:${minutes}`;
+
+        return `${startTime} - ${endTime}`;
+    }
+
+    function updateSlotInfo(count) {
+        const infoElement = $('#timeSlotInfo');
+
+        if (count === 0) {
+            infoElement.html('<span class="text-warning">⚠️ Ngày này đã hết lịch trống</span>');
+        } else if (count <= 3) {
+            infoElement.html(`<span class="text-warning">⚠️ Chỉ còn ${count} khung giờ trống</span>`);
+        } else {
+            infoElement.html(`<span class="text-success">✅ Có ${count} khung giờ trống</span>`);
+        }
+    }
+
+    // ========== FORM SUBMISSION ==========
+    function submitBooking() {
+        console.log('📝 Submitting booking...');
+
+        if (!validateBookingForm()) {
+            console.log('❌ Form validation failed');
+            return;
+        }
+
+        const submitBtn = $('#submitBookingBtn');
+        const originalText = submitBtn.html();
+
+        // Set loading state
+        submitBtn.addClass('loading').prop('disabled', true);
+
+        const formData = {
+            serviceId: BOOKING_CONFIG.serviceId,
+            bookingDate: $('#bookingDate').val(),
+            bookingTime: $('#bookingTime').val(),
+            notes: $('#notes').val().trim()
+        };
+
+        console.log('📤 Booking data:', formData);
+
+        $.ajax({
+            url: BOOKING_CONFIG.endpoints.book,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            timeout: 30000,
+            success: function (response) {
+                console.log('✅ Booking successful:', response);
+                handleBookingSuccess(response);
+            },
+            error: function (xhr, status, error) {
+                console.error('❌ Booking error:', xhr.status, error);
+                handleBookingError(xhr, status);
+            },
+            complete: function () {
+                submitBtn.removeClass('loading').prop('disabled', false).html(originalText);
+            }
+        });
+    }
+
+    function handleBookingSuccess(response) {
+        if (response.success) {
+            showBookingSuccess(response);
+            $('#bookingModal').modal('hide');
+
+            // Redirect after success message
+            setTimeout(() => {
+                window.location.href = '/admin/bookings/my-bookings';
+            }, 2500);
+        } else {
+            showBookingError(response.message || 'Đặt lịch thất bại');
+        }
+    }
+
+    function handleBookingError(xhr, status) {
+        let errorMessage = 'Có lỗi xảy ra khi đặt lịch';
+
+        if (status === 'timeout') {
+            errorMessage = 'Quá thời gian chờ. Vui lòng thử lại.';
+        } else if (xhr.status === 401) {
+            errorMessage = 'Phiên đăng nhập đã hết hạn';
+            setTimeout(() => {
+                window.location.href = '/admin/login';
+            }, 2000);
+        } else if (xhr.status === 400 && xhr.responseJSON?.message) {
+            errorMessage = xhr.responseJSON.message;
+        } else if (xhr.status === 409) {
+            errorMessage = 'Khung giờ này đã được đặt. Vui lòng chọn giờ khác.';
+            // Reload time slots
+            const selectedDate = $('#bookingDate').val();
+            if (selectedDate) {
+                loadAvailableTimeSlots(selectedDate);
+            }
+        }
+
+        showBookingError(errorMessage);
+    }
+
+    // ========== VALIDATION ==========
+    function validateBookingForm() {
+        let isValid = true;
+
+        // Validate date
+        const date = $('#bookingDate').val();
+        if (!date) {
+            showFieldError('bookingDate', 'Vui lòng chọn ngày đặt lịch');
+            isValid = false;
+        } else if (!validateBookingDate(date)) {
+            isValid = false;
+        }
+
+        // Validate time
+        const time = $('#bookingTime').val();
+        if (!time) {
+            showFieldError('bookingTime', 'Vui lòng chọn khung giờ');
+            isValid = false;
+        }
+
+        // Validate notes length
+        const notes = $('#notes').val();
+        if (notes.length > 500) {
+            showFieldError('notes', 'Ghi chú không được vượt quá 500 ký tự');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function validateBookingDate(date) {
+        const selectedDate = new Date(date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (selectedDate < today) {
+            showFieldError('bookingDate', 'Không thể chọn ngày trong quá khứ');
+            return false;
+        }
+
+        // Check weekend (business rule)
+        const dayOfWeek = selectedDate.getDay();
+        if (dayOfWeek === 0) { // Sunday
+            showFieldWarning('bookingDate', '⚠️ Chúng tôi nghỉ Chủ nhật');
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateBookingTime() {
+        const selectedTime = $('#bookingTime').val();
+        const selectedDate = $('#bookingDate').val();
+
+        if (!selectedDate) {
+            showFieldError('bookingTime', 'Vui lòng chọn ngày trước');
+            return false;
+        }
+
+        if (!selectedTime) {
+            showFieldError('bookingTime', 'Vui lòng chọn khung giờ');
+            return false;
+        }
+
+        return true;
+    }
+
+    // ========== UI HELPERS ==========
+    function showFieldError(fieldId, message) {
+        const field = $(`#${fieldId}`);
+        field.addClass('is-invalid');
+        field.siblings('.invalid-feedback').remove();
+        field.after(`<div class="invalid-feedback">❌ ${message}</div>`);
+    }
+
+    function showFieldWarning(fieldId, message) {
+        const field = $(`#${fieldId}`);
+        field.addClass('is-warning');
+        field.siblings('.warning-feedback').remove();
+        field.after(`<div class="warning-feedback text-warning small mt-1">${message}</div>`);
+    }
+
+    function clearFieldError(fieldId) {
+        const field = $(`#${fieldId}`);
+        field.removeClass('is-invalid is-warning');
+        field.siblings('.invalid-feedback, .warning-feedback').remove();
+    }
+
+    function resetBookingForm() {
+        $('#bookingForm')[0].reset();
+        $('#bookingTime').empty().append('<option value="">-- Chọn khung giờ --</option>');
+        $('#notesCount').text('0');
+        $('#timeSlotInfo').html('Giờ làm việc: 8:00 - 18:00');
+
+        $('.form-control').removeClass('is-invalid is-warning');
+        $('.invalid-feedback, .warning-feedback').remove();
+
+        console.log('🔄 Booking form reset');
+    }
+
+    // ========== NOTIFICATIONS ==========
+    function showBookingSuccess(response) {
+        const bookingId = response.booking?.bookingId || response.bookingId || 'N/A';
+
+        const successAlert = `
+        <div class="alert alert-success alert-dismissible fade show booking-alert">
+            <div class="d-flex align-items-center">
+                <i class="fa fa-check-circle fa-2x text-success mr-3"></i>
+                <div class="flex-grow-1">
+                    <h6 class="mb-1">🎉 Đặt lịch thành công!</h6>
+                    <p class="mb-1">
+                        <strong>Mã booking:</strong>
+                        <span class="badge badge-primary">${bookingId}</span>
+                    </p>
+                    <small class="text-muted">Đang chuyển hướng đến trang quản lý...</small>
+                </div>
+            </div>
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    `;
+
+        $('body').append(successAlert);
+
+        setTimeout(() => {
+            $('.booking-alert').fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, 3000);
+    }
+
+    function showBookingError(message) {
+        const errorAlert = `
+        <div class="alert alert-danger alert-dismissible fade show booking-alert">
+            <div class="d-flex align-items-center">
+                <i class="fa fa-exclamation-triangle fa-2x text-danger mr-3"></i>
+                <div class="flex-grow-1">
+                    <h6 class="mb-1">❌ Đặt lịch thất bại</h6>
+                    <p class="mb-0">${message}</p>
+                </div>
+            </div>
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    `;
+
+        $('body').append(errorAlert);
+
+        setTimeout(() => {
+            $('.booking-alert').fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, 6000);
+    }
+
+    function showLoginPrompt() {
+        const loginModal = `
+        <div class="modal fade" id="loginPromptModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fa fa-user-circle text-white"></i>
+                            Đăng nhập để đặt lịch
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center py-4">
+                        <i class="fa fa-lock fa-3x text-muted mb-3"></i>
+                        <h6>Bạn cần đăng nhập để đặt lịch dịch vụ</h6>
+                        <p class="text-muted">Đăng nhập để trải nghiệm đầy đủ tính năng của Beauty Center</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <a href="/admin/login" class="btn btn-primary">
+                            <i class="fa fa-sign-in-alt"></i> Đăng nhập ngay
+                        </a>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                            Để sau
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+        $('#loginPromptModal').remove();
+        $('body').append(loginModal);
+        $('#loginPromptModal').modal('show');
+    }
+
+    // ========== ADDITIONAL FEATURES ==========
+    function openChatSupport() {
+        console.log('💬 Opening chat support...');
+
+        // Placeholder for chat integration
+        const chatAlert = `
+        <div class="alert alert-info alert-dismissible fade show booking-alert">
+            <div class="d-flex align-items-center">
+                <i class="fa fa-comments fa-2x text-info mr-3"></i>
+                <div>
+                    <h6 class="mb-1">💬 Chat hỗ trợ</h6>
+                    <p class="mb-0">Tính năng chat sẽ được triển khai sớm!</p>
+                </div>
+            </div>
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    `;
+
+        $('body').append(chatAlert);
+
+        setTimeout(() => {
+            $('.booking-alert').fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, 3000);
+    }
+
+    // ========== GLOBAL ERROR HANDLING ==========
+    $(document).ajaxError(function (event, xhr, settings, thrownError) {
+        if (xhr.status === 401 && !settings.url.includes('/login')) {
+            console.log('🔐 Session expired, redirecting to login');
+            showBookingError('Phiên đăng nhập đã hết hạn. Đang chuyển hướng...');
+            setTimeout(() => {
+                window.location.href = '/admin/login';
+            }, 2000);
+        }
+    });
+
+    console.log('🚀 Booking system loaded successfully');
+
+</script>
+<script>
+    // Thêm debug logs vào JavaScript
+    function loadAvailableTimeSlots(date) {
+        console.log('🔍 DEBUG: Loading time slots for:', date);
+        console.log('🔍 DEBUG: Service ID:', BOOKING_CONFIG.serviceId);
+        console.log('🔍 DEBUG: API URL:', `${BOOKING_CONFIG.endpoints.availableSlots}${BOOKING_CONFIG.serviceId}`);
+
+        const timeSelect = $('#bookingTime');
+        const infoElement = $('#timeSlotInfo');
+
+        // Show loading
+        timeSelect.html('<option value="">⏳ Đang tải...</option>').prop('disabled', true);
+
+        $.ajax({
+            url: `${BOOKING_CONFIG.endpoints.availableSlots}${BOOKING_CONFIG.serviceId}`,
+            method: 'GET',
+            data: {date: date},
+            timeout: 10000,
+            success: function (response) {
+                console.log('✅ DEBUG: API Response:', response);
+                console.log('✅ DEBUG: Available slots:', response.availableSlots);
+
+                if (response.success && response.availableSlots) {
+                    if (response.availableSlots.length === 0) {
+                        console.log('⚠️ DEBUG: No slots available for this date');
+                        timeSelect.html('<option value="">❌ Hết lịch trống</option>');
+                    } else {
+                        populateTimeSlots(response.availableSlots);
+                    }
+                    updateSlotInfo(response.availableSlots.length);
+                } else {
+                    console.log('❌ DEBUG: Invalid response format');
+                    timeSelect.html('<option value="">❌ Không có lịch trống</option>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('❌ DEBUG: AJAX Error:', {
+                    status: xhr.status,
+                    statusText: xhr.statusText,
+                    responseText: xhr.responseText,
+                    error: error
+                });
+
+                timeSelect.html(`<option value="">❌ Lỗi: ${xhr.status}</option>`);
+            },
+            complete: function () {
+                timeSelect.prop('disabled', false);
+            }
+        });
+    }
+
+</script>
+
+
+<!-- JAVASCRIPT  FILES ========================================= -->
+<div th:replace="~{fragments/script :: common-scripts}"></div>
+
+</body>
+
+</html>
