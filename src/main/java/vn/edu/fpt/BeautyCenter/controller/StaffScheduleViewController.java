@@ -208,6 +208,41 @@ public class StaffScheduleViewController {
         }
         return dtos;
     }
+    @GetMapping("/admin/staffs/schedule/edit/{id}")
+    @ResponseBody
+    public Map<String, Object> getScheduleForEdit(@PathVariable String id) {
+        StaffSchedule sc = scheduleService.findById(id);
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("scheduleId", sc.getScheduleId());
+        data.put("staffId", sc.getStaffId());
+        data.put("roomId", sc.getRoomId());
+        data.put("serviceId", sc.getServiceId());
+        data.put("date", sc.getStartTime().toLocalDate().toString());
+        data.put("shift", sc.getStartTime().getHour() < 14 ? "MORNING" : "AFTERNOON");
+
+        return data;
+    }
+    @PostMapping("/admin/staffs/schedule/update")
+    public String updateSchedule(@RequestParam String scheduleId,
+                                 @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                 @RequestParam("staffId") String staffId,
+                                 @RequestParam("shift") String shift,
+                                 @RequestParam("roomId") String roomId,
+                                 @RequestParam("serviceId") String serviceId,
+                                 RedirectAttributes redirectAttributes) {
+
+        StaffSchedule sc = scheduleService.findById(scheduleId);
+        sc.setStaffId(staffId);
+        sc.setRoomId(roomId);
+        sc.setServiceId(serviceId);
+        sc.setStartTime(LocalDateTime.of(date, shift.equals("MORNING") ? LocalTime.of(8, 0) : LocalTime.of(14, 0)));
+        sc.setEndTime(LocalDateTime.of(date, shift.equals("MORNING") ? LocalTime.of(14, 0) : LocalTime.of(20, 0)));
+
+        scheduleService.create(sc);
+
+        redirectAttributes.addFlashAttribute("successMessageAddStaff", "Updated schedule successfully!");
+        return "redirect:/admin/staffs/schedule?selectedDate=" + date;
+    }
 
 }
