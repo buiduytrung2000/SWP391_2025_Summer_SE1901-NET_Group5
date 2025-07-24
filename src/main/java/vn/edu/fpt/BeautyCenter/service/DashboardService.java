@@ -12,7 +12,6 @@ import vn.edu.fpt.BeautyCenter.repository.ServiceAnalyticsRepository;
 import vn.edu.fpt.BeautyCenter.repository.StaffRepository;
 
 import java.math.BigDecimal;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -26,50 +25,61 @@ public class DashboardService {
 
     @Autowired
     private StaffRepository staffRepository;
+
     @Autowired
     private BlogRepository blogRepository;
 
-    public DashboardStats getWeeklyStats() {
-        LocalDate today = LocalDate.now();
-        LocalDateTime startOfWeek = today.with(DayOfWeek.MONDAY).atStartOfDay();
-        LocalDateTime endOfWeek = today.with(DayOfWeek.SUNDAY).atTime(LocalTime.MAX);
+    /**
+     * Hàm mới: Lấy thống kê theo khoảng tuần
+     */
+    public DashboardStats getWeeklyStats(LocalDate startDate, LocalDate endDate) {
+        LocalDateTime startOfWeek = startDate.atStartOfDay();
+        LocalDateTime endOfWeek = endDate.atTime(LocalTime.MAX);
 
-        // Truy vấn các dịch vụ đã được sử dụng (status = completed)
+        // Truy vấn các dịch vụ đã được sử dụng trong tuần (chỉ tính completed)
         List<Object[]> rawStats = appointmentRepo.countCompletedServiceStatsInWeek(
                 startOfWeek, endOfWeek, Appointment.Status.completed);
 
-        // Chuyển đổi sang DTO
         List<ServiceStatsDTO> topServices = rawStats.stream().map(row ->
                 new ServiceStatsDTO(
-                        (String) row[0],
-                        (BigDecimal) row[1],
-                        (Long) row[2],
-                        (BigDecimal) row[3]
+                        (String) row[0],      // service name
+                        (BigDecimal) row[1],  // price
+                        (Long) row[2],        // usage count
+                        (BigDecimal) row[3]   // total revenue
                 )
         ).toList();
 
-        // Đếm số user mới trong tuần
+        // Đếm số user mới (role = 'customer') trong tuần
         long newCustomerCount = staffRepository.countByCreatedAtBetweenAndRole(
                 startOfWeek,
                 endOfWeek,
                 "customer"
         );
 
-        // Tạo đối tượng DashboardStats
         DashboardStats stats = new DashboardStats();
         stats.setTopServices(topServices);
         stats.setNewUsersThisWeek(newCustomerCount);
-
         return stats;
     }
+
+    /**
+     * Hàm cũ: Lấy thống kê của tuần hiện tại (nếu cần dùng lại)
+     */
+    public DashboardStats getWeeklyStats() {
+        LocalDate today = LocalDate.now();
+        return getWeeklyStats(
+                today.with(java.time.DayOfWeek.MONDAY),
+                today.with(java.time.DayOfWeek.SUNDAY)
+        );
+    }
+
     public List<BlogStatsDTO> getTopBlogs(int limit) {
         List<Object[]> raw = blogRepository.findTopBlogs(PageRequest.of(0, limit));
-
         return raw.stream().map(row ->
                 new BlogStatsDTO(
                         (String) row[0],  // title
-                        (String) row[1],  // url (thumbnail or full URL)
-                        (String) row[2],  // author name
+                        (String) row[1],  // url
+                        (String) row[2],  // author
                         (Integer) row[3]  // view count
                 )
         ).toList();
