@@ -36,12 +36,10 @@ public class StaffScheduleViewController {
 
         LocalDate today = LocalDate.now();
 
-        // Nếu không chọn date -> mặc định là hôm nay
         if (selectedDate == null) {
             selectedDate = today;
         }
 
-        // Xử lý hiển thị tuần
         int displayYear = (year != null) ? year : today.getYear();
         int displayWeek = (week != null) ? week : today.get(java.time.temporal.WeekFields.ISO.weekOfYear());
 
@@ -121,7 +119,6 @@ public class StaffScheduleViewController {
         model.addAttribute("afternoonShifts", afternoonShifts);
         model.addAttribute("staffList", staffService.findAll());
 
-        // cho modal attendance
         model.addAttribute("selectedDate", selectedDate);
         model.addAttribute("todaySchedules", todaySchedules);
         model.addAttribute("roomList", roomService.findAll());

@@ -171,7 +171,7 @@ public class StaffController {
     @GetMapping("/delete/{id}")
     public String deleteStaff(@PathVariable String id, RedirectAttributes redirectAttributes) {
         try {
-            staffService.deleteById(id); // Tùy vào service của bạn
+            staffService.deleteById(id);
             redirectAttributes.addFlashAttribute("successMessage", "Staff deleted successfully.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Cannot delete staff: " + e.getMessage());
@@ -179,11 +179,11 @@ public class StaffController {
         return "redirect:/admin/staff";
     }
 
-    @GetMapping("/schedule")
-    public String staffSchedulePage(Model model) {
-        List<Integer> slots = IntStream.rangeClosed(0, 12).boxed().toList(); // Tạo 13 slot (0–12)
-        model.addAttribute("slots", slots);
-        return "admin.staffs/schedule";
-    }
+//    @GetMapping("/schedule")
+//    public String staffSchedulePage(Model model) {
+//        List<Integer> slots = IntStream.rangeClosed(0, 12).boxed().toList(); // Tạo 13 slot (0–12)
+//        model.addAttribute("slots", slots);
+//        return "admin.staffs/schedule";
+//    }
 
 }
