@@ -61,18 +61,6 @@ public class DashboardService {
         stats.setNewUsersThisWeek(newCustomerCount);
         return stats;
     }
-
-    /**
-     * Hàm cũ: Lấy thống kê của tuần hiện tại (nếu cần dùng lại)
-     */
-    public DashboardStats getWeeklyStats() {
-        LocalDate today = LocalDate.now();
-        return getWeeklyStats(
-                today.with(java.time.DayOfWeek.MONDAY),
-                today.with(java.time.DayOfWeek.SUNDAY)
-        );
-    }
-
     public List<BlogStatsDTO> getTopBlogs(int limit) {
         List<Object[]> raw = blogRepository.findTopBlogs(PageRequest.of(0, limit));
         return raw.stream().map(row ->
