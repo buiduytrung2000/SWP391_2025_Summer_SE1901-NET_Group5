@@ -47,7 +47,13 @@ window.onload = function () {
 
     /* ------- UI events ------- */
     dropArea.addEventListener('click', () => fileElem.click());
-
+    // Initialize: if there’s an existing URL, show it
+    if (hiddenUrlInput.value) {
+        previewBox.style.display = 'block';
+        dropArea.style.display   = 'none';
+    } else {
+        resetPreview();
+    }
     fileElem.onchange = function () {
         if (fileElem.files.length > 0) {
             processFile(fileElem.files[0]);

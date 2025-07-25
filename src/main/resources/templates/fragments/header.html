@@ -109,7 +109,7 @@
                 ></a>
               </li>
               <li class="submenu-direction">
-                <a th:href="@{/admin/blogs}"
+                <a th:href="@{/blogs}"
                 >Blogs</a>
               </li>
               <li class="submenu-direction">
@@ -119,11 +119,6 @@
               <li class="submenu-direction">
                 <a th:if="${session.user}" th:href="@{/admin/bookings/my-bookings}"
                 >My bookings</a>
-              </li>
-              <li>
-                <a th:href="@{/blogs}"
-                >Blogs<i class="fa"></i
-                ></a>
               </li>
               <li class="submenu-direction">
                 <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.staff)}" th:href="@{/admin/bookings/staff}"

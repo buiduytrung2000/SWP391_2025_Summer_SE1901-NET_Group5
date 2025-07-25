@@ -29,7 +29,7 @@
     </div>
     <!-- BREADCRUMB ROW END -->
 
-    <div
+    <div th:if="${session.user != null and (session.user?.getRole()?.equals(session.user?.getRole()?.admin) or session.user?.getRole()?.equals(session.user?.getRole()?.staff))}"
             class="section-full overlay-wraper site-bg-primary"
             th:style="|background-image: url('@{/images/background/bg-7.jpg}')|"
     >
@@ -41,7 +41,7 @@
               <div class="col-md-8 col-sm-8">
                 <!-- Blog Statistics -->
                 <div class="call-to-action-left p-tb30">
-                  <h4 class="text-white m-b10">Blog Statistics</h4>
+                <h4 class="text-white m-b10">Blog Statistics</h4>
                   <p class="text-white" th:if="${blogStatistics}">
                     <span th:text="'Total Blogs: ' + ${blogStatistics.totalBlogs}"></span> |
                     <span th:text="'Current Page: ' + ${blogStatistics.currentPage} + '/' + ${blogStatistics.totalPages}"></span>
@@ -51,7 +51,7 @@
               <div class="col-md-4">
                 <div class="call-to-action-right p-tb30">
                   <a
-                          th:href="@{/admin/blogs/add}"
+                          th:href="@{/blogs/admin/add}"
                           class="site-button-secondry text-uppercase radius-sm font-weight-600"
                   >
                     <i class="fa fa-plus"></i> Add New Blog
@@ -72,7 +72,7 @@
             <div class="filter-wrap p-b20">
               <h5 class="text-uppercase m-b20"><i class="fa fa-filter"></i> Filter Blogs</h5>
 
-              <form th:action="@{/admin/blogs}" method="get" class="filter-form">
+              <form th:action="@{/blogs}" method="get" class="filter-form">
                 <div class="row">
                   <!-- Search Keyword -->
                   <div class="col-md-3 m-b15">
@@ -147,7 +147,7 @@
                                         <span th:text="${filter}"></span>
                                         <span th:if="${!iterStat.last}">, </span>
                                     </span>
-                  <a th:href="@{/admin/blogs}" class="text-danger ml-2">
+                  <a th:href="@{/blogs}" class="text-danger ml-2">
                     <i class="fa fa-times"></i> Clear All
                   </a>
                 </small>
@@ -195,7 +195,7 @@
             <div class="wt-post-info">
               <div class="wt-post-title">
                 <h3 class="post-title">
-                  <a th:href="@{/admin/blogs/{id}(id=${blog.blogId})}"
+                  <a th:href="@{/blogs/{id}(id=${blog.blogId})}"
                      th:text="${blog.title}">Blog Title</a>
                 </h3>
               </div>
@@ -236,28 +236,28 @@
               <div class="wt-post-tags" th:if="${blog.tags != null and !blog.tags.isEmpty()}">
                 <i class="fa fa-tags"></i>
                 <span th:each="tag, iterStat : ${blog.tags}" class="tag-item">
-                                    <span class="badge badge-light" th:text="${tag}"></span>
+                                    <span class="" th:text="${tag}"></span>
                                 </span>
               </div>
 
               <!-- Action Buttons -->
               <div class="clearfix">
                 <div class="wt-post-readmore pull-left">
-                  <a th:href="@{/admin/blogs/{id}(id=${blog.blogId})}"
+                  <a th:href="@{/blogs/{id}(id=${blog.blogId})}"
                      title="READ MORE" rel="bookmark"
                      class="site-button radius-sm">
                     <i class="fa fa-eye"></i> View Details
                   </a>
                 </div>
-                <div class="wt-post-readmore pull-left" style="padding-left: 10px">
-                  <a th:href="@{/admin/blogs/edit/{id}(id=${blog.blogId})}"
+                <div th:if="${session.user != null and (session.user?.getRole()?.equals(session.user?.getRole()?.admin) or session.user?.getRole()?.equals(session.user?.getRole()?.staff))}" class="wt-post-readmore pull-left" style="padding-left: 10px">
+                  <a th:href="@{/blogs/admin/edit/{id}(id=${blog.blogId})}"
                      title="EDIT BLOG" rel="bookmark"
                      class="site-button radius-sm">
                     <i class="fa fa-edit"></i> Edit
                   </a>
                 </div>
-                <div class="wt-post-readmore pull-left" style="padding-left: 10px">
-                  <a th:href="@{/admin/blogs/delete/{id}(id=${blog.blogId})}"
+                <div th:if="${session.user != null and (session.user?.getRole()?.equals(session.user?.getRole()?.admin) or session.user?.getRole()?.equals(session.user?.getRole()?.staff))}" class="wt-post-readmore pull-left" style="padding-left: 10px">
+                  <a th:href="@{/blogs/admin/delete/{id}(id=${blog.blogId})}"
                      title="DELETE BLOG" rel="bookmark"
                      class="site-button radius-sm "
                      onclick="return confirm('Are you sure you want to delete this blog?')">
@@ -266,9 +266,9 @@
                 </div>
 
                 <!-- Publish/Unpublish Actions -->
-                <div class="wt-post-readmore pull-right">
+                <div th:if="${session.user != null and (session.user?.getRole()?.equals(session.user?.getRole()?.admin) or session.user?.getRole()?.equals(session.user?.getRole()?.staff))}" class="wt-post-readmore pull-right">
                   <form th:if="${blog.status.name() == 'DRAFT'}"
-                        th:action="@{/admin/blogs/{id}/publish(id=${blog.blogId})}"
+                        th:action="@{/blogs/admin/{id}/publish(id=${blog.blogId})}"
                         method="post" style="display: inline;">
                     <button type="submit" class="site-button-secondry radius-sm"
                             title="PUBLISH BLOG">
@@ -276,7 +276,7 @@
                     </button>
                   </form>
                   <form th:if="${blog.status.name() == 'PUBLISHED'}"
-                        th:action="@{/admin/blogs/{id}/unpublish(id=${blog.blogId})}"
+                        th:action="@{/blogs/admin/{id}/unpublish(id=${blog.blogId})}"
                         method="post" style="display: inline;">
                     <button type="submit" class="site-button-secondry radius-sm"
                             title="UNPUBLISH BLOG">
@@ -296,13 +296,13 @@
           <h4 class="text-muted m-t20">No blogs found</h4>
           <p class="text-muted">
                         <span th:if="${hasActiveFilters}">
-                            No blogs match your current filters. <a th:href="@{/admin/blogs}">Clear filters</a> to see all blogs.
+                            No blogs match your current filters. <a th:href="@{/blogs}">Clear filters</a> to see all blogs.
                         </span>
             <span th:unless="${hasActiveFilters}">
                             Get started by creating your first blog post.
                         </span>
           </p>
-          <a th:href="@{/admin/blogs/add}" class="site-button m-t20">
+          <a th:href="@{/blogs/admin/add}" class="site-button m-t20">
             <i class="fa fa-plus"></i> Create First Blog
           </a>
         </div>
@@ -312,21 +312,21 @@
           <ul class="custom-pagination pagination-1">
             <!-- Previous Page -->
             <li th:if="${blogs.hasPrevious()}">
-              <a th:href="@{/admin/blogs(page=${blogs.number - 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}">&laquo;</a>
+              <a th:href="@{/blogs(page=${blogs.number - 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}">&laquo;</a>
             </li>
 
             <!-- Page Numbers -->
             <li class="page-item" th:each="pageNum : ${pageNumbers}"
                 th:classappend="${pageNum == (blogs.number + 1)} ? 'active' : ''">
               <a class="page-link"
-                 th:href="@{/admin/blogs(page=${pageNum - 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}"
+                 th:href="@{/blogs(page=${pageNum - 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}"
                  th:text="${pageNum}"
                  th:title="'Page ' + ${pageNum}">1</a>
             </li>
 
             <!-- Next Page -->
             <li th:if="${blogs.hasNext()}">
-              <a th:href="@{/admin/blogs(page=${blogs.number + 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}">&raquo;</a>
+              <a th:href="@{/blogs(page=${blogs.number + 1}, size=${blogs.size}, keyword=${keyword}, status=${filterParams?.status}, categoryId=${filterParams?.categoryId}, featured=${filterParams?.featured}, sortBy=${sortBy}, sortDir=${sortDir})}">&raquo;</a>
             </li>
           </ul>
 

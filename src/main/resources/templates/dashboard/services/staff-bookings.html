@@ -274,7 +274,7 @@
     </div>
   </div>
 </div>
-<div th:replace="~{/dashboard/fragments/footer::admin-scripts}"></div>
+<div th:replace="~{/dashboard/fragments/footer::admin-scripts2}"></div>
 <script>
   function startSvc(btn){
     $.post('/sbs/admin/bookings/staff/start/'+btn.dataset.id).done(()=>location.reload());

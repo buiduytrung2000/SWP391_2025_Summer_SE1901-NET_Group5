@@ -59,7 +59,7 @@ import java.util.stream.IntStream;
  * </p>
  */
 @Controller
-@RequestMapping("/admin/blogs")
+@RequestMapping("/blogs")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BlogController {
@@ -121,12 +121,6 @@ public class BlogController {
             HttpSession session,
             Model model,
             RedirectAttributes redirectAttributes) {
-
-        // Check if user is not permitted (not logged in or not admin)
-        if (isNotPermit(session)) {
-            notificationService.addErrorMessage(redirectAttributes, "Access denied. Please login as administrator.");
-            return "redirect:/";
-        }
 
         try {
             // Validate and sanitize input parameters
@@ -222,7 +216,7 @@ public class BlogController {
             System.err.println(errorMessage);
             model.addAttribute("pageTitle", "Blog Management");
             model.addAttribute("blogs", Page.empty());
-            return "redirect:/admin/blogs";
+            return "redirect:/blogs";
         }
     }
 
@@ -237,11 +231,11 @@ public class BlogController {
      * @param session current HTTP session for authentication
      * @return the view name for the add blog form
      */
-    @GetMapping("/add")
+    @GetMapping("/admin/add")
     public String showAddForm(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
-            return "redirect:/";
+            return "redirect:/blogs";
         }
 
         try {
@@ -259,7 +253,7 @@ public class BlogController {
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes,
                     "Error preparing add form: " + e.getMessage());
-            return "redirect:/admin/blogs";
+            return "redirect:/blogs";
         }
     }
 
@@ -276,7 +270,7 @@ public class BlogController {
      * @param redirectAttributes attributes for redirect scenarios with flash messages
      * @return redirect to appropriate page based on operation result
      */
-    @PostMapping("/add")
+    @PostMapping("/admin/add")
     public String saveBlog(@ModelAttribute("blogRequest") @Valid BlogRequest request,
                            BindingResult bindingResult,
                            HttpSession session,
@@ -284,7 +278,7 @@ public class BlogController {
                            @RequestParam(value = "thumbnail") MultipartFile file) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
-            return "redirect:/";
+            return "redirect:/blogs";
         }
 
         // Handle validation errors
@@ -293,7 +287,7 @@ public class BlogController {
             redirectAttributes.addFlashAttribute("blogRequest", request);
             notificationService.addErrorMessage(redirectAttributes,
                     "Please check the information entered. All required fields must be completed correctly.");
-            return "redirect:/admin/blogs/add";
+            return "redirect:/blogs/admin/add";
         }
 
         try {
@@ -301,7 +295,7 @@ public class BlogController {
             User user = (User) session.getAttribute("user");
             if (user == null) {
                 notificationService.addErrorMessage(redirectAttributes, "Session expired. Please login again.");
-                return "redirect:/";
+                return "redirect:/blogs";
             }
             System.out.println("Tags: "+request);
 
@@ -320,20 +314,20 @@ public class BlogController {
             notificationService.addSuccessMessage(redirectAttributes,
                     "Blog post '" + request.getTitle() + "' has been successfully created!");
 
-            return "redirect:/admin/blogs";
+            return "redirect:/blogs";
 
         } catch (AppException e) {
             // Handle business logic exceptions
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
             redirectAttributes.addFlashAttribute("blogRequest", request);
-            return "redirect:/admin/blogs/add";
+            return "redirect:/blogs/admin/add";
 
         } catch (Exception e) {
             // Handle unexpected errors
             notificationService.addErrorMessage(redirectAttributes,
                     "An unexpected error occurred while creating the blog: " + e.getMessage());
             redirectAttributes.addFlashAttribute("blogRequest", request);
-            return "redirect:/admin/blogs/add";
+            return "redirect:/blogs/admin/add";
         }
     }
 
@@ -350,14 +344,14 @@ public class BlogController {
      * @param redirectAttributes attributes for redirect scenarios
      * @return the view name for the edit blog form
      */
-    @GetMapping("/edit/{blogId}")
+    @GetMapping("/admin/edit/{blogId}")
     public String showEditForm(@PathVariable String blogId,
                                Model model,
                                HttpSession session,
                                RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
-            return "redirect:/";
+            return "redirect:/blogs";
         }
 
         try {
@@ -365,7 +359,7 @@ public class BlogController {
             Optional<BlogResponse> blogOpt = blogService.getBlogById(blogId);
             if (blogOpt.isEmpty()) {
                 notificationService.addErrorMessage(redirectAttributes, "Blog not found. It may have been deleted.");
-                return "redirect:/admin/blogs";
+                return "redirect:/blogs";
             }
 
             BlogResponse blog = blogOpt.get();
@@ -397,7 +391,7 @@ public class BlogController {
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes,
                     "Error loading blog for editing: " + e.getMessage());
-            return "redirect:/admin/blogs";
+            return "redirect:/blogs";
         }
     }
 
@@ -415,7 +409,7 @@ public class BlogController {
      * @param redirectAttributes attributes for redirect scenarios
      * @return redirect to appropriate page based on operation result
      */
-    @PostMapping("/edit/{blogId}")
+    @PostMapping("/admin/edit/{blogId}")
     public String updateBlog(@PathVariable String blogId,
                              @ModelAttribute("blogRequest") @Valid BlogRequest request,
                              BindingResult bindingResult,
@@ -424,7 +418,7 @@ public class BlogController {
                              RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
-            return "redirect:/";
+            return "redirect:/blogs";
         }
 
         // Handle validation errors
@@ -433,7 +427,7 @@ public class BlogController {
             redirectAttributes.addFlashAttribute("blogRequest", request);
             notificationService.addErrorMessage(redirectAttributes,
                     "Please check the information entered. All fields must be valid.");
-            return "redirect:/admin/blogs/edit/" + blogId;
+            return "redirect:/blogs/admin/edit/" + blogId;
         }
 
         try {
@@ -453,20 +447,20 @@ public class BlogController {
             notificationService.addSuccessMessage(redirectAttributes,
                     "Blog post '" + request.getTitle() + "' has been successfully updated!");
 
-            return "redirect:/admin/blogs";
+            return "redirect:/blogs";
 
         } catch (AppException e) {
             // Handle business logic exceptions
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
             redirectAttributes.addFlashAttribute("blogRequest", request);
-            return "redirect:/admin/blogs/edit/" + blogId;
+            return "redirect:/blogs/admin/edit/" + blogId;
 
         } catch (Exception e) {
             // Handle unexpected errors
             notificationService.addErrorMessage(redirectAttributes,
                     "An unexpected error occurred while updating the blog: " + e.getMessage());
             redirectAttributes.addFlashAttribute("blogRequest", request);
-            return "redirect:/admin/blogs/edit/" + blogId;
+            return "redirect:/blogs/admin/edit/" + blogId;
         }
     }
 
@@ -494,7 +488,7 @@ public class BlogController {
             Optional<BlogResponse> blogOpt = blogService.getBlogById(blogId);
             if (blogOpt.isEmpty()) {
                 notificationService.addErrorMessage(redirectAttributes, "Blog not found or has been removed.");
-                return "redirect:/admin/blogs";
+                return "redirect:/blogs";
             }
 
             BlogResponse blog = blogOpt.get();
@@ -561,7 +555,7 @@ public class BlogController {
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes,
                     "Error loading blog details: " + e.getMessage());
-            return "redirect:/admin/blogs";
+            return "redirect:/blogs";
         }
     }
 
@@ -579,14 +573,14 @@ public class BlogController {
      * @param redirectAttributes Spring MVC redirect attributes for flash messages
      * @return redirect view name with appropriate success or error feedback
      */
-    @GetMapping("/delete/{blogId}")
+    @GetMapping("/admin/delete/{blogId}")
     public String deleteBlog(@PathVariable String blogId,
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
 
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Admin privileges required.");
-            return "redirect:/";
+            return "redirect:/blogs";
         }
 
         try {
@@ -594,7 +588,7 @@ public class BlogController {
             Optional<BlogResponse> blogOpt = blogService.getBlogById(blogId);
             if (blogOpt.isEmpty()) {
                 notificationService.addErrorMessage(redirectAttributes, "Blog not found.");
-                return "redirect:/admin/blogs";
+                return "redirect:/blogs";
             }
 
             // Store blog title for success message before deletion
@@ -607,18 +601,18 @@ public class BlogController {
             notificationService.addSuccessMessage(redirectAttributes,
                     "Blog post '" + blogTitle + "' deleted successfully");
 
-            return "redirect:/admin/blogs";
+            return "redirect:/blogs";
 
         } catch (IllegalStateException e) {
             // Handle business rule violations
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
-            return "redirect:/admin/blogs/delete/" + blogId;
+            return "redirect:/blogs/admin/delete/" + blogId;
 
         } catch (Exception e) {
             // Handle any unexpected errors during deletion process
             notificationService.addErrorMessage(redirectAttributes,
                     "Error deleting blog: " + e.getMessage());
-            return "redirect:/admin/blogs";
+            return "redirect:/blogs";
         }
     }
 
@@ -629,13 +623,13 @@ public class BlogController {
      * Provides user feedback and redirects to blog list.
      * </p>
      */
-    @PostMapping("/{blogId}/publish")
+    @PostMapping("/admin/{blogId}/publish")
     public String publishBlog(@PathVariable String blogId,
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Admin privileges required.");
-            return "redirect:/";
+            return "redirect:/blogs";
         }
 
         try {
@@ -650,7 +644,7 @@ public class BlogController {
                     "Error publishing blog: " + e.getMessage());
         }
 
-        return "redirect:/admin/blogs";
+        return "redirect:/blogs";
     }
 
     /**
@@ -659,13 +653,13 @@ public class BlogController {
      * Makes the blog invisible to public while keeping it available for editing.
      * </p>
      */
-    @PostMapping("/{blogId}/unpublish")
+    @PostMapping("/admin/{blogId}/unpublish")
     public String unpublishBlog(@PathVariable String blogId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Admin privileges required.");
-            return "redirect:/";
+            return "redirect:/blogs";
         }
 
         try {
@@ -680,7 +674,7 @@ public class BlogController {
                     "Error unpublishing blog: " + e.getMessage());
         }
 
-        return "redirect:/admin/blogs";
+        return "redirect:/blogs";
     }
 
     // ========== HELPER METHODS ==========

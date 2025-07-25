@@ -33,8 +33,8 @@
         <div class="bg-gray-light p-tb20">
             <div class="container">
                 <ul class="wt-breadcrumb breadcrumb-style-1">
-                    <li><a href="javascript:void(0);">Home</a></li>
-                    <li><a th:href="@{/admin/blogs}">Blog Management</a></li>
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/blogs}">Blog</a></li>
                     <li>Add New Blog</li>
                 </ul>
             </div>
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="wt-box">
-                                <form th:action="@{/admin/blogs/add}"
+                                <form th:action="@{/blogs/admin/add}"
                                       th:object="${blogRequest}" id="blogForm" method="POST"
                                       enctype="multipart/form-data">
                                     <!-- General notifications (success/error from redirect) -->
@@ -112,7 +112,7 @@
 
                                     <!-- Action Buttons -->
                                     <div class="text-right">
-                                        <a th:href="@{/admin/blogs}" class="site-button-secondry m-r15">Cancel</a>
+                                        <a th:href="@{/blogs}" class="site-button-secondry m-r15">Cancel</a>
                                         <button type="submit" name="status" value="DRAFT"
                                                 class="site-button-secondry m-r15">
                                             <i class="fa fa-save"></i> Save as Draft
