@@ -51,7 +51,7 @@ public class ServiceTagMapId implements java.io.Serializable {
      * Unique identifier for the tag. Must not be null.
      */
     @NotNull
-    @Column(name = "tag_id", nullable = false)
+    @Column(name = "tag_id", nullable = false, columnDefinition = "int")
     private Integer tagId;
 
     /**

@@ -10,18 +10,12 @@ package vn.edu.fpt.BeautyCenter.mapper;
  * <2025-06-30>      <1.0>              TrungBD      First Implement
  */
 import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 import vn.edu.fpt.BeautyCenter.dto.request.BlogRequest;
 import vn.edu.fpt.BeautyCenter.dto.response.BlogResponse;
 import vn.edu.fpt.BeautyCenter.entity.Blog;
 import vn.edu.fpt.BeautyCenter.entity.BlogCategory;
 import vn.edu.fpt.BeautyCenter.entity.BlogTag;
-import vn.edu.fpt.BeautyCenter.entity.BlogImage;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,7 +39,6 @@ public interface BlogMapper {
     @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "instantToLocalDateTime")
     @Mapping(target = "updatedAt", source = "updatedAt", qualifiedByName = "instantToLocalDateTime")
     @Mapping(target = "tags", source = "blogTags", qualifiedByName = "mapTagsToNames")
-    @Mapping(target = "imageUrls", source = "blogImages", qualifiedByName = "mapImagesToUrls")
     BlogResponse toResponse(Blog entity);
 
     @InheritInverseConfiguration(name = "toEntity")
@@ -62,16 +55,6 @@ public interface BlogMapper {
                 .collect(Collectors.toList());
     }
 
-    @Named("mapImagesToUrls")
-    default List<String> mapImagesToUrls(Set<BlogImage> images) {
-        if (images == null || images.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return images.stream()
-                .map(BlogImage::getImageUrl)
-                .sorted()
-                .collect(Collectors.toList());
-    }
 
     // Helper method để map list entities
     @IterableMapping(qualifiedByName = "standardResponse")
