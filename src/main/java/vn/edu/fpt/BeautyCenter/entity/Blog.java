@@ -93,10 +93,7 @@ public class Blog {
 
     @Column(name = "published_at")
     private Instant publishedAt;
-
-    @OneToMany(mappedBy = "blog")
-    private Set<BlogImage> blogImages = new LinkedHashSet<>();
-
+    
     @PrePersist
     public void prePersist() {
         Instant now = Instant.now();

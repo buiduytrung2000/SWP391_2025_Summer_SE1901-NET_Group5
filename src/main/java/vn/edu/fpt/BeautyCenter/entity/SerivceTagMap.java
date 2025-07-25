@@ -49,6 +49,6 @@ public class SerivceTagMap {
      */
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tag_id", nullable = false)
+    @JoinColumn(name = "tag_id", nullable = false, columnDefinition = "int")
     private ServiceTag tag;
 }

@@ -23,7 +23,11 @@ public class LoginController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String showLoginPage() {
+    public String showLoginPage(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            return "redirect:/";
+        }
         return "auth/login";
     }
 
