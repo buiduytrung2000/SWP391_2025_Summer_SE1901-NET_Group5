@@ -24,7 +24,26 @@
                             <div class="nk-block-head d-flex justify-content-between align-items-center mb-4">
                                 <h3 class="nk-block-title">Weekly Analytics</h3>
                             </div>
+                            <form method="get" class="d-flex align-items-center gap-2 mb-4">
+                                <label class="form-label mb-0">Year:</label>
+                                <select name="year" class="form-select" style="width:auto;">
+                                    <option th:each="y : ${years}"
+                                            th:value="${y}"
+                                            th:selected="${y == selectedYear}"
+                                            th:text="${y}">2025</option>
+                                </select>
 
+                                <label class="form-label mb-0">Week:</label>
+                                <select name="week" class="form-select" style="width:auto;">
+                                    <option th:each="w : ${weeks}"
+                                            th:value="${w.number}"
+                                            th:selected="${w.number} == ${selectedWeek}"
+                                            th:text="${w.label}"></option>
+                                </select>
+
+
+                                <button class="btn btn-primary">View</button>
+                            </form>
                             <!-- Row with New Users + Service Stats -->
                             <div class="row g-4 mb-4">
                                 <!-- User Registrations -->
@@ -42,27 +61,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Row: Online Store Visitors -->
-<!--                                <div class="row g-4 mb-4">-->
-<!--                                    <div class="col-12">-->
-<!--                                        <div class="card card-bordered">-->
-<!--                                            <div class="card-inner">-->
-<!--                                                <div class="d-flex justify-content-between align-items-start">-->
-<!--                                                    <div>-->
-<!--                                                        <h6 class="mb-1">Online Store Visitors</h6>-->
-<!--                                                        <h3 class="fw-bold" th:text="${stats.totalVisitors}">820</h3>-->
-<!--                                                        <p class="text-muted">Visitors Over Time</p>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                <canvas id="visitorsChart" height="100"></canvas>-->
-<!--                                                <div class="d-flex justify-content-end gap-3 mt-2 small">-->
-<!--                                                    <span><span class="badge bg-primary">&nbsp;</span> This Week</span>-->
-<!--                                                    <span><span class="badge bg-secondary">&nbsp;</span> Last Week</span>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
                                 <!-- Top Blogs Table -->
                                 <div class="row g-4 mb-4">
                                     <!-- Top Services Table -->
@@ -83,8 +81,9 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="s : ${stats.topServices}">
-                                                        <td>
+                                                    <tr th:each="s, stat : ${stats.topServices}" th:if="${stat.index} < 5">
+
+                                                    <td>
                                                             <div class="d-flex align-items-center">
                                                                 <span th:text="${s.name}">Service Name</span>
                                                             </div>
@@ -118,9 +117,13 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr th:each="b : ${topBlogs}">
-                                                <td th:text="${b.title}">Title</td>
-                                                <td><a th:href="${b.url}" th:text="${b.url}">URL</a></td>
+                                            <tr th:each="b, stat : ${topBlogs}" th:if="${stat.index} < 5">
+
+                                            <td th:text="${b.title}">Title</td>
+                                                <td>
+                                                    <a th:href="${b.url}" th:text="${b.url}" class="truncate-url" title="" th:attr="title=${b.url}">URL</a>
+                                                </td>
+
                                                 <td th:text="${b.authorName}">Author</td>
                                                 <td th:text="${b.viewCount}">0</td>
                                             </tr>
@@ -183,66 +186,15 @@
     </div>
 </div>
 </div>
-<!-- Chart.js Scripts -->
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    const visitorsThisWeek = /*[[${visitors.thisWeek}]]*/ [100, 120, 160, 155, 165, 170, 160];
-    const visitorsLastWeek = /*[[${visitors.lastWeek}]]*/ [60, 70, 68, 65, 67, 70, 85];
-    const visitorLabels = /*[[${visitors.labels}]]*/ ['18th', '20th', '22nd', '24th', '26th', '28th', '30th'];
-
-    const visitorsCtx = document.getElementById('visitorsChart');
-    new Chart(visitorsCtx, {
-        type: 'line',
-        data: {
-            labels: visitorLabels,
-            datasets: [
-                {
-                    label: 'This Week',
-                    data: visitorsThisWeek,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                    tension: 0.4
-                },
-                {
-                    label: 'Last Week',
-                    data: visitorsLastWeek,
-                    borderColor: '#ccc',
-                    backgroundColor: 'rgba(200,200,200,0.1)',
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-
-    const topServiceNames = /*[[${topServiceNames}]]*/ ['Facial', 'Massage', 'Hair Wash'];
-    const topServiceCounts = /*[[${topServiceCounts}]]*/ [1200, 2340, 600];
-    const topServicesCtx = document.getElementById('topServicesChart');
-    new Chart(topServicesCtx, {
-        type: 'bar',
-        data: {
-            labels: topServiceNames,
-            datasets: [{
-                label: 'Lượt sử dụng dịch vụ trong tuần',
-                data: topServiceCounts,
-                backgroundColor: 'rgba(54, 162, 235, 0.7)'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-    /*]]>*/
-</script>
+<style>
+    .truncate-url {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        vertical-align: bottom;
+    }
+</style>
 </body>
 </html>

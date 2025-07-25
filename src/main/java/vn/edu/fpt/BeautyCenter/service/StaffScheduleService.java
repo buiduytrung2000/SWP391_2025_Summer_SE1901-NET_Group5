@@ -19,14 +19,6 @@ public class StaffScheduleService {
         return scheduleRepository.save(schedule);
     }
 
-    public List<StaffSchedule> findByStaffId(String staffId) {
-        return scheduleRepository.findByStaffId(staffId);
-    }
-
-    public List<StaffSchedule> findAll() {
-        return scheduleRepository.findAll();
-    }
-
     public List<StaffSchedule> findByDateRange(LocalDate startDate, LocalDate endDate) {
         return scheduleRepository.findByStartTimeBetween(
                 startDate.atStartOfDay(),
