@@ -613,7 +613,7 @@ public class ServiceController {
             redirectAttributes.addFlashAttribute("serviceUpdateRequest", request);
             notificationService.addErrorMessage(redirectAttributes,
                     "Please check the information entered. All fields must be valid.");
-            return "redirect:/admin/edit/" + serviceId;
+            return "redirect:/services/admin/edit/" + serviceId;
         }
 
         try {
@@ -634,20 +634,20 @@ public class ServiceController {
             notificationService.addSuccessMessage(redirectAttributes,
                     "Service '" + request.getName() + "' has been successfully updated!");
 
-            return "redirect:/admin";
+            return "redirect:/services/admin";
 
         } catch (AppException e) {
             // Handle business logic exceptions
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
             redirectAttributes.addFlashAttribute("serviceUpdateRequest", request);
-            return "redirect:/admin/edit/" + serviceId;
+            return "redirect:/services/admin/edit/" + serviceId;
 
         } catch (Exception e) {
             // Handle unexpected errors
             notificationService.addErrorMessage(redirectAttributes,
                     "An unexpected error occurred while updating the service: " + e.getMessage());
             redirectAttributes.addFlashAttribute("serviceUpdateRequest", request);
-            return "redirect:/admin/edit/" + serviceId;
+            return "redirect:/services/admin/edit/" + serviceId;
         }
     }
 

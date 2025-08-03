@@ -15,6 +15,7 @@ import vn.edu.fpt.BeautyCenter.dto.response.BlogResponse;
 import vn.edu.fpt.BeautyCenter.entity.Blog;
 import vn.edu.fpt.BeautyCenter.entity.BlogCategory;
 import vn.edu.fpt.BeautyCenter.entity.BlogTag;
+import org.mapstruct.Named;
 
 import java.util.List;
 import java.util.Set;
@@ -44,6 +45,7 @@ public interface BlogMapper {
     @InheritInverseConfiguration(name = "toEntity")
     void updateEntity(@MappingTarget Blog entity, BlogRequest request);
 
+
     @Named("mapTagsToNames")
     default List<String> mapTagsToNames(Set<BlogTag> tags) {
         if (tags == null || tags.isEmpty()) {
@@ -69,10 +71,7 @@ public interface BlogMapper {
     @Mapping(target = "imageUrls", expression = "java(Collections.emptyList())")
     BlogResponse toSummaryResponse(Blog entity);
 
-    @Named("mapCategoryId")
-    default Integer mapCategoryId(BlogCategory category) {
-        return category != null ? category.getId() : null;
-    }
+
 
     // Custom conversion methods
 

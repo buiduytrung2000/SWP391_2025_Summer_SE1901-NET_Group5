@@ -29,6 +29,7 @@ import vn.edu.fpt.BeautyCenter.entity.BlogTag;
 import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
 import vn.edu.fpt.BeautyCenter.mapper.BlogMapper;
+import vn.edu.fpt.BeautyCenter.repository.BlogCategoryRepository;
 import vn.edu.fpt.BeautyCenter.repository.BlogRepository;
 import vn.edu.fpt.BeautyCenter.service.BlogService;
 import vn.edu.fpt.BeautyCenter.service.BlogTagService;
@@ -51,6 +52,7 @@ public class BlogServiceImpl implements BlogService {
     private final BlogTagService blogTagService;
     private final BlogMapper blogMapper;
     private final UserService userService;
+    private final BlogCategoryRepository blogCategoryRepository;
 
     @Override
     public BlogResponse createBlog(BlogRequest request, String authorId) {
@@ -125,6 +127,7 @@ public class BlogServiceImpl implements BlogService {
         }
 
         // Update blog fields
+        System.out.println(request.getCategoryId());
         blogMapper.updateEntity(blog, request);
 
         // Process tags
@@ -144,7 +147,8 @@ public class BlogServiceImpl implements BlogService {
         if (request.getStatus() == BlogStatus.PUBLISHED && blog.getPublishedAt() == null) {
             blog.setPublishedAt(Instant.from(LocalDateTime.now()));
         }
-
+        Optional<BlogCategory> category = blogCategoryRepository.findById(request.getCategoryId());
+        blog.setCategory(category.orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND)));
         Blog updatedBlog = blogRepository.save(blog);
         log.info("Blog updated successfully with ID: {}", updatedBlog.getBlogId());
 

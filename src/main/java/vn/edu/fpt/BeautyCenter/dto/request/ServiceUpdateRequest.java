@@ -57,7 +57,7 @@ public class ServiceUpdateRequest {
      */
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
-    @DecimalMax(value = "9999.99", message = "Price must not exceed 9999.99")
+    @DecimalMax(value = "999999.99", message = "Price must not exceed 9999.99")
     private BigDecimal price;
 
     /**
