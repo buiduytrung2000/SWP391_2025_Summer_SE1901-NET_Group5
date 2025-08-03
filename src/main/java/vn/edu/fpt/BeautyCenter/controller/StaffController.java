@@ -1,5 +1,6 @@
 package vn.edu.fpt.BeautyCenter.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,12 +15,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.StaffCreationRequest;
 import vn.edu.fpt.BeautyCenter.dto.request.StaffUpdateRequest;
 import vn.edu.fpt.BeautyCenter.entity.Staff;
+import vn.edu.fpt.BeautyCenter.entity.User;
 import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
 import vn.edu.fpt.BeautyCenter.service.StaffService;
 
 import jakarta.validation.Valid;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -34,19 +37,14 @@ public class StaffController {
     /**
      * Display paginated list of staff members
      */
-    @GetMapping({"", "/"})
-    public String showStaffList(@RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "10") int size,
-                                @RequestParam(required = false) String keyword,
-                                Model model) {
-        Page<Staff> staffPage;
-
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            staffPage = staffService.searchStaff(keyword.trim(), PageRequest.of(page, size));
-            model.addAttribute("keyword", keyword); // giữ lại giá trị trong input search
-        } else {
-            staffPage = staffService.getStaffPage(PageRequest.of(page, size));
-        }
+    @GetMapping({"", "/"})public String showStaffList(@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "10") int size,
+                                                      @RequestParam(required = false) String keyword,
+                                                      Model model,
+                                                      HttpSession session) {
+        Page<Staff> staffPage = keyword != null && !keyword.trim().isEmpty()
+                ? staffService.searchStaff(keyword.trim(), PageRequest.of(page, size))
+                : staffService.getStaffPage(PageRequest.of(page, size));
 
         model.addAttribute("staffList", staffPage.getContent());
         model.addAttribute("currentPage", page);
@@ -54,9 +52,14 @@ public class StaffController {
         model.addAttribute("pageSize", size);
         model.addAttribute("newStaff", new StaffCreationRequest());
 
+        User sessionUser = (User) session.getAttribute("user");
+        if (sessionUser != null) {
+            model.addAttribute("currentUserId", sessionUser.getUserId());
+        }
+
+
         return "admin.staffs/list";
     }
-
 
     /**
      * Handle staff creation
@@ -154,36 +157,29 @@ public class StaffController {
      * Toggle staff status (Active/Inactive)
      */
     @GetMapping("/toggle-status/{id}")
-    public String toggleStatus(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    public String toggleStatus(@PathVariable String id,
+                               HttpSession session,
+                               RedirectAttributes redirectAttributes) {
+
+        User sessionUser = (User) session.getAttribute("user");
+        if (sessionUser != null && sessionUser.getUserId().equals(id)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "You cannot change your own status.");
+            return "redirect:/admin/staff";
+        }
+
         Staff staff = staffService.getByUserId(id);
         if (staff != null) {
             staff.setStatus(
-                    staff.getStatus() == null || staff.getStatus() == Staff.Status.inactive
-                            ? Staff.Status.active
-                            : Staff.Status.inactive
+                    staff.getStatus() == Staff.Status.active
+                            ? Staff.Status.inactive
+                            : Staff.Status.active
             );
             staffService.save(staff);
         }
-        redirectAttributes.addFlashAttribute("successMessage", "Status updated successfully!");
-        return "redirect:/admin/staff/";
-    }
 
-    @GetMapping("/delete/{id}")
-    public String deleteStaff(@PathVariable String id, RedirectAttributes redirectAttributes) {
-        try {
-            staffService.deleteById(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Staff deleted successfully.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Cannot delete staff: " + e.getMessage());
-        }
+        redirectAttributes.addFlashAttribute("successMessage", "Status updated successfully!");
         return "redirect:/admin/staff";
     }
 
-//    @GetMapping("/schedule")
-//    public String staffSchedulePage(Model model) {
-//        List<Integer> slots = IntStream.rangeClosed(0, 12).boxed().toList(); // Tạo 13 slot (0–12)
-//        model.addAttribute("slots", slots);
-//        return "admin.staffs/schedule";
-//    }
 
 }

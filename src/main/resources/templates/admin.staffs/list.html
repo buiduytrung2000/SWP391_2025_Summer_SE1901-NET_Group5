@@ -79,17 +79,21 @@
                                                                 th:attr="data-bs-target='#staffDetailModal__' + ${staff.userId}">
                                                             Detail
                                                         </button>
-                                                        <a th:href="@{/admin/staff/toggle-status/{id}(id=${staff.userId})}"
+                                                        <!-- Nếu không phải chính mình -->
+                                                        <a th:if="${staff.userId != currentUserId}"
+                                                           th:href="@{/admin/staff/toggle-status/{id}(id=${staff.userId})}"
                                                            class="btn btn-sm"
                                                            th:classappend="${staff.status?.name() == 'active'} ? 'btn-warning' : 'btn-success'"
                                                            th:text="${staff.status?.name() == 'active'} ? 'Deactivate' : 'Activate'">
                                                         </a>
-                                                        <button type="button"
-                                                                class="btn btn-danger btn-sm"
-                                                                th:attr="data-staff-id=${staff.userId}"
-                                                                onclick="confirmDeleteStaff(this)">
-                                                            Delete
+
+                                                        <!-- Nếu là chính mình -->
+                                                        <button th:if="${staff.userId == currentUserId}"
+                                                                class="btn btn-secondary btn-sm"
+                                                                disabled
+                                                                th:text="${staff.status?.name() == 'active'} ? 'Deactivate' : 'Activate'">
                                                         </button>
+
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -503,24 +507,5 @@
         });
     });
 </script>
-<script>
-    function confirmDeleteStaff(button) {
-        const staffId = button.getAttribute('data-staff-id');
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "This action will permanently delete the staff record.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#e3342f',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = `/sbs/admin/staff/delete/${staffId}`;
-            }
-        });
-    }
-</script>
-
 </body>
 </html>

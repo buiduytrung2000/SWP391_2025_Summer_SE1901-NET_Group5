@@ -15,7 +15,7 @@ public class StaffCreationRequest {
      * Must only contain letters (including Vietnamese accented letters) and spaces.
      */
     @NotBlank(message = "Full name is required")
-    @Size(max = 20, message = "Full name must not exceed 20 characters")
+    @Size(max = 20, message = "Full name must not exceed 30 characters")
     @Pattern(
             regexp = "^[A-Za-zÀ-ỹà-ỹ\\s]+$",
             message = "Full name must contain only letters and spaces"
@@ -82,7 +82,7 @@ public class StaffCreationRequest {
      * Start date of employment or profile creation.
      * Expected in yyyy-MM-dd format from form input.
      */
-    @PastOrPresent(message = "Start date cannot be in the future")
+    @FutureOrPresent(message = "Start date cannot be in the past")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 

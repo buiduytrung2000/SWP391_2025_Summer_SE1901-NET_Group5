@@ -12,6 +12,7 @@ import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
 import vn.edu.fpt.BeautyCenter.repository.StaffRepository;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.*;
@@ -44,13 +45,9 @@ public class StaffService {
     public Page<Staff> searchStaff(String keyword, Pageable pageable) {
         return staffRepository.searchByKeyword(keyword.toLowerCase(), pageable);
     }
-
-    public void deleteById(String id) {
-        staffRepository.deleteById(id);
+    public Staff getByEmail(String email) {
+        return staffRepository.findByEmail(email).orElse(null);
     }
-    /**
-     * Save or update a staff record
-     */
     public Staff save(Staff staff) {
         return staffRepository.save(staff);
     }
@@ -142,8 +139,10 @@ public class StaffService {
         String fileName = UUID.randomUUID() + "_" + avatar.getOriginalFilename();
 
         // Define the upload path (resources/static/uploads)
-        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
+//        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
+        String uploadDir = new File("target/classes/static/uploads").getAbsolutePath();
         Path uploadPath = Paths.get(uploadDir);
+
 
         // Create directory if it doesn't exist
         if (!Files.exists(uploadPath)) {
