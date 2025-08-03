@@ -79,7 +79,7 @@
 
               <!-- BOOKING FORM -->
 
-              <form id="bookingForm" method="post" th:action="@{/admin/bookings/book}" th:object="${bookingRequest}">
+              <form id="bookingForm" method="post" th:action="@{/bookings/book}" th:object="${bookingRequest}">
                 <input type="hidden" th:field="*{serviceId}" th:value="${service.serviceId}">
 
                 <!-- Service Info Card -->
@@ -297,7 +297,7 @@
                     <i class="fa fa-calendar-check"></i>
                     Confirm booking
                   </button>
-                  <a th:href="@{/admin/services/{serviceId}(serviceId=${service.serviceId})}" class="btn btn-outline-secondary btn-lg">
+                  <a th:href="@{/services/{serviceId}(serviceId=${service.serviceId})}" class="btn btn-outline-secondary btn-lg">
                     <i class="fa fa-arrow-left"></i>
                     Back
                   </a>
@@ -650,8 +650,8 @@
     currentUserId: /*[[${currentUser?.userId}]]*/ null,
     currentUserName: /*[[${currentUser?.fullName}]]*/ null,
     endpoints: {
-      availableSlots: '/sbs/admin/bookings/available-slots/',
-      book: '/sbs/admin/bookings/book'
+      availableSlots: '/sbs/bookings/available-slots/',
+      book: '/sbs/bookings/book'
     }
   };
   console.log(BOOKING_CONFIG)
@@ -805,10 +805,10 @@
 
   function populateTimeSlots(timeSlots) {
     const timeSelect = $('#bookingTime');
-    timeSelect.empty().append('<option value="">-- Chọn khung giờ --</option>');
+    timeSelect.empty().append('<option value="">-- Select timeline --</option>');
 
     if (timeSlots.length === 0) {
-      timeSelect.append('<option value="" disabled>Hết lịch trống</option>');
+      timeSelect.append('<option value="" disabled>Out of slot</option>');
       return;
     }
 
@@ -929,6 +929,7 @@
   /*<![CDATA[*/
   function appendSkinTypeToNotes() {
     const skinTypeVal = document.querySelector('input[name="skinType"]:checked')?.value || '';
+    const ageRange = document.getElementById('customerAge').value || '';
     const notesField  = document.getElementById('notes');
 
     if (!skinTypeVal) return;            // Chưa chọn -> không thay đổi
@@ -939,6 +940,7 @@
       // Giữ nguyên nội dung người dùng nhưng thêm xuống dòng mới (hoặc ký tự phân cách)
       notesField.value = notesField.value ? `${notesField.value}\n${tag}` : tag;
     }
+
   }
   /*]]>*/
 

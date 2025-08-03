@@ -139,6 +139,25 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public void deleteComment(String commentId) {
+        log.info("Deleting comment: {}", commentId);
+
+        // Find existing comment
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND));
+
+        if (!comment.getIsActive()) {
+            throw new AppException(ErrorCode.COMMENT_NOT_FOUND);
+        }
+
+        // Soft delete
+        comment.setIsActive(false);
+        commentRepository.save(comment);
+
+        log.info("Comment soft deleted successfully: {}", commentId);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<CommentResponse> getCommentsByBlogId(String blogId) {
         return getCommentsByBlogId(blogId, null);

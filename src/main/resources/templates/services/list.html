@@ -149,12 +149,13 @@
                     <div class="blog-post blog-md date-style-1 clearfix" th:each="service : ${services}">
 
                         <div class="wt-post-media wt-img-effect zoom-slow">
+
                             <!-- Service Icon/Image -->
-                            <div class="service-icon-container"
-                                 style="width: 320px; height: 180px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px;">
-                                <div class="service-icon" style="text-align: center; color: white;">
-                                    <i class="fa fa-spa" style="font-size: 60px; margin-bottom: 10px;"></i>
-                                    <div style="font-size: 14px; font-weight: bold;">SERVICE</div>
+                            <div class="service-icon-container">
+                                <img th:attr="alt=${service.name}" />
+                                <div class="service-icon">
+                                    <i class="fa fa-spa"></i>
+                                    <div class="label" th:text="${service.name}">SERVICE</div>
                                 </div>
                             </div>
 
@@ -222,7 +223,7 @@
                                         <i class="fa fa-eye"></i> View Details
                                     </a>
                                     <a th:if="${isLoggedIn}"
-                                       th:href="@{/admin/bookings/service/{serviceId}(serviceId=${service.serviceId})}"
+                                       th:href="@{/bookings/service/{serviceId}(serviceId=${service.serviceId})}"
                                        title="BOOK NOW!" rel="bookmark"
                                        class="site-button radius-sm">
                                         <i class="fa fa-eye"></i> Book Now!
@@ -246,7 +247,7 @@
               Get started by creating your first service offering.
             </span>
                     </p>
-                    <a th:href="@{/services/add}" class="site-button m-t20">
+                    <a th:href="@{/services/admin/add}" class="site-button m-t20">
                         <i class="fa fa-plus"></i> Create First Service
                     </a>
                 </div>
@@ -474,6 +475,21 @@
         }
     }
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Array of placeholder image URLs
+        const images = [
+            'https://picsum.photos/seed/spa1/320/180',
+            'https://picsum.photos/seed/spa3/320/180',
+            'https://source.unsplash.com/random/320x180/?spa'
+        ];
+
+        // Find all service containers and set random image for each
+        document.querySelectorAll('.service-icon-container img').forEach(imgEl => {
+            imgEl.src = images[Math.floor(Math.random() * images.length)];
+        });
+    });
+</script>
 
 </body>
 </html>

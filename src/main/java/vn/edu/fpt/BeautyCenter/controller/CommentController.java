@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.CommentRequest;
 import vn.edu.fpt.BeautyCenter.dto.response.CommentResponse;
 import vn.edu.fpt.BeautyCenter.entity.User;
+import vn.edu.fpt.BeautyCenter.entity.enums.Role;
 import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.service.CommentService;
 import vn.edu.fpt.BeautyCenter.service.NotificationService;
@@ -146,6 +147,15 @@ public class CommentController {
             }
 
             if (!existingComment.get().getAuthorId().equals(user.getUserId())) {
+                if(user.getRole().equals(Role.admin)){
+                    commentService.deleteComment(commentId);
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("success", true);
+                    response.put("message", "Comment deleted successfully!");
+                    response.put("commentId", commentId);
+
+                    return ResponseEntity.ok(response);
+                }
                 return ResponseEntity.status(403)
                         .body(Map.of("success", false, "message", "You can only delete your own comments"));
             }

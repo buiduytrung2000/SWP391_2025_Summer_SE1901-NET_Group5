@@ -1,319 +1,317 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:fragment="common-head">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- META -->
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="keywords" content="" />
-  <meta name="author" content="" />
-  <meta name="robots" content="" />
-  <meta name="description" content="" />
+    <!-- META -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content=""/>
+    <meta name="robots" content=""/>
+    <meta name="description" content=""/>
 
-  <!-- FAVICONS ICON -->
-  <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon" />
-  <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.png}" />
+    <!-- FAVICONS ICON -->
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.png}"/>
 
-<!--  &lt;!&ndash; PAGE TITLE HERE &ndash;&gt;-->
-  <title th:text="${pageTitle} ?: 'Spa Template | Default Page'">Default Spa Title</title>
+    <!--  &lt;!&ndash; PAGE TITLE HERE &ndash;&gt;-->
+    <title th:text="${pageTitle} ?: 'Spa Template | Default Page'">Default Spa Title</title>
 
-  <!-- MOBILE SPECIFIC -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- MOBILE SPECIFIC -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-  <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
-  <!-- BOOTSTRAP STYLE SHEET -->
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/css/fontawesome/css/font-awesome.min.css}"
-  />
-  <!-- FONTAWESOME STYLE SHEET -->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/flaticon.min.css}" />
-  <!-- FLATICON STYLE SHEET -->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}" />
-  <!-- ANIMATE STYLE SHEET -->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.min.css}" />
-  <!-- OWL CAROUSEL STYLE SHEET -->
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/css/bootstrap-select.min.css}"
-  />
-  <!-- BOOTSTRAP SELECT BOX STYLE SHEET -->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/magnific-popup.min.css}" />
-  <!-- MAGNIFIC POPUP STYLE SHEET -->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/loader.min.css}" />
-  <!-- LOADER STYLE SHEET -->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
-  <!-- MAIN STYLE SHEET -->
-  <link
-          rel="stylesheet"
-          type="text/css"
-          class="skin"
-          th:href="@{/css/skin/skin-7.css}"
-  />
-  <!-- THEME COLOR CHANGE STYLE SHEEET -->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/switcher.css}" />
-  <!-- SIDE SWITCHER STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- BOOTSTRAP STYLE SHEET -->
+    <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/css/fontawesome/css/font-awesome.min.css}"
+    />
+    <!-- FONTAWESOME STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/flaticon.min.css}"/>
+    <!-- FLATICON STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"/>
+    <!-- ANIMATE STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.min.css}"/>
+    <!-- OWL CAROUSEL STYLE SHEET -->
+    <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/css/bootstrap-select.min.css}"
+    />
+    <!-- BOOTSTRAP SELECT BOX STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/magnific-popup.min.css}"/>
+    <!-- MAGNIFIC POPUP STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/loader.min.css}"/>
+    <!-- LOADER STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <!-- MAIN STYLE SHEET -->
+    <link
+            rel="stylesheet"
+            type="text/css"
+            class="skin"
+            th:href="@{/css/skin/skin-7.css}"
+    />
+    <!-- THEME COLOR CHANGE STYLE SHEEET -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/switcher.css}"/>
+    <!-- SIDE SWITCHER STYLE SHEET -->
 
-  <!-- GOOGLE FONTS -->
-  <link
-          href="/https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet"
-  />
+    <!-- GOOGLE FONTS -->
+    <link
+            href="/https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet"
+    />
 
-  <!-- REVOLUTION SLIDER CSS -->
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/plugins/revolution/revolution/css/settings.css}"
-  />
-  <!-- REVOLUTION NAVIGATION STYLE -->
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/plugins/revolution/revolution/css/navigation.css}"
-  />
+    <!-- REVOLUTION SLIDER CSS -->
+    <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/plugins/revolution/revolution/css/settings.css}"
+    />
+    <!-- REVOLUTION NAVIGATION STYLE -->
+    <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/plugins/revolution/revolution/css/navigation.css}"
+    />
 </head>
 
 <body id="bg">
 <div class="page-wraper">
-  <!-- HEADER START -->
-  <header th:fragment="header" class="site-header header-style-3 mobile-sider-drawer-menu">
-    <!-- Search Form -->
-    <div class="sticky-header main-bar-wraper">
-      <div class="main-bar site-bg-primary">
-        <div class="container">
-          <div class="logo-header">
-            <a th:href="@{/}">
-              <img
-                      th:src="@{/images/logo-light-7.png}"
-                      width="216"
-                      height="37"
-                      alt=""
-              />
-            </a>
-          </div>
-          <!-- MAIN Vav -->
-          <div class="header-nav navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="active">
-                <a th:href="@{/}"
-                >Home</a>
-
-              </li>
-              <li>
-                <a th:href="@{/services}"
-                >Service<i class="fa"></i
-                ></a>
-              </li>
-              <li class="submenu-direction">
-                <a th:href="@{/blogs}"
-                >Blogs</a>
-              </li>
-              <li class="submenu-direction">
-                <a th:href="@{/services}"
-                >Services</a>
-              </li>
-              <li class="submenu-direction">
-                <a th:if="${session.user}" th:href="@{/admin/bookings/my-bookings}"
-                >My bookings</a>
-              </li>
-              <li class="submenu-direction">
-                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.staff)}" th:href="@{/admin/bookings/staff}"
-                >Booking Management</a>
-              </li>
-              <li class="submenu-direction">
-                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.admin)}" th:href="@{/admin}"
-                >Dashboard</a>
-              </li>
-            </ul>
-          </div>
-          <!-- NAV Toggle Button -->
-          <button
-                  id="mobile-side-drawer"
-                  data-target=".header-nav"
-                  data-toggle="collapse"
-                  type="button"
-                  class="navbar-toggler collapsed"
-          >
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar icon-bar-first"></span>
-            <span class="icon-bar icon-bar-two"></span>
-            <span class="icon-bar icon-bar-three"></span>
-          </button>
-          <!-- ETRA Nav -->
-          <div class="extra-nav">
-            <div class="extra-cell">
-              <a th:href="@{/#search}" class="site-search-btn"
-              ><i class="fa fa-search"></i
-              ></a>
-            </div>
-            <div class="extra-cell">
-              <a
-                      href="javascript:"
-                      class="wt-cart cart-btn dropdown-toggle"
-                      title="Your Cart"
-                      id="ID-MSG_dropdown"
-                      data-bs-toggle="dropdown"
-              >
+    <!-- HEADER START -->
+    <header th:fragment="header" class="site-header header-style-3 mobile-sider-drawer-menu">
+        <!-- Search Form -->
+        <div class="sticky-header main-bar-wraper">
+            <div class="main-bar site-bg-primary">
+                <div class="container">
+                    <div class="logo-header">
+                        <a th:href="@{/}">
+                            <img
+                                    th:src="@{/images/logo-light-7.png}"
+                                    width="216"
+                                    height="37"
+                                    alt=""
+                            />
+                        </a>
+                    </div>
+                    <!-- MAIN Vav -->
+                    <div class="header-nav navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li th:classappend="${currentURI == '/sbs/'} ? 'active'">
+                                <a th:href="@{/}"
+                                >Home</a>
+                            </li>
+                            <li class="submenu-direction" th:classappend="${currentURI == '/sbs/blogs'} ? 'active'">
+                                <a th:href="@{/blogs}"
+                                >Blogs</a>
+                            </li>
+                            <li class="submenu-direction" th:classappend="${currentURI == '/sbs/services'} ? 'active'">
+                                <a th:href="@{/services}"
+                                >Services</a>
+                            </li>
+                            <li class="submenu-direction"
+                                th:classappend="${currentURI == '/sbs/bookings/my-bookings'} ? 'active'">
+                                <a th:if="${session.user}" th:href="@{/bookings/my-bookings}"
+                                >My bookings</a>
+                            </li>
+                            <li class="submenu-direction"
+                                th:classappend="${currentURI == '/sbs/bookings/staff'} ? 'active'">
+                                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.staff)}"
+                                   th:href="@{/bookings/staff}"
+                                >Booking Management</a>
+                            </li>
+                            <li class="submenu-direction">
+                                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.admin)}"
+                                   th:href="@{/admin}"
+                                >Dashboard</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- NAV Toggle Button -->
+                    <button
+                            id="mobile-side-drawer"
+                            data-target=".header-nav"
+                            data-toggle="collapse"
+                            type="button"
+                            class="navbar-toggler collapsed"
+                    >
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar icon-bar-first"></span>
+                        <span class="icon-bar icon-bar-two"></span>
+                        <span class="icon-bar icon-bar-three"></span>
+                    </button>
+                    <!-- ETRA Nav -->
+                    <div class="extra-nav">
+                        <div class="extra-cell">
+                            <a th:href="@{/#search}" class="site-search-btn"
+                            ><i class="fa fa-search"></i
+                            ></a>
+                        </div>
+                        <div class="extra-cell">
+                            <a
+                                    href="javascript:"
+                                    class="wt-cart cart-btn dropdown-toggle"
+                                    title="Your Cart"
+                                    id="ID-MSG_dropdown"
+                                    data-bs-toggle="dropdown"
+                            >
                     <span class="link-inner">
                       <span class="woo-cart-total"> </span>
                       <span class="woo-cart-count">
                         <span class="shopping-bag wcmenucart-count">4</span>
                       </span>
                     </span>
-              </a>
+                            </a>
 
-              <div class="dropdown-menu cart-dropdown-item-wraper">
-                <div class="nav-cart-content">
-                  <div class="nav-cart-items p-a15">
-                    <div class="nav-cart-item clearfix">
-                      <div class="nav-cart-item-image">
-                        <a th:href="@{/#}"
-                        ><img th:src="@{/images/cart/pic-1.jpg}" alt="p-1"
-                        /></a>
-                      </div>
-                      <div class="nav-cart-item-desc">
-                        <a th:href="@{/#}">Safety helmet</a>
-                        <span class="nav-cart-item-price"
-                        ><strong>2</strong> x $19.99</span
-                        >
-                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                      </div>
-                    </div>
-                    <div class="nav-cart-item clearfix">
-                      <div class="nav-cart-item-image">
-                        <a th:href="@{/#}"
-                        ><img th:src="@{/images/cart/pic-2.jpg}" alt="p-2"
-                        /></a>
-                      </div>
-                      <div class="nav-cart-item-desc">
-                        <a th:href="@{/#}">Hammer drill machine</a>
-                        <span class="nav-cart-item-price"
-                        ><strong>1</strong> x $24.99</span
-                        >
-                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                      </div>
-                    </div>
-                    <div class="nav-cart-item clearfix">
-                      <div class="nav-cart-item-image">
-                        <a th:href="@{/#}"
-                        ><img th:src="@{/images/cart/pic-3.jpg}" alt="p-1"
-                        /></a>
-                      </div>
-                      <div class="nav-cart-item-desc">
-                        <a th:href="@{/#}">Safety helmet</a>
-                        <span class="nav-cart-item-price"
-                        ><strong>2</strong> x $19.99</span
-                        >
-                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                      </div>
-                    </div>
-                    <div class="nav-cart-item clearfix">
-                      <div class="nav-cart-item-image">
-                        <a th:href="@{/#}"
-                        ><img th:src="@{/images/cart/pic-4.jpg}" alt="p-2"
-                        /></a>
-                      </div>
-                      <div class="nav-cart-item-desc">
-                        <a th:href="@{/#}">Hammer drill machine</a>
-                        <span class="nav-cart-item-price"
-                        ><strong>1</strong> x $24.99</span
-                        >
-                        <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="nav-cart-title p-tb10 p-lr15 clearfix">
-                    <h4 class="pull-left m-a0">Subtotal:</h4>
-                    <h5 class="pull-right m-a0">$114.95</h5>
-                  </div>
-                  <div class="nav-cart-action p-a15 clearfix">
-                    <button
-                            class="site-button btn-block m-b15"
-                            type="button"
-                    >
-                      View Cart
-                    </button>
-                    <button class="site-button btn-block" type="button">
-                      Checkout
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+                            <div class="dropdown-menu cart-dropdown-item-wraper">
+                                <div class="nav-cart-content">
+                                    <div class="nav-cart-items p-a15">
+                                        <div class="nav-cart-item clearfix">
+                                            <div class="nav-cart-item-image">
+                                                <a th:href="@{/#}"
+                                                ><img th:src="@{/images/cart/pic-1.jpg}" alt="p-1"
+                                                /></a>
+                                            </div>
+                                            <div class="nav-cart-item-desc">
+                                                <a th:href="@{/#}">Safety helmet</a>
+                                                <span class="nav-cart-item-price"
+                                                ><strong>2</strong> x $19.99</span
+                                                >
+                                                <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                                            </div>
+                                        </div>
+                                        <div class="nav-cart-item clearfix">
+                                            <div class="nav-cart-item-image">
+                                                <a th:href="@{/#}"
+                                                ><img th:src="@{/images/cart/pic-2.jpg}" alt="p-2"
+                                                /></a>
+                                            </div>
+                                            <div class="nav-cart-item-desc">
+                                                <a th:href="@{/#}">Hammer drill machine</a>
+                                                <span class="nav-cart-item-price"
+                                                ><strong>1</strong> x $24.99</span
+                                                >
+                                                <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                                            </div>
+                                        </div>
+                                        <div class="nav-cart-item clearfix">
+                                            <div class="nav-cart-item-image">
+                                                <a th:href="@{/#}"
+                                                ><img th:src="@{/images/cart/pic-3.jpg}" alt="p-1"
+                                                /></a>
+                                            </div>
+                                            <div class="nav-cart-item-desc">
+                                                <a th:href="@{/#}">Safety helmet</a>
+                                                <span class="nav-cart-item-price"
+                                                ><strong>2</strong> x $19.99</span
+                                                >
+                                                <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                                            </div>
+                                        </div>
+                                        <div class="nav-cart-item clearfix">
+                                            <div class="nav-cart-item-image">
+                                                <a th:href="@{/#}"
+                                                ><img th:src="@{/images/cart/pic-4.jpg}" alt="p-2"
+                                                /></a>
+                                            </div>
+                                            <div class="nav-cart-item-desc">
+                                                <a th:href="@{/#}">Hammer drill machine</a>
+                                                <span class="nav-cart-item-price"
+                                                ><strong>1</strong> x $24.99</span
+                                                >
+                                                <a th:href="@{/#}" class="nav-cart-item-quantity">x</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nav-cart-title p-tb10 p-lr15 clearfix">
+                                        <h4 class="pull-left m-a0">Subtotal:</h4>
+                                        <h5 class="pull-right m-a0">$114.95</h5>
+                                    </div>
+                                    <div class="nav-cart-action p-a15 clearfix">
+                                        <button
+                                                class="site-button btn-block m-b15"
+                                                type="button"
+                                        >
+                                            View Cart
+                                        </button>
+                                        <button class="site-button btn-block" type="button">
+                                            Checkout
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="extra-cell" style="width: 40.3px">
-              <a th:href="@{/login}"
-                 th:if="${session.user == null}"
-              >
-                <i
-                        class="fa-duotone fa-solid fa-circle-user fa-2xl"
-                        style="color: black; margin-left:15px"></i>
+                        <div class="extra-cell" style="width: 40.3px">
+                            <a th:href="@{/login}"
+                               th:if="${session.user == null}"
+                            >
+                                <i
+                                        class="fa-duotone fa-solid fa-circle-user fa-2xl"
+                                        style="color: black; margin-left:15px"></i>
 
-              </a>
-              <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle" data-bs-toggle="dropdown"
-              >
-                <img id="avatar"
-                     class="wt-cart cart-btn dropdown-toggle"
+                            </a>
+                            <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle" data-bs-toggle="dropdown"
+                            >
+                                <img id="avatar"
+                                     class="wt-cart cart-btn dropdown-toggle"
 
-                     th:if="${session.user != null && session.userAvatar != null}"
-                     th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}"
+                                     th:if="${session.user != null && session.userAvatar != null}"
+                                     th:src="${session.user.avatarUrl + '?v=' + #dates.createNow().getTime()}"
 
-                     style="width: 121px !important; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; margin-left:15px"
-                >
-                <i
-                        th:if="${session.user != null && session.userAvatar == null}"
+                                     style="width: 121px !important; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; margin-left:15px"
+                                >
+                                <i
+                                        th:if="${session.user != null && session.userAvatar == null}"
 
-                        class="fa-duotone fa-solid fa-circle-user fa-2xl"
-                        style="color: white; margin-left:15px"></i></a>
-              <div class="dropdown-menu cart-dropdown-item-wraper">
-                <div class="nav-cart-content">
-                  <div class="nav-cart-items p-a15">
-                    <div class="nav-cart-item clearfix">
-                      <a th:href="@{/logout}">Logout</a>
-                    </div>
-                    <div class="nav-cart-item clearfix">
-                      <a th:href="@{/view_profile}">Profile</a>
+                                        class="fa-duotone fa-solid fa-circle-user fa-2xl"
+                                        style="color: white; margin-left:15px"></i></a>
+                            <div class="dropdown-menu cart-dropdown-item-wraper">
+                                <div class="nav-cart-content">
+                                    <div class="nav-cart-items p-a15">
+                                        <div class="nav-cart-item clearfix">
+                                            <a th:href="@{/logout}">Logout</a>
+                                        </div>
+                                        <div class="nav-cart-item clearfix">
+                                            <a th:href="@{/view_profile}">Profile</a>
 
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <!-- SITE Search -->
-          <div id="search">
-            <span class="close"></span>
-            <form
-                    role="search"
-                    id="searchform"
-                    action="/search"
-                    method="get"
-                    class="radius-xl"
-            >
-              <div class="input-group">
-                <label>
-                  <input
-                          value=""
-                          name="q"
-                          type="search"
-                          placeholder="Type to search"
-                  />
-                </label>
-                <span class="input-group-btn"
-                ><button type="button" class="search-btn">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SITE Search -->
+                        <div id="search">
+                            <span class="close"></span>
+                            <form
+                                    role="search"
+                                    id="searchform"
+                                    action="/search"
+                                    method="get"
+                                    class="radius-xl"
+                            >
+                                <div class="input-group">
+                                    <label>
+                                        <input
+                                                value=""
+                                                name="q"
+                                                type="search"
+                                                placeholder="Type to search"
+                                        />
+                                    </label>
+                                    <span class="input-group-btn"
+                                    ><button type="button" class="search-btn">
                         <i class="fa fa-search"></i></button
-                ></span>
-              </div>
-            </form>
-          </div>
+                                    ></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    </div>
 
-  </header>
+    </header>
 </div>
-  <!-- HEADER END -->
+<!-- HEADER END -->

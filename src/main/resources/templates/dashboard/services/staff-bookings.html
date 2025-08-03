@@ -244,18 +244,18 @@
                   <nav th:if="${totalPages > 1}">
                     <ul class="pagination justify-content-center">
                       <li class="page-item" th:classappend="${!hasPrevious}? 'disabled'">
-                        <a class="page-link" th:href="@{/admin/bookings/staff(page=${currentPage})}">
+                        <a class="page-link" th:href="@{/bookings/staff(page=${currentPage})}">
                           <em class="icon ni ni-chevron-left"></em>
                         </a>
                       </li>
                       <li class="page-item"
                           th:each="p : ${#numbers.sequence(0,totalPages)}"
                           th:classappend="${p==currentPage}? 'active'">
-                        <a class="page-link" th:href="@{/admin/bookings/staff(page=${p})}"
+                        <a class="page-link" th:href="@{/bookings/staff(page=${p})}"
                            th:text="${p+1}">1</a>
                       </li>
                       <li class="page-item" th:classappend="${!hasNext}? 'disabled'">
-                        <a class="page-link" th:href="@{/admin/bookings/staff(page=${currentPage+1})}">
+                        <a class="page-link" th:href="@{/bookings/staff(page=${currentPage+1})}">
                           <em class="icon ni ni-chevron-right"></em>
                         </a>
                       </li>
@@ -277,10 +277,10 @@
 <div th:replace="~{/dashboard/fragments/footer::admin-scripts2}"></div>
 <script>
   function startSvc(btn){
-    $.post('/sbs/admin/bookings/staff/start/'+btn.dataset.id).done(()=>location.reload());
+    $.post('/sbs/bookings/staff/start/'+btn.dataset.id).done(()=>location.reload());
   }
   function doneSvc(btn){
-    $.post('/sbs/admin/bookings/staff/complete/'+btn.dataset.id,
+    $.post('/sbs/bookings/staff/complete/'+btn.dataset.id,
             JSON.stringify({completionNotes:''}),
             'json').done(()=>location.reload());
   }
@@ -292,7 +292,7 @@
     console.log('Cancel reason:', reason);
 
     $.ajax({
-      url: `/sbs/admin/bookings/staff/cancel/${bookingId}`,
+      url: `/sbs/bookings/staff/cancel/${bookingId}`,
       method: 'POST',
       contentType: 'application/json',
       dataType: 'json',

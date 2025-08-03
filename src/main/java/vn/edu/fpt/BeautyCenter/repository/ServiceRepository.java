@@ -75,8 +75,7 @@ public interface ServiceRepository extends JpaRepository<Service, String> {
             "LEFT JOIN service_tag_map stm ON s.service_id COLLATE utf8mb4_unicode_ci = stm.service_id COLLATE utf8mb4_unicode_ci " +
             "LEFT JOIN service_tags st ON st.tag_id = stm.tag_id " +
             "WHERE (:keyword IS NULL OR " +
-            "       LOWER(s.name COLLATE utf8mb4_unicode_ci) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "       s.content COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', :keyword, '%')) " +
+            "       LOWER(s.name COLLATE utf8mb4_unicode_ci) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
             "AND (:minPrice IS NULL OR s.price >= :minPrice) " +
             "AND (:maxPrice IS NULL OR s.price <= :maxPrice) " +
             "AND (:minDuration IS NULL OR s.duration >= :minDuration) " +
@@ -92,8 +91,7 @@ public interface ServiceRepository extends JpaRepository<Service, String> {
                     "LEFT JOIN service_tag_map stm ON s.service_id COLLATE utf8mb4_unicode_ci = stm.service_id COLLATE utf8mb4_unicode_ci " +
                     "LEFT JOIN service_tags st ON st.tag_id = stm.tag_id " +
                     "WHERE (:keyword IS NULL OR " +
-                    "       LOWER(s.name COLLATE utf8mb4_unicode_ci) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-                    "       s.content COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', :keyword, '%')) " +
+                    "       LOWER(s.name COLLATE utf8mb4_unicode_ci) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
                     "AND (:minPrice IS NULL OR s.price >= :minPrice) " +
                     "AND (:maxPrice IS NULL OR s.price <= :maxPrice) " +
                     "AND (:minDuration IS NULL OR s.duration >= :minDuration) " +

@@ -84,7 +84,7 @@
                   </div>
 
                   <!-- Status Filter -->
-                  <div class="col-md-2 m-b15">
+                  <div class="col-md-2 m-b15" th:if="${session.user != null and (session.user?.getRole()?.equals(session.user?.getRole()?.admin) or session.user?.getRole()?.equals(session.user?.getRole()?.staff))}">
                     <select name="status" class="form-control">
                       <option value="">All Status</option>
                       <option th:each="status : ${availableStatuses}"
@@ -180,7 +180,7 @@
               </div>
 
               <!-- Status Badge -->
-              <div class="status-badge" th:classappend="${blog.status.name()}">
+              <div class="status-badge"  th:classappend="${blog.status.name()}">
                                 <span class="badge"
                                       th:classappend="${blog.status.name() == 'PUBLISHED'} ? 'badge-success' :
                                                      (${blog.status.name() == 'DRAFT'} ? 'badge-warning' : 'badge-secondary')"

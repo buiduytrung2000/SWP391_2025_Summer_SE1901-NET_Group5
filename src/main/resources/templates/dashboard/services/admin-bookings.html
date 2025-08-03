@@ -164,12 +164,12 @@
                               <select class="form-select"
                                       id="statusSelect"
                                       onchange="location.href=this.value">
-                                <option th:value="@{/admin/bookings/admin}"
+                                <option th:value="@{/bookings/admin}"
                                         th:selected="${selectedStatus == null}">
                                   All
                                 </option>
                                 <option th:each="s : ${bookingStatuses}"
-                                        th:value="@{/admin/bookings/admin(status=${s})}"
+                                        th:value="@{/bookings/admin(status=${s})}"
                                         th:selected="${selectedStatus == s}"
                                         th:text="${s.vietnameseName}">Pending
                                 </option>
@@ -258,7 +258,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                           <ul class="link-list-opt">
-                            <li><a th:href="@{/admin/bookings/{id}(id=${bk.bookingId})}">
+                            <li><a th:href="@{/services/{id}(id=${bk.serviceId})}">
                               <em class="icon ni ni-eye"></em>
                               <span>Details</span></a></li>
                             <li th:if="${bk.canBeAssigned}">
@@ -303,7 +303,7 @@
                       <li class="page-item"
                           th:classappend="${!hasPrevious}? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/admin/bookings/admin(page=${currentPage},status=${selectedStatus})}">
+                           th:href="@{/bookings/admin(page=${currentPage},status=${selectedStatus})}">
                           <em class="icon ni ni-chevron-left"></em>
                         </a>
                       </li>
@@ -311,13 +311,13 @@
                           th:each="p : ${#numbers.sequence(0,totalPages - 1)}"
                           th:classappend="${p==currentPage}? 'active'">
                         <a class="page-link"
-                           th:href="@{/admin/bookings/admin(page=${p},status=${selectedStatus})}"
+                           th:href="@{/bookings/admin(page=${p},status=${selectedStatus})}"
                            th:text="${p + 1}">1</a>
                       </li>
                       <li class="page-item"
                           th:classappend="${!hasNext}? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/admin/bookings/admin(page=${currentPage+1},status=${selectedStatus})}">
+                           th:href="@{/bookings/admin(page=${currentPage+1},status=${selectedStatus})}">
                           <em class="icon ni ni-chevron-right"></em>
                         </a>
                       </li>
@@ -534,7 +534,7 @@
     warningAlert.classList.add('d-none');
 
     // AJAX call to get available staff
-    fetch(`/sbs/admin/bookings/available-staff/${bookingId}`, {
+    fetch(`/sbs/bookings/available-staff/${bookingId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -866,6 +866,36 @@
         notification.remove();
       }
     }, 5000);
+  }
+  function openCancel(btn) {
+    const bookingId = btn.dataset.id;
+    const reason = prompt('Cancel reason?');
+    if (!reason) return;
+
+    console.log('Cancel reason:', reason);
+
+    $.ajax({
+      url: `/sbs/bookings/staff/cancel/${bookingId}`,
+      method: 'POST',
+      contentType: 'application/json',
+      dataType: 'json',
+      data: JSON.stringify({ cancellationReason: reason }),
+      success: function(response) {
+        if (response.success) {
+          alert('Cancel schedule success');
+          location.reload();
+        } else {
+          alert('Error: ' + response.message);
+        }
+      },
+      error: function(xhr) {
+        let msg = 'Có lỗi khi hủy lịch';
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          msg = xhr.responseJSON.message;
+        }
+        alert(msg);
+      }
+    });
   }
 
 </script>

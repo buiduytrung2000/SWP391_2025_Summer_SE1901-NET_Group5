@@ -41,6 +41,8 @@ import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -55,6 +57,7 @@ import java.util.stream.IntStream;
  */
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/services")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ServiceController {
 
@@ -93,7 +96,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios with flash messages
      * @return the view name for the service list with applied filters and data
      */
-    @GetMapping({"/admin/services", "/admin/services/"})
+    @GetMapping({"/admin/", "/admin"})
     public String getAllServiceWithAdvancedFilter(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size,
@@ -209,7 +212,6 @@ public class ServiceController {
 
             // Prepare filter button states for active indication
             prepareFilterButtonStates(model, filterParams);
-
             // Add main attributes to model for view rendering
             model.addAttribute("pageTitle", "Services Management");
             model.addAttribute("services", services);
@@ -240,7 +242,7 @@ public class ServiceController {
             return "dashboard/services/list";
         }
     }
-    @GetMapping({"/services", "/services/"})
+    @GetMapping({"/", ""})
     public String getAllServiceWithAdvancedFilterForUser(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size,
@@ -394,7 +396,7 @@ public class ServiceController {
      * @param session current HTTP session for authentication
      * @return the view name for the add service form
      */
-    @GetMapping("/admin/services/add")
+    @GetMapping("/admin/add")
     public String showAddForm(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
@@ -416,7 +418,7 @@ public class ServiceController {
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes,
                     "Error preparing add form: " + e.getMessage());
-            return "redirect:/admin/services";
+            return "redirect:/admin";
         }
     }
 
@@ -434,7 +436,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios with flash messages
      * @return redirect to appropriate page based on operation result
      */
-    @PostMapping("/admin/services/add")
+    @PostMapping("/admin/add")
     public String saveService(@ModelAttribute("serviceCreationRequest") @Valid ServiceCreationRequest request,
                               BindingResult bindingResult,
                               HttpSession session,
@@ -450,7 +452,7 @@ public class ServiceController {
             redirectAttributes.addFlashAttribute("serviceCreationRequest", request);
             notificationService.addErrorMessage(redirectAttributes,
                     "Please check the information entered. All required fields must be completed correctly.");
-            return "redirect:/admin/services/add";
+            return "redirect:/admin/add";
         }
 
         try {
@@ -468,20 +470,20 @@ public class ServiceController {
             notificationService.addSuccessMessage(redirectAttributes,
                     "Service '" + request.getName() + "' has been successfully created!");
 
-            return "redirect:/admin/services";
+            return "redirect:/admin";
 
         } catch (AppException e) {
             // Handle business logic exceptions
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
             redirectAttributes.addFlashAttribute("serviceCreationRequest", request);
-            return "redirect:/admin/services/add";
+            return "redirect:/admin/add";
 
         } catch (Exception e) {
             // Handle unexpected errors
             notificationService.addErrorMessage(redirectAttributes,
                     "An unexpected error occurred while creating the service: " + e.getMessage());
             redirectAttributes.addFlashAttribute("serviceCreationRequest", request);
-            return "redirect:/admin/services/add";
+            return "redirect:/admin/add";
         }
     }
 
@@ -499,7 +501,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios
      * @return the view name for the edit service form
      */
-    @GetMapping("/admin/services/edit/{serviceId}")
+    @GetMapping("/admin/edit/{serviceId}")
     public String showEditForm(@PathVariable String serviceId,
                                Model model,
                                HttpSession session,
@@ -514,7 +516,7 @@ public class ServiceController {
             Optional<ServiceResponse> serviceOpt = serviceService.getServiceById(serviceId);
             if (serviceOpt.isEmpty()) {
                 notificationService.addErrorMessage(redirectAttributes, "Service not found. It may have been deleted.");
-                return "redirect:/admin/services";
+                return "redirect:/admin";
             }
 
             ServiceResponse service = serviceOpt.get();
@@ -557,11 +559,11 @@ public class ServiceController {
 
         } catch (NumberFormatException e) {
             notificationService.addErrorMessage(redirectAttributes, "Invalid data format in service details.");
-            return "redirect:/admin/services";
+            return "redirect:/admin";
         } catch (Exception e) {
             notificationService.addErrorMessage(redirectAttributes,
                     "Error loading service for editing: " + e.getMessage());
-            return "redirect:/admin/services";
+            return "redirect:/admin";
         }
     }
 
@@ -580,7 +582,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios
      * @return redirect to appropriate page based on operation result
      */
-    @PostMapping("/admin/services/edit/{serviceId}")
+    @PostMapping("/admin/edit/{serviceId}")
     public String updateService(@PathVariable String serviceId,
                                 @ModelAttribute("serviceUpdateRequest") @Valid ServiceUpdateRequest request,
                                 BindingResult bindingResult,
@@ -597,7 +599,7 @@ public class ServiceController {
             redirectAttributes.addFlashAttribute("serviceUpdateRequest", request);
             notificationService.addErrorMessage(redirectAttributes,
                     "Please check the information entered. All fields must be valid.");
-            return "redirect:/admin/services/edit/" + serviceId;
+            return "redirect:/admin/edit/" + serviceId;
         }
 
         try {
@@ -608,20 +610,20 @@ public class ServiceController {
             notificationService.addSuccessMessage(redirectAttributes,
                     "Service '" + request.getName() + "' has been successfully updated!");
 
-            return "redirect:/admin/services";
+            return "redirect:/admin";
 
         } catch (AppException e) {
             // Handle business logic exceptions
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
             redirectAttributes.addFlashAttribute("serviceUpdateRequest", request);
-            return "redirect:/admin/services/edit/" + serviceId;
+            return "redirect:/admin/edit/" + serviceId;
 
         } catch (Exception e) {
             // Handle unexpected errors
             notificationService.addErrorMessage(redirectAttributes,
                     "An unexpected error occurred while updating the service: " + e.getMessage());
             redirectAttributes.addFlashAttribute("serviceUpdateRequest", request);
-            return "redirect:/admin/services/edit/" + serviceId;
+            return "redirect:/admin/edit/" + serviceId;
         }
     }
 
@@ -639,7 +641,7 @@ public class ServiceController {
      * @param redirectAttributes attributes for redirect scenarios
      * @return the view name for the service details page
      */
-    @GetMapping({"/admin/services/{serviceId}","/services/{serviceId}"})
+    @GetMapping({"/admin/{serviceId}","/{serviceId}"})
     public String viewService(@PathVariable String serviceId,
                               Model model,
                               HttpSession session,
@@ -693,7 +695,7 @@ public class ServiceController {
      * @param redirectAttributes Spring MVC redirect attributes for flash messages
      * @return redirect view name with appropriate success or error feedback
      */
-    @GetMapping("/admin/services/delete/{serviceId}")
+    @GetMapping("/admin/delete/{serviceId}")
     public String deleteService(@PathVariable String serviceId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {
@@ -712,7 +714,7 @@ public class ServiceController {
             if (serviceOpt.isEmpty()) {
                 // Service not found - add error message and redirect to list view
                 notificationService.addErrorMessage(redirectAttributes, "Service not found.");
-                return "redirect:/admin/services";
+                return "redirect:/admin";
             }
 
             // Store service name for success message before deletion
@@ -728,20 +730,20 @@ public class ServiceController {
             }
 
             // Redirect to services list page after successful deletion
-            return "redirect:/admin/services";
+            return "redirect:/admin";
 
         } catch (IllegalStateException e) {
             // Handle business rule violations (e.g., service has dependencies)
             // Redirect to delete confirmation page to show dependency information
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
-            return "redirect:/admin/services/delete/" + serviceId;
+            return "redirect:/admin/delete/" + serviceId;
 
         } catch (Exception e) {
             // Handle any unexpected errors during deletion process
             // Log error and show user-friendly message while redirecting to safe location
             notificationService.addErrorMessage(redirectAttributes,
                     "Error deleting service: " + e.getMessage());
-            return "redirect:/admin/services";
+            return "redirect:/admin";
         }
     }
 
@@ -1140,5 +1142,15 @@ public class ServiceController {
     public void initBinder(WebDataBinder binder) {
         StringTrimmerEditor stringTrimmer = new StringTrimmerEditor(true);
         binder.registerCustomEditor(String.class, stringTrimmer);
+    }
+
+    private String getFirstImage(String content) {
+        String img = "";
+        Pattern pattern = Pattern.compile("src=\"(data:image\\/[^;]+;base64[^\"]+)\"");
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            img = matcher.group(1);
+        }
+        return img;
     }
 }

@@ -74,7 +74,7 @@ public class BlogController {
 
     // List of allowed sort fields to prevent SQL injection
     private static final List<String> ALLOWED_SORT_FIELDS = Arrays.asList(
-            "title", "author_id", "createdAt", "published_at", "view_count", "status"
+            "title", "author_id", "createdAt", "publishedAt", "viewCount", "status"
     );
 
     /**
@@ -149,7 +149,7 @@ public class BlogController {
             }
             Sort.Direction direction;
             // Create sort direction and validate sort field for security
-            if(sortBy.equals("title") || sortBy.equals("viewCount")){
+            if(sortBy.equals("title")){
                 direction = "desc".equalsIgnoreCase(sortDir) ?
                         Sort.Direction.ASC : Sort.Direction.DESC;
             }else{
@@ -683,8 +683,8 @@ public class BlogController {
      * Validates and sanitizes the sort field to prevent SQL injection.
      */
     private String validateSortField(String sortBy) {
-        if (sortBy != null && ALLOWED_SORT_FIELDS.contains(sortBy.toLowerCase())) {
-            return sortBy.toLowerCase();
+        if (sortBy != null && ALLOWED_SORT_FIELDS.contains(sortBy)) {
+            return sortBy;
         }
         return "createdAt";
     }

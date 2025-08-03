@@ -33,7 +33,8 @@
         <link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.min.css}"><!-- OWL CAROUSEL STYLE SHEET -->
         <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}">
         <!-- BOOTSTRAP SELECT BOX STYLE SHEET -->
-        <link rel="stylesheet" type="text/css" th:href="@{/css/magnific-popup.min.css}"><!-- MAGNIFIC POPUP STYLE SHEET -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/magnific-popup.min.css}">
+        <!-- MAGNIFIC POPUP STYLE SHEET -->
         <link rel="stylesheet" type="text/css" th:href="@{/css/loader.min.css}"><!-- LOADER STYLE SHEET -->
         <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"><!-- MAIN STYLE SHEET -->
         <link rel="stylesheet" type="text/css" class="skin" th:href="@{/css/skin/skin-1.css}">
@@ -90,35 +91,34 @@
                     <!-- MAIN Vav -->
                     <div class="header-nav navbar-collapse collapse ">
                         <ul class="nav navbar-nav">
-                            <li class="active">
+                            <li th:classappend="${currentURI == '/sbs/'} ? 'active'">
                                 <a th:href="@{/}"
                                 >Home</a>
-
                             </li>
-                            <li>
+                            <li class="submenu-direction" th:classappend="${currentURI == '/sbs/blogs'} ? 'active'">
+                                <a th:href="@{/blogs}"
+                                >Blogs</a>
+                            </li>
+                            <li class="submenu-direction" th:classappend="${currentURI == '/sbs/services'} ? 'active'">
                                 <a th:href="@{/services}"
-                                >Service<i class="fa"></i
-                                ></a>
+                                >Services</a>
                             </li>
-                            <li class="submenu-direction">
-                                <a th:if="${session.user}" th:href="@{/admin/bookings/my-bookings}"
+                            <li class="submenu-direction"
+                                th:classappend="${currentURI == '/sbs/bookings/my-bookings'} ? 'active'">
+                                <a th:if="${session.user}" th:href="@{/bookings/my-bookings}"
                                 >My bookings</a>
                             </li>
-                            <li>
-                                <a th:href="@{/blogs}"
-                                >Blogs<i class="fa"></i
-                                ></a>
-                            </li>
-                            <li class="submenu-direction">
-                                <a th:if="${session.user}" th:href="@{/admin/bookings/staff}"
+                            <li class="submenu-direction"
+                                th:classappend="${currentURI == '/sbs/bookings/staff'} ? 'active'">
+                                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.staff)}"
+                                   th:href="@{/bookings/staff}"
                                 >Booking Management</a>
                             </li>
                             <li class="submenu-direction">
-                                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.admin)}" th:href="@{/admin}"
+                                <a th:if="${session.user?.getRole()?.equals(session.user?.getRole()?.admin)}"
+                                   th:href="@{/admin}"
                                 >Dashboard</a>
                             </li>
-
-
                         </ul>
                     </div>
                     <div class="extra-nav">

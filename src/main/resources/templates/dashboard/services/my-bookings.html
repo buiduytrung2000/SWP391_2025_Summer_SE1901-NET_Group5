@@ -90,7 +90,7 @@
         <div class="booking-filters mb-4">
           <div class="card">
             <div class="card-body">
-              <form method="GET" th:action="@{/admin/bookings/my-bookings}">
+              <form method="GET" th:action="@{/bookings/my-bookings}">
                 <div class="row align-items-end">
                   <div class="col-md-3">
                     <label for="statusFilter" class="form-label">Status:</label>
@@ -216,7 +216,7 @@
                         <div class="booking-actions">
 
                           <!-- VIEW DETAILS -->
-                          <a th:href="@{/admin/services/{id}(id=${booking.serviceId})}"
+                          <a th:href="@{/services/{id}(id=${booking.serviceId})}"
                              class="btn btn-sm btn-outline-info mb-2">
                             <i class="fa fa-eye"></i>
                             Service Details
@@ -236,7 +236,7 @@
 
                           <!-- BOOK AGAIN -->
                           <a th:if="${booking.status.name() == 'COMPLETED'}"
-                             th:href="@{/admin/bookings/service/{serviceId}(serviceId=${booking.serviceId})}"
+                             th:href="@{/bookings/service/{serviceId}(serviceId=${booking.serviceId})}"
                              class="btn btn-sm btn-success mb-2 ml-1">
                             <i class="fa fa-redo"></i>
                             Book Service again
@@ -294,7 +294,7 @@
               <!-- Previous Page -->
               <li class="page-item" th:class="${hasPrevious} ? '' : 'disabled'">
                 <a class="page-link"
-                   th:href="@{/admin/bookings/my-bookings(page=${currentPage - 1}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
+                   th:href="@{/bookings/my-bookings(page=${currentPage - 1}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
                    aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -305,14 +305,14 @@
                   class="page-item"
                   th:class="${pageNum == currentPage} ? 'active' : ''">
                 <a class="page-link"
-                   th:href="@{/admin/bookings/my-bookings(page=${pageNum}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
+                   th:href="@{/bookings/my-bookings(page=${pageNum}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
                    th:text="${pageNum + 1}">1</a>
               </li>
 
               <!-- Next Page -->
               <li class="page-item" th:class="${hasNext} ? '' : 'disabled'">
                 <a class="page-link"
-                   th:href="@{/admin/bookings/my-bookings(page=${currentPage + 1}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
+                   th:href="@{/bookings/my-bookings(page=${currentPage + 1}, size=${param.size ?: 10}, status=${param.status}, fromDate=${param.fromDate}, toDate=${param.toDate})}"
                    aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>

@@ -24,7 +24,7 @@ public interface CommentService {
     Optional<CommentResponse> getCommentById(String commentId);
     CommentResponse updateComment(String commentId, CommentRequest request, String currentUserId);
     void deleteComment(String commentId, String currentUserId);
-
+    void deleteComment(String commentId);
     // Get comments for a blog
     List<CommentResponse> getCommentsByBlogId(String blogId);
     List<CommentResponse> getCommentsByBlogId(String blogId, String currentUserId);

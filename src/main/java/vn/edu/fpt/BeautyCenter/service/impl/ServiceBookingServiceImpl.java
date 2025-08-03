@@ -21,6 +21,7 @@ import vn.edu.fpt.BeautyCenter.dto.response.BookingResponse;
 import vn.edu.fpt.BeautyCenter.dto.response.BookingStatusHistoryResponse;
 import vn.edu.fpt.BeautyCenter.entity.*;
 import vn.edu.fpt.BeautyCenter.entity.enums.BookingStatus;
+import vn.edu.fpt.BeautyCenter.entity.enums.Role;
 import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.exception.ErrorCode;
 import vn.edu.fpt.BeautyCenter.mapper.ServiceBookingMapper;
@@ -490,15 +491,15 @@ public class ServiceBookingServiceImpl implements ServiceBookingService {
 
         LocalDate date = booking.getBookingDate();
         LocalTime time = booking.getBookingTime();
-
         // 2. Load all active staff users
-        List<User> allStaff = userRepository.findByRoleOrderByFullName("STAFF"); // or Role.STAFF enum
-
+        List<User> allStaff = userRepository.findByRoleOrderByFullName(Role.staff+""); // or Role.STAFF enum
+        System.out.println("serv 2");
         // 3. Filter out staff who have a conflicting booking
         List<String> busyStaffIds = bookingRepository.findBookedStaffIds(
                 date, time,
                 List.of(BookingStatus.ASSIGNED, BookingStatus.IN_PROGRESS)
         );
+        System.out.println("serv 3");
 
         // 4. Map to DTO
         return allStaff.stream()

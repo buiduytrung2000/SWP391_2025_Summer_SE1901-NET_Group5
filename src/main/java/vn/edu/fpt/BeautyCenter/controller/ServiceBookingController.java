@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin/bookings")
+@RequestMapping("/bookings")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
@@ -73,14 +73,14 @@ public class ServiceBookingController {
             User user = (User) session.getAttribute("user");
             if (user == null) {
                 notificationService.addErrorMessage(redirectAttributes, "Please login to book a service");
-                return "redirect:/admin/login";
+                return "redirect:/login";
             }
 
             // Get service details
             Optional<ServiceResponse> serviceOpt = serviceService.getServiceById(serviceId);
             if (serviceOpt.isEmpty()) {
                 notificationService.addErrorMessage(redirectAttributes, "Service not found");
-                return "redirect:/admin/services";
+                return "redirect:/services";
             }
 
             ServiceResponse service = serviceOpt.get();
@@ -108,7 +108,7 @@ public class ServiceBookingController {
         } catch (Exception e) {
             log.error("Error loading booking form for service {}: ", serviceId, e);
             notificationService.addErrorMessage(redirectAttributes, "Error loading booking form");
-            return "redirect:/admin/services";
+            return "redirect:/bookings";
         }
     }
 
@@ -124,14 +124,14 @@ public class ServiceBookingController {
             User user = (User) session.getAttribute("user");
             if (user == null) {
                 notificationService.addErrorMessage(redirectAttributes, "Please login to book a service");
-                return "redirect:/admin/login";
+                return "redirect:/login";
             }
             System.out.println(request);
             if (bindingResult.hasErrors()) {
                 redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.bookingRequest", bindingResult);
                 redirectAttributes.addFlashAttribute("bookingRequest", request);
                 notificationService.addErrorMessage(redirectAttributes, "Please check your booking details");
-                return "redirect:/admin/bookings/service/" + request.getServiceId();
+                return "redirect:/bookings/service/" + request.getServiceId();
             }
 
             BookingResponse booking = bookingService.createBooking(request, user.getUserId());
@@ -139,17 +139,17 @@ public class ServiceBookingController {
             notificationService.addSuccessMessage(redirectAttributes,
                     "Service booked successfully! Booking ID: " + booking.getBookingId());
 
-            return "redirect:/admin/bookings/my-bookings";
+            return "redirect:/bookings/my-bookings";
 
         } catch (AppException e) {
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
             redirectAttributes.addFlashAttribute("bookingRequest", request);
             System.out.println("app exception");
-            return "redirect:/admin/bookings/service/" + request.getServiceId();
+            return "redirect:/bookings/service/" + request.getServiceId();
         } catch (Exception e) {
             System.err.println("Error creating booking: "+ e);
             notificationService.addErrorMessage(redirectAttributes, "Error creating booking");
-            return "redirect:/admin/bookings/service/" + request.getServiceId();
+            return "redirect:/bookings/service/" + request.getServiceId();
         }
     }
 
@@ -212,7 +212,7 @@ public class ServiceBookingController {
         } catch (Exception e) {
             System.out.println("Error loading customer bookings: "+ e);
             notificationService.addErrorMessage(redirectAttributes, "Error loading your bookings");
-            return "redirect:/admin/dashboard";
+            return "redirect:/services";
         }
     }
 
@@ -238,15 +238,15 @@ public class ServiceBookingController {
             bookingService.cancelBooking(bookingId, request, user.getUserId());
 
             notificationService.addSuccessMessage(redirectAttributes, "Booking cancelled successfully");
-            return "redirect:/admin/bookings/my-bookings";
+            return "redirect:/bookings/my-bookings";
 
         } catch (AppException e) {
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
-            return "redirect:/admin/bookings/my-bookings";
+            return "redirect:/bookings/my-bookings";
         } catch (Exception e) {
             log.error("Error cancelling booking: ", e);
             notificationService.addErrorMessage(redirectAttributes, "Error cancelling booking");
-            return "redirect:/admin/bookings/my-bookings";
+            return "redirect:/bookings/my-bookings";
         }
     }
 
@@ -296,7 +296,7 @@ public class ServiceBookingController {
         } catch (Exception e) {
             log.error("Error loading admin bookings: ", e);
             notificationService.addErrorMessage(redirectAttributes, "Error loading bookings");
-            return "redirect:/admin/dashboard";
+            return "redirect:/admin";
         }
     }
     /**
@@ -380,7 +380,7 @@ public class ServiceBookingController {
             User staff = (User) session.getAttribute("user");
             if (staff == null || staff.getRole() != Role.staff) {
                 notificationService.addErrorMessage(redirectAttributes, "Staff access required");
-                return "redirect:/admin/dashboard";
+                return "redirect:/admin";
             }
 
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "bookingDate", "bookingTime"));
@@ -407,7 +407,7 @@ public class ServiceBookingController {
         } catch (Exception e) {
             log.error("Error loading staff bookings: ", e);
             notificationService.addErrorMessage(redirectAttributes, "Error loading your assigned services");
-            return "redirect:/admin/dashboard";
+            return "redirect:/admin";
         }
     }
 
@@ -490,7 +490,7 @@ public class ServiceBookingController {
             HttpSession session) {
         try {
             User staff = (User) session.getAttribute("user");
-            if (staff == null || staff.getRole() != Role.staff) {
+            if (staff == null || staff.getRole() == Role.customer) {
                 return ResponseEntity.status(401)
                         .body(Map.of("success", false, "message", "Staff access required"));
             }
@@ -527,7 +527,7 @@ public class ServiceBookingController {
             User user = (User) session.getAttribute("user");
             if (user == null) {
                 notificationService.addErrorMessage(redirectAttributes, "Please login to view booking details");
-                return "redirect:/admin/login";
+                return "redirect:/login";
             }
 
             Optional<BookingResponse> bookingOpt = bookingService.getBookingById(bookingId);

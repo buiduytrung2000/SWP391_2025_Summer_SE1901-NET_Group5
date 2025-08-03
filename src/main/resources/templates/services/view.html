@@ -65,7 +65,12 @@
                             <div class="widget bg-white  widget_tag_cloud">
                                 <h4 class="tagcloud">Tags</h4>
                                 <div class="tagcloud" th:if="${not #lists.isEmpty(service.tags)}">
-                                    <a href="about-1.html" th:each="tag : ${service.tags}"
+                                    <a th:href="@{/(
+    keyword='',
+    createdBy='',
+    selectedTags=${service.tags},
+    page=0
+)}" th:each="tag : ${service.tags}"
                                        class="tag"
                                        th:text="${tag}">Tag 1</a>
 

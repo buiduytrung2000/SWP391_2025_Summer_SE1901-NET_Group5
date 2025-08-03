@@ -175,7 +175,7 @@
                                                                 <div class="dropdown-inner">
                                                                     <div class="p-3">
                                                                         <form method="get"
-                                                                              th:action="@{/admin/services}"
+                                                                              th:action="@{/services/admin}"
                                                                               class="filter-form">
                                                                             <div class="row g-2">
                                                                                 <div class="col-6">
@@ -255,7 +255,7 @@
                                                                 <div class="dropdown-inner">
                                                                     <div class="p-3">
                                                                         <form method="get"
-                                                                              th:action="@{/admin/services}"
+                                                                              th:action="@{/services/admin}"
                                                                               class="filter-form">
                                                                             <div class="row g-2">
                                                                                 <div class="col-6">
@@ -377,7 +377,7 @@
 
                                                                         <!-- Custom Date Range -->
                                                                         <form method="get"
-                                                                              th:action="@{/admin/services}"
+                                                                              th:action="@{/services/admin}"
                                                                               class="filter-form">
                                                                             <div class="row g-2">
                                                                                 <div class="col-6">
@@ -453,7 +453,7 @@
                                                                 <div class="dropdown-inner">
                                                                     <div class="p-3">
                                                                         <form method="get"
-                                                                              th:action="@{/admin/services}"
+                                                                              th:action="@{/services/admin}"
                                                                               class="filter-form">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label-sm">Select
@@ -531,7 +531,7 @@
                                                                 <div class="dropdown-inner">
                                                                     <div class="p-3">
                                                                         <form method="get"
-                                                                              th:action="@{/admin/services}"
+                                                                              th:action="@{/services/admin}"
                                                                               class="filter-form">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label-sm">Select
@@ -600,7 +600,7 @@
 
                                                     <!-- Add New Service Button -->
                                                     <li class="nk-block-tools-opt">
-                                                        <a th:href="@{/admin/services/add}" class="btn btn-primary">
+                                                        <a th:href="@{/services/admin/add}" class="btn btn-primary">
                                                             <em class="icon ni ni-plus"></em>
                                                             <span>Add Service</span>
                                                         </a>
@@ -637,9 +637,9 @@
                                                     <div class="form-inline flex-nowrap gx-3">
                                                     </div>
                                                 </div>
-                                                <form method="get" th:action="@{/admin/services}">
+                                                <form method="get" th:action="@{/services}">
                                                     <div class="search-content">
-                                                        <a th:href="@{/admin/services}"
+                                                        <a th:href="@{/services/admin}"
                                                            class="btn btn-outline-secondary btn-sm"
                                                            th:if="${keyword != null && !keyword.isEmpty()}">
                                                             <em class="icon ni ni-arrow-left"></em>
@@ -661,7 +661,7 @@
                                             </div>
                                             <div class="card-search search-wrap" data-search="search">
                                                 <div class="card-body">
-                                                    <form method="get" th:action="@{/admin/services}">
+                                                    <form method="get" th:action="@{/services/admin}">
                                                         <div class="search-content">
                                                             <a href="#" class="search-back btn btn-icon toggle-search"
                                                                data-target="search">
@@ -743,17 +743,17 @@
                                                             <li class="nk-tb-action-hidden"><a
                                                                     class="btn btn-trigger btn-icon"
                                                                     data-bs-toggle="tooltip"
-                                                                    th:href="@{/admin/services/edit/{id}(id=${s.getServiceId()})}"
+                                                                    th:href="@{/services/admin/edit/{id}(id=${s.getServiceId()})}"
                                                                     data-bs-placement="top" title="Quick Edit"><em
                                                                     class="icon ni ni-edit-fill"></em></a></li>
                                                             <li class="nk-tb-action-hidden"><a
-                                                                    th:href="@{/admin/services/{id}(id=${s.getServiceId()})}"
+                                                                    th:href="@{/services/{id}(id=${s.getServiceId()})}"
                                                                     class="btn btn-trigger btn-icon"
                                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                                     aria-label="View" data-bs-original-title="View"><em
                                                                     class="icon ni ni-eye-fill"></em></a></li>
                                                             <li class="nk-tb-action-hidden"><a
-                                                                    th:href="@{/admin/services/delete/{id}(id=${s.getServiceId()})}"
+                                                                    th:href="@{/services/admin/delete/{id}(id=${s.getServiceId()})}"
                                                                     class="btn btn-trigger btn-icon"
                                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                                     title="Delete"><em
@@ -828,7 +828,7 @@
                                                     <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
                                                         <div>Page</div>
                                                         <div>
-                                                            <form method="get" th:action="@{/admin/services}">
+                                                            <form method="get" th:action="@{/services/admin}">
                                                                 <label>
                                                                     <select class="form-select js-select2"
                                                                             name="page"

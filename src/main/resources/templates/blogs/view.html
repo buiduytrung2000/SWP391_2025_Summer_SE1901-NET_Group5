@@ -240,7 +240,7 @@
                                                                 </small>
                                                             </div>
                                                             <!-- Edit/Delete buttons for comment owner -->
-                                                            <div th:if="${isLoggedIn and currentUser.userId == comment.authorId}"
+                                                            <div th:if="${isLoggedIn and currentUser.userId == comment.authorId || currentUser.getRole().equals(currentUser.getRole().admin)}"
                                                                  class="comment-actions-dropdown">
                                                                 <div class="dropdown">
                                                                     <button class="btn btn-sm btn-link text-muted"
