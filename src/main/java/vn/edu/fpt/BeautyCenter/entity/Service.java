@@ -11,6 +11,7 @@ package vn.edu.fpt.BeautyCenter.entity;
  */
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
@@ -97,6 +98,10 @@ public class Service {
             )
     )
     private Set<ServiceTag> serviceTags = new LinkedHashSet<>();
+
+    @Size(max = 500)
+    @Column(name = "thumbnail_url", length = 500)
+    private String thumbnailUrl;
 
     /**
      * Adds a tag to this service and maintains bidirectional relationship.

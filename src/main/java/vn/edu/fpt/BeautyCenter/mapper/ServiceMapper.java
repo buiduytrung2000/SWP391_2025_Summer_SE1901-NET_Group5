@@ -63,6 +63,7 @@ public interface ServiceMapper {
     @Mapping(target = "tags", source = "serviceTags", qualifiedByName = "mapTags")
     @Mapping(target = "createdAt", source = "createdAt", dateFormat = "dd/MM/yyyy HH:mm")
     @Mapping(target = "createdBy", source = "createdBy")
+    @Mapping(target = "thumbnailUrl", source = "thumbnailUrl")
     ServiceResponse toResponse(Service entity);
 
     /**
@@ -89,6 +90,7 @@ public interface ServiceMapper {
      * @param request the source update DTO
      */
     @InheritInverseConfiguration(name = "toEntity")
+    @Mapping(target = "thumbnailUrl", source = "thumbnailUrl")
     void updateEntity(@MappingTarget Service entity, ServiceUpdateRequest request);
 
     /**

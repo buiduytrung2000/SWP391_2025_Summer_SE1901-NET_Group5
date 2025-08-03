@@ -70,7 +70,7 @@ public interface ServiceRepository extends JpaRepository<Service, String> {
      * @return page of services matching all specified criteria
      */
     @Query(value = "SELECT DISTINCT s.service_id, s.content, s.created_at, s.created_by, " +
-            "s.duration, s.name, s.price, s.updated_at " +
+            "s.duration, s.name, s.price, s.updated_at,s.thumbnail_url " +
             "FROM services s " +
             "LEFT JOIN service_tag_map stm ON s.service_id COLLATE utf8mb4_unicode_ci = stm.service_id COLLATE utf8mb4_unicode_ci " +
             "LEFT JOIN service_tags st ON st.tag_id = stm.tag_id " +

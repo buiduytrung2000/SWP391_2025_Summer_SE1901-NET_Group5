@@ -297,8 +297,6 @@ public class BlogController {
                 notificationService.addErrorMessage(redirectAttributes, "Session expired. Please login again.");
                 return "redirect:/blogs";
             }
-            System.out.println("Tags: "+request);
-
             // Attempt to create the blog
             if (file != null && !file.isEmpty()) {
                 try {
@@ -440,7 +438,6 @@ public class BlogController {
                     throw new RuntimeException(e);
                 }
             }
-            System.out.println(request);
             BlogResponse updatedBlog = blogService.updateBlog(blogId, request);
 
             // Success notification with blog title

@@ -136,6 +136,44 @@
                                 </div>
                               </div>
                             </div>
+                            <div class="wt-box m-b30">
+                              <h5>Featured Image</h5>
+
+                              <!-- Drop zone -->
+                              <div id="thumb-drop-area"
+                                   class="upload-area"
+                                   style=""
+                                   th:style="${service.thumbnailUrl != null} ? 'display:none;' : 'display:block;border:2px dashed #EA9999;padding:30px;text-align:center;cursor:pointer;'">
+                                <i class="fa fa-cloud-upload"
+                                   style="font-size:48px;color:#EA9999;"></i>
+                                <p class="text-muted m-b5">Drop or click to upload thumbnail</p>
+                                <small>Recommended size 800 × 400 px • Max 10 MB</small>
+                              </div>
+
+                              <!-- Hidden file input -->
+                              <input id="thumbInput"
+                                     type="file"
+                                     name="thumbnail"
+                                     accept="image/*"
+                                     style="display:none;">
+
+                              <!-- Preview container -->
+
+                              <div id="thumbPreviewBox"
+                                   th:style="${service.thumbnailUrl != null} ? 'display:block;' : 'display:none;'">
+                                <img id="thumbPreview" th:src="${service.getThumbnailUrl()}"
+                                     style="width:100%;max-height:200px;
+                            object-fit:cover;border-radius:8px;">
+                                <button type="button"
+                                        class="btn btn-sm btn-danger mt-2"
+                                        id="thumbRemoveBtn">
+                                  Remove image
+                                </button>
+                              </div>
+
+                              <!-- Hidden field lưu URL sau khi upload -->
+                              <input type="hidden" name="thumbnailUrl" id="thumbnailUrl" th:value="${service.getThumbnailUrl()}">
+                            </div>
 
                             <div class="col-12">
                               <div class="form-group">
@@ -149,7 +187,6 @@
                               </div>
                             </div>
                           </div>
-
                         </div>
                       </div>
                     </div>
@@ -164,5 +201,6 @@
   </div>
 </div>
 <div th:replace="~{/dashboard/fragments/footer::admin-scripts2}"></div>
+<script th:src="@{/js/blogThumbnailUpload.js}"></script>
 </body>
 </html>

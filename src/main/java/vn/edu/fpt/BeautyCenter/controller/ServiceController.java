@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceCreationRequest;
 import vn.edu.fpt.BeautyCenter.dto.request.ServiceFilterParams;
@@ -34,10 +35,13 @@ import vn.edu.fpt.BeautyCenter.entity.User;
 import vn.edu.fpt.BeautyCenter.entity.enums.Role;
 import vn.edu.fpt.BeautyCenter.exception.AppException;
 import vn.edu.fpt.BeautyCenter.service.NotificationService;
+import vn.edu.fpt.BeautyCenter.service.S3Service;
 import vn.edu.fpt.BeautyCenter.service.ServiceService;
 import vn.edu.fpt.BeautyCenter.service.UserService;
 
 import jakarta.validation.Valid;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -64,6 +68,7 @@ public class ServiceController {
     ServiceService serviceService;
     UserService userService;
     NotificationService notificationService;
+    S3Service s3Service;
 
     // List of allowed sort fields to prevent SQL injection
     private static final List<String> ALLOWED_SORT_FIELDS = Arrays.asList(
@@ -381,7 +386,7 @@ public class ServiceController {
             // Return to list view with error notification
             model.addAttribute("pageTitle", "Services Management");
             model.addAttribute("services", Page.empty());
-            return "dashboard/services/list";
+            return "services/list";
         }
     }
 
@@ -440,7 +445,8 @@ public class ServiceController {
     public String saveService(@ModelAttribute("serviceCreationRequest") @Valid ServiceCreationRequest request,
                               BindingResult bindingResult,
                               HttpSession session,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes,
+                              @RequestParam(value = "thumbnail") MultipartFile file) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
             return "redirect:/";
@@ -452,7 +458,7 @@ public class ServiceController {
             redirectAttributes.addFlashAttribute("serviceCreationRequest", request);
             notificationService.addErrorMessage(redirectAttributes,
                     "Please check the information entered. All required fields must be completed correctly.");
-            return "redirect:/admin/add";
+            return "redirect:/services/admin/add";
         }
 
         try {
@@ -462,7 +468,14 @@ public class ServiceController {
                 notificationService.addErrorMessage(redirectAttributes, "Session expired. Please login again.");
                 return "redirect:/";
             }
-
+            if (file != null && !file.isEmpty()) {
+                try {
+                    String url = s3Service.uploadFile(file);
+                    request.setThumbnailUrl(url);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             // Attempt to create the service
             serviceService.createService(request, user.getUserId());
 
@@ -476,14 +489,14 @@ public class ServiceController {
             // Handle business logic exceptions
             notificationService.addErrorMessage(redirectAttributes, e.getMessage());
             redirectAttributes.addFlashAttribute("serviceCreationRequest", request);
-            return "redirect:/admin/add";
+            return "redirect:/services/admin/add";
 
         } catch (Exception e) {
             // Handle unexpected errors
             notificationService.addErrorMessage(redirectAttributes,
                     "An unexpected error occurred while creating the service: " + e.getMessage());
             redirectAttributes.addFlashAttribute("serviceCreationRequest", request);
-            return "redirect:/admin/add";
+            return "redirect:/services/admin/add";
         }
     }
 
@@ -587,6 +600,7 @@ public class ServiceController {
                                 @ModelAttribute("serviceUpdateRequest") @Valid ServiceUpdateRequest request,
                                 BindingResult bindingResult,
                                 HttpSession session,
+                                @RequestParam(value = "thumbnail") MultipartFile file,
                                 RedirectAttributes redirectAttributes) {
         if (isNotPermit(session)) {
             notificationService.addErrorMessage(redirectAttributes, "Access denied. Administrator privileges required.");
@@ -604,6 +618,16 @@ public class ServiceController {
 
         try {
             // Perform the update operation
+            // Perform the update operation
+            if (file != null && !file.isEmpty()) {
+                try {
+                    String url = s3Service.uploadFile(file);
+                    request.setThumbnailUrl(url);
+                    System.out.println(request.getThumbnailUrl());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             serviceService.updateService(serviceId, request);
 
             // Success notification with service name
@@ -762,8 +786,8 @@ public class ServiceController {
      * @return validated field name or default "createdAt"
      */
     private String validateSortField(String sortBy) {
-        if (sortBy != null && ALLOWED_SORT_FIELDS.contains(sortBy.toLowerCase())) {
-            return sortBy.toLowerCase();
+        if (sortBy != null && ALLOWED_SORT_FIELDS.contains(sortBy)) {
+            return sortBy;
         }
         return "created_at"; // Default sort field
     }

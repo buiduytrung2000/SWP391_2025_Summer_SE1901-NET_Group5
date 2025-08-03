@@ -26,7 +26,7 @@
               </div>
               <div class="nk-block">
                 <form th:action="@{/services/admin/add}" th:object="${serviceCreationRequest}"
-                      enctype="multipart/form-data" method="POST">
+                      enctype="multipart/form-data" id="serviceForm" method="POST">
                   <!-- General notifications (success/error from redirect) -->
                   <div th:replace="~{fragments/notifications :: notification}"></div>
 
@@ -136,6 +136,44 @@
                                 </div>
                               </div>
                             </div>
+                            <!-- BLOG THUMBNAIL -->
+                            <div class="wt-box m-b30">
+                              <h5>Featured Image</h5>
+
+                              <!-- Drop zone -->
+                              <div id="thumb-drop-area"
+                                   class="upload-area"
+                                   style="border:2px dashed #EA9999;padding:30px;text-align:center;cursor:pointer;">
+                                <i class="fa fa-cloud-upload"
+                                   style="font-size:48px;color:#EA9999;"></i>
+                                <p class="text-muted m-b5">Drop or click to upload thumbnail</p>
+                                <small>Recommended size 800 × 400 px • Max 10 MB</small>
+                              </div>
+
+                              <!-- Hidden file input -->
+                              <input id="thumbInput"
+                                     type="file"
+                                     name="thumbnail"
+                                     th:form="serviceForm"
+                                     accept="image/*"
+                                     style="display:none;">
+
+                              <!-- Preview container -->
+
+                              <div id="thumbPreviewBox">
+                                <img id="thumbPreview"
+                                     style="width:100%;max-height:200px;
+                            object-fit:cover;border-radius:8px;">
+                                <button type="button"
+                                        class="btn btn-sm btn-danger mt-2"
+                                        id="thumbRemoveBtn">
+                                  Remove image
+                                </button>
+                              </div>
+
+                              <!-- Hidden field lưu URL sau khi upload -->
+                              <input type="hidden" th:field="*{thumbnailUrl}" id="thumbnailUrl">
+                            </div>
 
                             <div class="col-12">
                               <div class="form-group">
@@ -164,5 +202,6 @@
   </div>
 </div>
 <div th:replace="~{/dashboard/fragments/footer::admin-scripts2}"></div>
+<script th:src="@{/js/blogThumbnailUpload.js}"></script>
 </body>
 </html>

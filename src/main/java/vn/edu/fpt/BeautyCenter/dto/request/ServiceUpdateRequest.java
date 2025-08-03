@@ -64,4 +64,5 @@ public class ServiceUpdateRequest {
      * Modified list of tags associated with the service.
      */
     List<String> tagNames;
+    private String thumbnailUrl;
 }

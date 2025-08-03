@@ -123,7 +123,7 @@
                                 <div class="alert alert-info" style="margin-top: 15px;">
                                     <strong><i class="fa fa-filter"></i> Active Filters:</strong>
                                     <span th:each="filter, iterStat : ${activeFilters}">
-                    <span class="badge badge-primary" th:text="${filter}"></span>
+                    <span class="badge-primary" th:text="${filter}"></span>
                     <span th:if="${!iterStat.last}">, </span>
                   </span>
                                     <a th:href="@{/services}" class="btn btn-sm btn-danger pull-right">
@@ -152,10 +152,8 @@
 
                             <!-- Service Icon/Image -->
                             <div class="service-icon-container">
-                                <img th:attr="alt=${service.name}" />
-                                <div class="service-icon">
-                                    <i class="fa fa-spa"></i>
-                                    <div class="label" th:text="${service.name}">SERVICE</div>
+                                <div th:if="${service.thumbnailUrl}">
+                                    <img th:src="${service.thumbnailUrl}" style="width: 320px;height: 180px;object-fit: cover" alt="Blog Thumbnail" class="img-responsive">
                                 </div>
                             </div>
 
@@ -475,21 +473,5 @@
         }
     }
 </style>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Array of placeholder image URLs
-        const images = [
-            'https://picsum.photos/seed/spa1/320/180',
-            'https://picsum.photos/seed/spa3/320/180',
-            'https://source.unsplash.com/random/320x180/?spa'
-        ];
-
-        // Find all service containers and set random image for each
-        document.querySelectorAll('.service-icon-container img').forEach(imgEl => {
-            imgEl.src = images[Math.floor(Math.random() * images.length)];
-        });
-    });
-</script>
-
 </body>
 </html>

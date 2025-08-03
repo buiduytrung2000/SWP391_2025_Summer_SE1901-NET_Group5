@@ -135,6 +135,7 @@ public class ServiceService {
                 .duration(request.getDuration())
                 .price(request.getPrice())
                 .createdBy(userId)
+                .thumbnailUrl(request.getThumbnailUrl())
                 .build();
         // Handle tags if provided
         if (request.getTagNames() != null && !request.getTagNames().isEmpty()) {
@@ -190,7 +191,9 @@ public class ServiceService {
     public void updateService(String serviceId, ServiceUpdateRequest request) {
         vn.edu.fpt.BeautyCenter.entity.Service service = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
+        System.out.println("ser"+request.getThumbnailUrl());
         serviceMapper.updateEntity(service, request);
+        System.out.println("ent"+service.getThumbnailUrl());
         if (request.getTagNames() != null && !request.getTagNames().isEmpty()) {
             Set<ServiceTag> tags = processServiceTags(request.getTagNames());
             service.setServiceTags(tags);

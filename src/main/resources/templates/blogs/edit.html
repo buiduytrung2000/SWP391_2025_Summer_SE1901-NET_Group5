@@ -326,35 +326,6 @@
             placeholder: 'Write your engaging blog content here...',
         });
 
-        // // Tag Management
-        // let tags = [];
-        //
-        // function updateTagsDisplay() {
-        //     const container = $('#tagContainer');
-        //     container.empty();
-        //
-        //     tags.forEach(function (tag, index) {
-        //         const tagElement = $(`
-        //         <span class="badge badge-primary mr-2 mb-2" style="font-size: 14px;">
-        //             ${tag}
-        //             <button type="button" class="btn-close btn-close-white ms-1" style="background: none; border: none; color: white; font-size: 18px; padding: 0 0 0 5px;" data-index="${index}">×</button>
-        //         </span>
-        //     `);
-        //         container.append(tagElement);
-        //     });
-        //
-        //     // Update hidden field
-        //     $('#hiddenTags').val(tags.join(','));
-        // }
-        //
-        // function addTag(tagName) {
-        //     tagName = tagName.trim();
-        //     if (tagName && !tags.includes(tagName)) {
-        //         tags.push(tagName);
-        //         updateTagsDisplay();
-        //     }
-        // }
-
         // Handle tag input
         $('#tagInput').on('keypress', function (e) {
             if (e.which === 13 || e.which === 188) { // Enter or comma

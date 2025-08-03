@@ -64,6 +64,7 @@ public class ServiceCreationRequest {
      * Username or ID of the user who created the service.
      */
     String createdBy;
+    private String thumbnailUrl;
 
     /**
      * List of tag names associated with the service. No more than 10 tags,

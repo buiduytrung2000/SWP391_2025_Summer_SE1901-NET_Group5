@@ -53,7 +53,7 @@ public class ServiceResponse {
 
     /** Timestamp when the service was created. */
     private LocalDateTime createdAt;
+    private String thumbnailUrl;
 
-    // /** Timestamp when the service was last updated. */
     // private LocalDateTime updatedAt;
 }

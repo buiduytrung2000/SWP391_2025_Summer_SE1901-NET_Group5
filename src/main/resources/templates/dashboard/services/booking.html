@@ -155,7 +155,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="customerAge">Age-range</label>
-                        <select class="form-control" id="customerAge">
+                        <select class="form-control" name="ageRange" id="customerAge">
                           <option value="">-- Select age range --</option>
                           <option value="18-25">18-25 yo</option>
                           <option value="26-35">26-35 yo</option>
@@ -293,7 +293,7 @@
                 </div>
                 <!-- Submit Buttons -->
                 <div class="form-actions text-center">
-                  <button type="submit" class="btn btn-primary btn-lg mr-3" id="submitBookingBtn" onclick="appendSkinTypeToNotes()">
+                  <button type="submit" class="btn btn-primary btn-lg mr-3" id="submitBookingBtn" onclick="appendSkinTypeToNotes();appendAgeRangeToNotes()">
                     <i class="fa fa-calendar-check"></i>
                     Confirm booking
                   </button>
@@ -929,7 +929,6 @@
   /*<![CDATA[*/
   function appendSkinTypeToNotes() {
     const skinTypeVal = document.querySelector('input[name="skinType"]:checked')?.value || '';
-    const ageRange = document.getElementById('customerAge').value || '';
     const notesField  = document.getElementById('notes');
 
     if (!skinTypeVal) return;            // Chưa chọn -> không thay đổi
@@ -941,6 +940,14 @@
       notesField.value = notesField.value ? `${notesField.value}\n${tag}` : tag;
     }
 
+  }
+  /*<![CDATA[*/
+  function appendAgeRangeToNotes() {
+    const ageRange = document.querySelector('input[name="ageRange"]:checked')?.value || '';
+    const notesField  = document.getElementById('notes');
+    if (!ageRange) return;            // Chưa chọn -> không thay đổi
+    // Giữ nguyên nội dung người dùng nhưng thêm xuống dòng mới (hoặc ký tự phân cách)
+    notesField.value = notesField.value ? `${notesField.value}\n${ageRange}` : ageRange;
   }
   /*]]>*/
 

@@ -666,7 +666,7 @@
     confirmBtn.disabled = true;
 
     // Send assignment request
-    fetch(`/sbs/admin/bookings/assign/${currentBookingId}`, {
+    fetch(`/sbs/bookings/assign/${currentBookingId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

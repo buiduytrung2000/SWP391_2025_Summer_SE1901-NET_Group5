@@ -772,7 +772,7 @@
                                                     <ul class="pagination justify-content-center justify-content-md-start">
                                                         <li class="page-item" th:if="${services.hasPrevious()}">
                                                             <a class="page-link"
-                                                               th:href="@{/admin/services(page=${services.number - 1},
+                                                               th:href="@{/services/admin(page=${services.number - 1},
                                     size=${services.size},
                                     keyword=${keyword},
                                     minPrice=${filterParams.minPrice},
@@ -790,7 +790,7 @@
                                                         <li class="page-item" th:each="pageNum : ${pageNumbers}"
                                                             th:classappend="${pageNum == (services.number + 1)} ? 'active' : ''">
                                                             <a class="page-link"
-                                                               th:href="@{/admin/services(page=${pageNum - 1},
+                                                               th:href="@{/services/admin(page=${pageNum - 1},
                                     size=${services.size},
                                     keyword=${keyword},
                                     minPrice=${filterParams.minPrice},
@@ -808,7 +808,7 @@
 
                                                         <li class="page-item" th:if="${services.hasNext()}">
                                                             <a class="page-link"
-                                                               th:href="@{/admin/services(page=${services.number + 1},
+                                                               th:href="@{/services/admin(page=${services.number + 1},
                                     size=${services.size},
                                     keyword=${keyword},
                                     minPrice=${filterParams.minPrice},
